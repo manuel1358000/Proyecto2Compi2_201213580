@@ -1,4 +1,5 @@
 //tener cuidado con el nombre de las variales
+//aqui vamos a manejar todo lo de la interfaz
 function crearPesta(){
     var d=new Date();
     var n=d.getTime();
