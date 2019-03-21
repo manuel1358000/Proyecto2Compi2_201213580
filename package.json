@@ -1,0 +1,22 @@
+{
+  "name": "proyecto2compi2_201213580",
+  "version": "1.0.0",
+  "description": "Proyecto 2 Laboratorio compi2 usac facultad de ingenieria",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manuel1358000/Proyecto2Compi2_201213580.git"
+  },
+  "author": "Manuel Fuentes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manuel1358000/Proyecto2Compi2_201213580/issues"
+  },
+  "homepage": "https://github.com/manuel1358000/Proyecto2Compi2_201213580#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
