@@ -13,6 +13,10 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
         <!--area de llamadas al compilador-->
         <script src="/javascript/compilador/script.js"></script>
+        <!--Modulo que controla la interfaz-->
+        <script src="/javascript/controladorui/principal.js"></script>
+        <!--Modulo del parser-->
+        <script src="/javascript/compilador/ejecutar.js"></script>
         <title>Proyecto 2 Compi 2</title>
     </head>
     <body>
@@ -29,7 +33,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#" id="id_abrir">ABRIR</a>
-                                <a class="dropdown-item" href="#" id="id_crear">CREAR PESTAÑA</a>
+                                <a class="dropdown-item" href="#" onclick="crearPesta()">CREAR PESTAÑA</a>
                                 <a class="dropdown-item" href="#" id="id_guardar">CERRAR PESTAÑA ACTUAL</a>
                                 <a class="dropdown-item" href="#" id="id_guardar">GUARDAR</a>
                             </div>
@@ -39,7 +43,7 @@
                               OPCIONES DE COMPILACION
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="#" id="id_compilador">COMPILADOR</a>
+                              <a class="dropdown-item" onclick="btn_compilar()" id="id_compilador">COMPILADOR</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -69,23 +73,20 @@
                         <div class="row">
                             <div class="col">
                                 <div class="container-fluid">
-                                    <ul class="nav nav-pills">
-                                        <li class="active"><a data-toggle="pill" href="#archivo1">Archivo 1</a></li>
-                                        <li><a data-toggle="pill" href="#archivo2">Archivo 2</a></li>
-                                        <li><a data-toggle="pill" href="#archivo3">Archivo 3</a></li>
+                                    <ul class="nav nav-pills" id="nav_pesta">
+                                        <li class="active"><a data-toggle="pill" href="#pesta_1">Archivo 1</a></li>
+                                        <li><a data-toggle="pill" href="#pesta_2">Archivo 2</a></li>
+                                        <li><a data-toggle="pill" href="#pesta_3">Archivo 3</a></li>
                                     </ul>          
-                                    <div class="tab-content">
-                                        <div id="archivo1" class="tab-pane fade in active">
-                                            <h3>Archivo 1</h3>
-                                            <p>Archivo 2</p>
+                                    <div class="tab-content" id="contenedor_pesta">
+                                        <div id="pesta_1" class="tab-pane fade in active">
+                                            <textarea class="form-control rounded-0" id="pesta_1_input" rows="10"></textarea>
                                         </div>
-                                        <div id="archivo2" class="tab-pane fade">
-                                          <h3>Archivo2</h3>
-                                          <p>Some content in menu 1.</p>
+                                        <div id="pesta_2" class="tab-pane fade">
+                                            <textarea class="form-control rounded-0" id="pesta_2_input" rows="10"></textarea>
                                         </div>
-                                        <div id="archivo3" class="tab-pane fade">
-                                          <h3>Menu 2</h3>
-                                          <p>Some content in menu 2.</p>
+                                        <div id="pesta_3" class="tab-pane fade">
+                                            <textarea class="form-control rounded-0" id="pesta_3_input" rows="10"></textarea>
                                         </div>
                                     </div>
                                 </div>
