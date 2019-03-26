@@ -11,14 +11,26 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-        <!--area de llamadas al compilador-->
+        <!--Modulo Codemirror-->
+        <link rel='stylesheet' type='text/css' href="/javascript/editortexto/codemirror-5.45.0/lib/codemirror.css"> 
+        <script type='text/javascript' src="/javascript/editortexto/codemirror-5.45.0/lib/codemirror.js"></script>
+        <!--Se definen las estructuras auxiliares,heap, stack-->
+        <script src="/javascript/AST/Auxiliares/Estructurasaux.js"></script>
+        
+        <!--Modulo que Controla el ast-->
+        <script src="/javascript/AST/Entorno/Entorno.js"></script>
+        <script src="/javascript/AST/Instrucciones/Declaracion.js"></script>
+        <script src="/javascript/AST/Expresiones/Operaciones/Aritmetica.js"></script>
+        <script src="/javascript/AST/AST.js"></script>
+        <!--Modulo de llamada al compilador-->
         <script src="/javascript/compilador/script.js"></script>
         <!--Modulo que controla la interfaz-->
         <script src="/javascript/controladorui/principal_ui.js"></script>
         <!--Modulo del parser-->
         <script src="/javascript/compilador/ejecutar.js"></script>
-        <!--Archivo de jison-->
+        <!--Modulo jison-->
         <script src="/javascript/Analizador/calculadora.js"></script>
+        <!--El orden tiene que cuidarse-->
         <title>Proyecto 2 Compi 2</title>
     </head>
     <body>
@@ -34,9 +46,9 @@
                                 ARCHIVO
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#" id="id_abrir">ABRIR</a>
+                                <input id="fileInput" accept=".coline" type="file" size="50" onchange="processFiles(this.files)">
                                 <a class="dropdown-item" href="#" onclick="crearPesta()">CREAR PESTAÑA</a>
-                                <a class="dropdown-item" href="#" id="id_guardar">CERRAR PESTAÑA ACTUAL</a>
+                                <a class="dropdown-item" href="#" id="id_guardar" onclick="obtenerAritmetica()">CERRAR PESTAÑA ACTUAL</a>
                                 <a class="dropdown-item" href="#" id="id_guardar">GUARDAR</a>
                             </div>
                         </li>                        
@@ -76,20 +88,13 @@
                             <div class="col">
                                 <div class="container-fluid">
                                     <ul class="nav nav-pills" id="nav_pesta">
-                                        <li class="active"><a data-toggle="pill" href="#pesta_1">Archivo 1</a></li>
-                                        <li><a data-toggle="pill" href="#pesta_2">Archivo 2</a></li>
-                                        <li><a data-toggle="pill" href="#pesta_3">Archivo 3</a></li>
+                                        <li class="active"><a data-toggle="pill" href="#pesta_1">INICIO</a></li>
                                     </ul>          
                                     <div class="tab-content" id="contenedor_pesta">
-                                        <div id="pesta_1" class="tab-pane fade in active">
-                                            <textarea class="form-control rounded-0" id="pesta_1_input" rows="10"></textarea>
-                                        </div>
-                                        <div id="pesta_2" class="tab-pane fade">
-                                            <textarea class="form-control rounded-0" id="pesta_2_input" rows="10"></textarea>
-                                        </div>
-                                        <div id="pesta_3" class="tab-pane fade">
-                                            <textarea class="form-control rounded-0" id="pesta_3_input" rows="10"></textarea>
-                                        </div>
+                                            <div id="pesta_1" class="tab-pane fade in active">
+                                                    <textarea class="form-control" id="pesta_1_input"></textarea>
+                                            </div>
+                                            
                                     </div>
                                 </div>
                             </div>
@@ -144,4 +149,11 @@
                         </div>
                 </div>
     </body>
+    <script>
+      CodeMirror.fromTextArea(document.getElementById("pesta_1_input"), {
+        lineNumbers : true,
+        matchBrackets : true,
+        height:"350px",
+      });
+    </script>
 </html>

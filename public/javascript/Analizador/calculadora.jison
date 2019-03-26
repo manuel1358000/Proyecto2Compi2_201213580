@@ -6,7 +6,29 @@
 %%
 
 \s+                   /* skip whitespace */
-[0-9]+("."[0-9]+)?\b  return 'NUMBER'
+
+
+"int"               return 'INT'
+"string"            return 'STRING'
+"double"            return 'DOUBLE'
+"char"              return 'CHAR'
+"boolean"           return 'BOOLEAN'
+
+"public"            return 'PUBLIC'
+"static"            return 'STATIC'
+"final"             return 'FINAL'
+"private"           return 'PRIVATE'
+"protected"         return 'PROTECTED'
+
+
+
+
+//simbolos del lenguaje
+","                   return ','
+"]"                   return ']'
+"["                   return '['
+";"                   return ';'
+"="                   return '='
 "*"                   return '*'
 "/"                   return '/'
 "-"                   return '-'
@@ -16,8 +38,8 @@
 "%"                   return '%'
 "("                   return '('
 ")"                   return ')'
-"PI"                  return 'PI'
-"E"                   return 'E'
+([a-zA-Z]|["_"])([a-zA-Z]|[0-9]|["_"])* return 'ID'
+[0-9]+("."[0-9]+)?\b  return 'NUMBER'
 <<EOF>>               return 'EOF'
 .                     return 'INVALID'
 
@@ -38,36 +60,98 @@
 
 expressions
     : e EOF
-        { typeof console !== 'undefined' ? console.log($1) : print($1);
-          return $1; }
+        { return $1; }
     ;
 
-e
-    : e '+' e
-        {$$ = $1+$3;}
-    | e '-' e
-        {$$ = $1-$3;}
-    | e '*' e
-        {$$ = $1*$3;}
-    | e '/' e
-        {$$ = $1/$3;}
-    | e '^' e
-        {$$ = Math.pow($1, $3);}
-    | e '!'
-        {{
-          $$ = (function fact (n) { return n==0 ? 1 : fact(n-1) * n })($1);
-        }}
-    | e '%'
-        {$$ = $1/100;}
-    | '-' e %prec UMINUS
-        {$$ = -$2;}
-    | '(' e ')'
+e: sentencias_globales;
+
+
+sentencias_globales: declaracion_variables{$$=$1;};
+
+declaracion_variables: modificadores_variables tipo declaraciones_var ';'{
+                                                                          for(var i=0;i<$3.length;i++){
+                                                                              $3[i].modificadores=$1;
+                                                                              $3[i].tipo=$2;
+                                                                          }
+                                                                          $$=$3;
+                                                                        };
+
+declaraciones_var: declaraciones_var ',' declaracion_var{$$=$1
+                                                        $$.push($3);
+                                                        }
+                |  declaracion_var{$$=[];
+                                    $$.push($1);
+                                    };
+
+declaracion_var: variable_id '=' variable_inicializada{
+                                                        $1.iniValue=$3
+                                                        $1.inicializado=true;
+                                                        $$=$1;
+                                                    }
+                | variable_id{$$=$1;};
+
+variable_id:  variable_id '[' ']'{$1.dimensiones=$1.dimensiones+1;
+                                $$=$1;
+                                }
+            | ID{$$=new Declaracion(yytext,PrimitiveType.NULO,null,0,0,0);};
+
+variable_inicializada: exp{
+                            $$=$1;
+                            };
+
+
+modificadores_variables: {$$=[];}
+                        | modificadores_variables2{$$=$1;};
+modificadores_variables2: modificadores_variables2 modificador_variable{
+                                                                        $$=$1;
+                                                                        $$.push($2);
+                                                                       }
+                         | modificador_variable{
+                                                $$=[];
+                                                $$.push($1);       
+                         };
+
+modificador_variable: STATIC{$$=Visibilidad.STATIC;}
+                    | FINAL{$$=Visibilidad.FINAL;}
+                    | PUBLIC{$$=Visibilidad.PUBLIC;}
+                    | PRIVATE{$$=Visibilidad.PRIVATE;}
+                    | PROTECTED{$$=Visibilidad.PROTECTED;};
+
+tipo: INT{$$=PrimitiveType.INTEGER;}
+    | STRING{$$=PrimitiveType.STRING;}
+    | DOUBLE{$$=PrimitiveType.DOUBLE;}
+    | CHAR{$$=PrimitiveType.CHAR;}
+    | BOOLEAN{$$=PrimitiveType.BOOLEAN;};
+
+
+exp: exp '+' exp
+        {
+            $$=new Aritmetica($1,$3,false,null,"+",null,0,0);
+        }
+    | exp '-' exp
+        {
+            $$=new Aritmetica($1,$3,false,null,"-",null,0,0);
+        }
+    | exp '*' exp
+        {
+            $$=new Aritmetica($1,$3,false,null,"*",null,0,0);
+        }
+    | exp '/' exp
+        {
+            $$=new Aritmetica($1,$3,false,null,"/",null,0,0);
+            $$ = $1/$3;
+        }
+    | exp '^' exp
+        {
+            $$=new Aritmetica($1,$3,false,null,"^",null,0,0);
+        }
+    | '(' exp ')'
         {$$ = $2;}
     | NUMBER
-        {$$ = Number(yytext);}
-    | E
-        {$$ = Math.E;}
-    | PI
-        {$$ = Math.PI;}
+        {
+            $$=new Aritmetica(null,null,false,Number(yytext),null,PrimitiveType.INTEGER,0,0);
+        }
+    | ID{
+            $$=new Aritmetica(null,null,false,yytext,null,Type.ID,0,0);
+        }
     ;
-
