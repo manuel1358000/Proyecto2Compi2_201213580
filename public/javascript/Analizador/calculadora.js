@@ -72,12 +72,12 @@
   }
 */
 var calculadora = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[28,29,30,31,32],$V1=[1,8],$V2=[1,9],$V3=[1,10],$V4=[1,11],$V5=[1,12],$V6=[23,24,25,26,27,28,29,30,31,32],$V7=[1,24],$V8=[11,12],$V9=[11,12,15,17],$Va=[1,34],$Vb=[1,32],$Vc=[1,33],$Vd=[1,36],$Ve=[1,37],$Vf=[1,38],$Vg=[1,39],$Vh=[1,40],$Vi=[11,12,33,34,35,36,37,39],$Vj=[11,12,33,34,39],$Vk=[11,12,33,34,35,36,39];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,12],$V1=[1,8],$V2=[1,11],$V3=[1,5],$V4=[1,4],$V5=[1,6],$V6=[1,7],$V7=[1,9],$V8=[1,10],$V9=[1,14],$Va=[1,15],$Vb=[1,16],$Vc=[1,17],$Vd=[1,18],$Ve=[1,19],$Vf=[5,45,46,47,48,49,50,52],$Vg=[5,45,46,52],$Vh=[5,45,46,47,48,52],$Vi=[5,45,46,47,48,49,52];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"expressions":3,"e":4,"EOF":5,"sentencias_globales":6,"declaracion_variables":7,"modificadores_variables":8,"tipo":9,"declaraciones_var":10,";":11,",":12,"declaracion_var":13,"variable_id":14,"=":15,"variable_inicializada":16,"[":17,"]":18,"ID":19,"exp":20,"modificadores_variables2":21,"modificador_variable":22,"STATIC":23,"FINAL":24,"PUBLIC":25,"PRIVATE":26,"PROTECTED":27,"INT":28,"STRING":29,"DOUBLE":30,"CHAR":31,"BOOLEAN":32,"+":33,"-":34,"*":35,"/":36,"^":37,"(":38,")":39,"NUMBER":40,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",11:";",12:",",15:"=",17:"[",18:"]",19:"ID",23:"STATIC",24:"FINAL",25:"PUBLIC",26:"PRIVATE",27:"PROTECTED",28:"INT",29:"STRING",30:"DOUBLE",31:"CHAR",32:"BOOLEAN",33:"+",34:"-",35:"*",36:"/",37:"^",38:"(",39:")",40:"NUMBER"},
-productions_: [0,[3,2],[4,1],[6,1],[7,4],[10,3],[10,1],[13,3],[13,1],[14,3],[14,1],[16,1],[8,0],[8,1],[21,2],[21,1],[22,1],[22,1],[22,1],[22,1],[22,1],[9,1],[9,1],[9,1],[9,1],[9,1],[20,3],[20,3],[20,3],[20,3],[20,3],[20,3],[20,1],[20,1]],
+symbols_: {"error":2,"expressions":3,"e":4,"EOF":5,"exp":6,"sentencias_globales":7,"declaraciones_clase":8,"declaracion_clase":9,"modificadores_clase":10,"CLASS":11,"ID":12,"{":13,"cuerpo_clase":14,"}":15,"EXTENDS":16,"cuerpo_clase_declaraciones":17,"declaracion_variables":18,"modificadores_clase2":19,"modificador_clase":20,"PUBLIC":21,"PROTECTED":22,"PRIVATE":23,"ABSTRACT":24,"STATIC":25,"FINAL":26,"modificadores_variables":27,"tipo":28,"declaraciones_var":29,";":30,",":31,"declaracion_var":32,"variable_id":33,"=":34,"variable_inicializada":35,"[":36,"]":37,"modificadores_variables2":38,"modificador_variable":39,"INT":40,"STRING":41,"DOUBLE":42,"CHAR":43,"BOOLEAN":44,"+":45,"-":46,"*":47,"/":48,"^":49,"%":50,"(":51,")":52,"NUMBER":53,"DECIMAL":54,"FALSE":55,"TRUE":56,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",11:"CLASS",12:"ID",13:"{",15:"}",16:"EXTENDS",21:"PUBLIC",22:"PROTECTED",23:"PRIVATE",24:"ABSTRACT",25:"STATIC",26:"FINAL",30:";",31:",",34:"=",36:"[",37:"]",40:"INT",41:"STRING",42:"DOUBLE",43:"CHAR",44:"BOOLEAN",45:"+",46:"-",47:"*",48:"/",49:"^",50:"%",51:"(",52:")",53:"NUMBER",54:"DECIMAL",55:"FALSE",56:"TRUE"},
+productions_: [0,[3,2],[4,1],[7,1],[8,2],[8,1],[9,6],[9,8],[14,2],[14,1],[17,1],[10,0],[10,1],[19,2],[19,1],[20,1],[20,1],[20,1],[20,1],[20,1],[20,1],[18,4],[29,3],[29,1],[32,3],[32,1],[33,3],[33,1],[35,1],[27,0],[27,1],[38,2],[38,1],[39,1],[39,1],[39,1],[39,1],[39,1],[28,1],[28,1],[28,1],[28,1],[28,1],[6,3],[6,3],[6,3],[6,3],[6,3],[6,3],[6,3],[6,2],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -86,10 +86,90 @@ switch (yystate) {
 case 1:
  return $$[$0-1]; 
 break;
-case 3: case 8: case 13:
+case 2:
+
+    this.$=[];
+    this.$.push($$[$0]);
+    
+break;
+case 3: case 10: case 25: case 30:
 this.$=$$[$0];
 break;
 case 4:
+
+                                                            this.$=$$[$0-1];
+                                                            this.$.push($$[$0]);
+                                                        
+break;
+case 5:
+
+                                        this.$=[];
+                                        this.$.push($$[$0]);
+                                    
+break;
+case 6:
+
+                                                                        this.$=new Declaracionclase($$[$0-3],$$[$0-5],null,$$[$0-1]);
+                                                                    
+break;
+case 7:
+
+                                                                                this.$=new Declaracionclase($$[$0-5],$$[$0-7],$$[$0-3],$$[$0-1]);
+                                                                            
+break;
+case 8:
+
+                                                        this.$=$$[$0-1];
+                                                        for(var i=0;i<$$[$0].length;i++){
+                                                            this.$.push($$[$0][i]);
+                                                        }                
+                                                    
+break;
+case 9:
+
+                                        this.$=[];
+                                        for(var i=0;i<$$[$0].length;i++){
+                                            this.$.push($$[$0][i]);
+                                        }
+                                        
+break;
+case 11: case 29:
+this.$=[];
+break;
+case 12:
+this.$=$$[$0]
+break;
+case 13:
+
+                                                            this.$=$$[$0-1];
+                                                            this.$.push($$[$0]);
+                                                            
+break;
+case 14:
+
+                                        this.$=[];
+                                        this.$.push($$[$0]);
+                                        
+break;
+case 15: case 35:
+this.$=Visibilidad.PUBLIC;
+break;
+case 16: case 37:
+this.$=Visibilidad.PROTECTED;
+break;
+case 17: case 36:
+this.$=Visibilidad.PRIVATE;
+break;
+case 18:
+this.$=Visibilidad.ABSTRACT;
+break;
+case 19: case 33:
+this.$=Visibilidad.STATIC;
+break;
+case 20: case 34:
+this.$=Visibilidad.FINAL;
+break;
+case 21:
 
                                                                           for(var i=0;i<$$[$0-1].length;i++){
                                                                               $$[$0-1][i].modificadores=$$[$0-3];
@@ -98,124 +178,142 @@ case 4:
                                                                           this.$=$$[$0-1];
                                                                         
 break;
-case 5:
+case 22:
 this.$=$$[$0-2]
                                                         this.$.push($$[$0]);
                                                         
 break;
-case 6:
+case 23:
 this.$=[];
                                     this.$.push($$[$0]);
                                     
 break;
-case 7:
+case 24:
 
                                                         $$[$0-2].iniValue=$$[$0]
                                                         $$[$0-2].inicializado=true;
                                                         this.$=$$[$0-2];
                                                     
 break;
-case 9:
+case 26:
 $$[$0-2].dimensiones=$$[$0-2].dimensiones+1;
                                 this.$=$$[$0-2];
                                 
 break;
-case 10:
+case 27:
 this.$=new Declaracion(yytext,PrimitiveType.NULO,null,0,0,0);
 break;
-case 11:
+case 28:
 
                             this.$=$$[$0];
                             
 break;
-case 12:
-this.$=[];
-break;
-case 14:
+case 31:
 
                                                                         this.$=$$[$0-1];
                                                                         this.$.push($$[$0]);
                                                                        
 break;
-case 15:
+case 32:
 
                                                 this.$=[];
                                                 this.$.push($$[$0]);       
                          
 break;
-case 16:
-this.$=Visibilidad.STATIC;
-break;
-case 17:
-this.$=Visibilidad.FINAL;
-break;
-case 18:
-this.$=Visibilidad.PUBLIC;
-break;
-case 19:
-this.$=Visibilidad.PRIVATE;
-break;
-case 20:
-this.$=Visibilidad.PROTECTED;
-break;
-case 21:
+case 38:
 this.$=PrimitiveType.INTEGER;
 break;
-case 22:
+case 39:
 this.$=PrimitiveType.STRING;
 break;
-case 23:
+case 40:
 this.$=PrimitiveType.DOUBLE;
 break;
-case 24:
+case 41:
 this.$=PrimitiveType.CHAR;
 break;
-case 25:
+case 42:
 this.$=PrimitiveType.BOOLEAN;
 break;
-case 26:
+case 43:
 
             this.$=new Aritmetica($$[$0-2],$$[$0],false,null,"+",null,0,0);
         
 break;
-case 27:
+case 44:
 
             this.$=new Aritmetica($$[$0-2],$$[$0],false,null,"-",null,0,0);
         
 break;
-case 28:
+case 45:
 
             this.$=new Aritmetica($$[$0-2],$$[$0],false,null,"*",null,0,0);
         
 break;
-case 29:
+case 46:
 
             this.$=new Aritmetica($$[$0-2],$$[$0],false,null,"/",null,0,0);
-            this.$ = $$[$0-2]/$$[$0];
         
 break;
-case 30:
+case 47:
 
             this.$=new Aritmetica($$[$0-2],$$[$0],false,null,"^",null,0,0);
         
 break;
-case 31:
-this.$ = $$[$0-1];
+case 48:
+
+            this.$=new Aritmetica($$[$0-2],$$[$0],false,null,"%",null,0,0);
+        
 break;
-case 32:
+case 49:
+
+                    this.$ = $$[$0-1];
+                 
+break;
+case 50:
+
+                this.$=new Aritmetica($$[$0],null,true,null,"-",null,0,0);
+             
+break;
+case 51:
 
             this.$=new Aritmetica(null,null,false,Number(yytext),null,PrimitiveType.INTEGER,0,0);
         
 break;
-case 33:
+case 52:
+
+            this.$=new Aritmetica(null,null,false,Number(yytext),null,PrimitiveType.DOUBLE,0,0);
+        
+break;
+case 53:
+
+            this.$=new Aritmetica(null,null,false,yytext,null,PrimitiveType.STRING,0,0);
+        
+break;
+case 54:
+
+            this.$=new Aritmetica(null,null,false,"false",null,PrimitiveType.BOOLEAN,0,0);
+        
+break;
+case 55:
+
+            this.$=new Aritmetica(null,null,false,"true",null,PrimitiveType.BOOLEAN,0,0);
+        
+break;
+case 56:
+
+            this.$=new Aritmetica(null,null,false,yytext,null,PrimitiveType.CHAR,0,0);
+        
+break;
+case 57:
 
             this.$=new Aritmetica(null,null,false,yytext,null,Type.ID,0,0);
         
 break;
 }
 },
-table: [o($V0,[2,12],{3:1,4:2,6:3,7:4,8:5,21:6,22:7,23:$V1,24:$V2,25:$V3,26:$V4,27:$V5}),{1:[3]},{5:[1,13]},{5:[2,2]},{5:[2,3]},{9:14,28:[1,15],29:[1,16],30:[1,17],31:[1,18],32:[1,19]},o($V0,[2,13],{22:20,23:$V1,24:$V2,25:$V3,26:$V4,27:$V5}),o($V6,[2,15]),o($V6,[2,16]),o($V6,[2,17]),o($V6,[2,18]),o($V6,[2,19]),o($V6,[2,20]),{1:[2,1]},{10:21,13:22,14:23,19:$V7},{19:[2,21]},{19:[2,22]},{19:[2,23]},{19:[2,24]},{19:[2,25]},o($V6,[2,14]),{11:[1,25],12:[1,26]},o($V8,[2,6]),o($V8,[2,8],{15:[1,27],17:[1,28]}),o($V9,[2,10]),{5:[2,4]},{13:29,14:23,19:$V7},{16:30,19:$Va,20:31,38:$Vb,40:$Vc},{18:[1,35]},o($V8,[2,5]),o($V8,[2,7]),o($V8,[2,11],{33:$Vd,34:$Ve,35:$Vf,36:$Vg,37:$Vh}),{19:$Va,20:41,38:$Vb,40:$Vc},o($Vi,[2,32]),o($Vi,[2,33]),o($V9,[2,9]),{19:$Va,20:42,38:$Vb,40:$Vc},{19:$Va,20:43,38:$Vb,40:$Vc},{19:$Va,20:44,38:$Vb,40:$Vc},{19:$Va,20:45,38:$Vb,40:$Vc},{19:$Va,20:46,38:$Vb,40:$Vc},{33:$Vd,34:$Ve,35:$Vf,36:$Vg,37:$Vh,39:[1,47]},o($Vj,[2,26],{35:$Vf,36:$Vg,37:$Vh}),o($Vj,[2,27],{35:$Vf,36:$Vg,37:$Vh}),o($Vk,[2,28],{37:$Vh}),o($Vk,[2,29],{37:$Vh}),o($Vi,[2,30]),o($Vi,[2,31])],
-defaultActions: {3:[2,2],4:[2,3],13:[2,1],15:[2,21],16:[2,22],17:[2,23],18:[2,24],19:[2,25],25:[2,4]},
+table: [{3:1,4:2,6:3,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},{1:[3]},{5:[1,13]},{5:[2,2],45:$V9,46:$Va,47:$Vb,48:$Vc,49:$Vd,50:$Ve},{6:20,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},{6:21,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},o($Vf,[2,51]),o($Vf,[2,52]),o($Vf,[2,53]),o($Vf,[2,54]),o($Vf,[2,55]),o($Vf,[2,56]),o($Vf,[2,57]),{1:[2,1]},{6:22,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},{6:23,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},{6:24,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},{6:25,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},{6:26,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},{6:27,12:$V0,41:$V1,43:$V2,46:$V3,51:$V4,53:$V5,54:$V6,55:$V7,56:$V8},{45:$V9,46:$Va,47:$Vb,48:$Vc,49:$Vd,50:$Ve,52:[1,28]},o($Vg,[2,50],{47:$Vb,48:$Vc,49:$Vd,50:$Ve}),o($Vg,[2,43],{47:$Vb,48:$Vc,49:$Vd,50:$Ve}),o($Vg,[2,44],{47:$Vb,48:$Vc,49:$Vd,50:$Ve}),o($Vh,[2,45],{49:$Vd,50:$Ve}),o($Vh,[2,46],{49:$Vd,50:$Ve}),o($Vi,[2,47],{50:$Ve}),o($Vi,[2,48],{50:$Ve}),o($Vf,[2,49])],
+defaultActions: {13:[2,1]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -692,66 +790,86 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 28
+case 1:return 40
 break;
-case 2:return 29
+case 2:return 41
 break;
-case 3:return 30
+case 3:return 42
 break;
-case 4:return 31
+case 4:return 43
 break;
-case 5:return 32
+case 5:return 44
 break;
-case 6:return 25
+case 6:return 21
 break;
-case 7:return 23
+case 7:return 25
 break;
-case 8:return 24
+case 8:return 26
 break;
-case 9:return 26
+case 9:return 23
 break;
-case 10:return 27
+case 10:return 22
 break;
-case 11:return 12
+case 11:return 24
 break;
-case 12:return 18
+case 12:return 11
 break;
-case 13:return 17
+case 13:return 16
 break;
-case 14:return 11
+case 14:return 13
 break;
 case 15:return 15
 break;
-case 16:return 35
+case 16:return 31
 break;
-case 17:return 36
+case 17:return 37
 break;
-case 18:return 34
+case 18:return 36
 break;
-case 19:return 33
+case 19:return 30
 break;
-case 20:return 37
+case 20:return 34
 break;
-case 21:return '!'
+case 21:return 47
 break;
-case 22:return '%'
+case 22:return 48
 break;
-case 23:return 38
+case 23:return 46
 break;
-case 24:return 39
+case 24:return 45
 break;
-case 25:return 19
+case 25:return 49
 break;
-case 26:return 40
+case 26:return '!'
 break;
-case 27:return 5
+case 27:return 50
 break;
-case 28:return 'INVALID'
+case 28:return 51
+break;
+case 29:return 52
+break;
+case 30:return 56
+break;
+case 31:return 55
+break;
+case 32:return 54
+break;
+case 33:return 53
+break;
+case 34:return 41
+break;
+case 35:return 43
+break;
+case 36:return 12
+break;
+case 37:return 5
+break;
+case 38:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:int\b)/,/^(?:string\b)/,/^(?:double\b)/,/^(?:char\b)/,/^(?:boolean\b)/,/^(?:public\b)/,/^(?:static\b)/,/^(?:final\b)/,/^(?:private\b)/,/^(?:protected\b)/,/^(?:,)/,/^(?:\])/,/^(?:\[)/,/^(?:;)/,/^(?:=)/,/^(?:\*)/,/^(?:\/)/,/^(?:-)/,/^(?:\+)/,/^(?:\^)/,/^(?:!)/,/^(?:%)/,/^(?:\()/,/^(?:\))/,/^(?:([a-zA-Z]|["_"])([a-zA-Z]|[0-9]|["_"])*)/,/^(?:[0-9]+(\.[0-9]+)?\b)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:int\b)/,/^(?:string\b)/,/^(?:double\b)/,/^(?:char\b)/,/^(?:boolean\b)/,/^(?:public\b)/,/^(?:static\b)/,/^(?:final\b)/,/^(?:private\b)/,/^(?:protected\b)/,/^(?:abstract\b)/,/^(?:class\b)/,/^(?:extends\b)/,/^(?:\{)/,/^(?:\})/,/^(?:,)/,/^(?:\])/,/^(?:\[)/,/^(?:;)/,/^(?:=)/,/^(?:\*)/,/^(?:\/)/,/^(?:-)/,/^(?:\+)/,/^(?:\^)/,/^(?:!)/,/^(?:%)/,/^(?:\()/,/^(?:\))/,/^(?:true\b)/,/^(?:false\b)/,/^(?:[0-9]+(\.[0-9]+)\b)/,/^(?:[0-9]+)/,/^(?:"[^\"\n]*")/,/^(?:'[a-zA-Z][^''\n]*')/,/^(?:([a-zA-Z]|["_"])([a-zA-Z]|[0-9]|["_"])*)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38],"inclusive":true}}
 });
 return lexer;
 })();

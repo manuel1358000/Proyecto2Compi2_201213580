@@ -1,5 +1,5 @@
 class Simbolo{
-    constructor(nombre,tipo,ambito,rol,apuntador,tamanio,tamdimensiones,ref,visibilidad,modificadores){
+    constructor(nombre,tipo,ambito,rol,apuntador,tamanio,tamdimensiones,visibilidad,modificadores){
         this.nombre=nombre;
         this.tipo=tipo;
         this.ambito=ambito;
@@ -7,7 +7,6 @@ class Simbolo{
         this.apuntador=apuntador;
         this.tamanio=tamanio;
         this.dim=tamdimensiones;
-        this.ref=ref;
         this.visibilidad=visibilidad;
         //los modificadores son una lista de valores separadas por _
         this.modificadores=modificadores;
@@ -22,7 +21,7 @@ class HashTable{
     put(clave,sim){
         var numerohash=this.obtenerHash(clave);
         this.valores[numerohash]=sim;
-        alert("El numero hash es "+numerohash);
+        //alert("El numero hash es "+numerohash);
     }
     get(clave){
         var numerohash=this.obtenerHash(clave);
@@ -40,6 +39,10 @@ class HashTable{
         }
         return hash;
     }
+    getTam(){
+        return this.valores.length;
+
+    }
 }
 
 
@@ -54,12 +57,13 @@ class Entorno{
     }
     agregar(clave,sim){
         var com=this.obtener(clave);
-        console.log("paso por aqui");
         if(com==null){
             this.tabla.put(clave,sim);
+        }else{
+            alert("Error semantico: ya existe una declaracion con la clave "+clave);
         }
     }
-    agregarparametro(clave,simbolo){
+    agregarparametro(clave,sim){
         this.tabla.put(clave,sim);
     }
     actualizar(clave,sim){
