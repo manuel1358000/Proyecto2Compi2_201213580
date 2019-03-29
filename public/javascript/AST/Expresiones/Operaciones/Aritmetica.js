@@ -37,6 +37,20 @@ class Aritmetica{
                             var result=new Result();
                             result.u_etiqueta=generarEtiqueta();
                             result.cadena+=result.u_etiqueta+"=h;\n";
+                            if(tipo1=='BOOLEAN'){
+                                if(result1.valor==1){
+                                    result1.valor=true;
+                                }else{
+                                    result1.valor=false;
+                                }
+                            }
+                            if(tipo2=='BOOLEAN'){
+                                if(result2.valor==1){
+                                    result2.valor=true;
+                                }else{
+                                    result2.valor=false;
+                                }
+                            }
                             result.cadena+=generarString(result1.valor,false)
                             result.cadena+=generarString(result2.valor,true);
                             result.valor=result1.valor+result2.valor;
@@ -145,24 +159,57 @@ class Aritmetica{
                     }else if(this.operador=="^"){
                         if(tipo=="INTEGER"){
                             var result=new Result();
-                            result.u_etiqueta=generarEtiqueta();
                             result.cadena=result1.cadena+result2.cadena;
-                            result.cadena+=result.u_etiqueta+"="+result1.u_etiqueta+"^"+result2.u_etiqueta+";\n";
+                            var etc=generarSalto();
+                            var etv=generarSalto();
+                            var etf=generarSalto();
+                            result.u_etiqueta=generarEtiqueta();
+                            result.cadena+=result.u_etiqueta+"="+result1.u_etiqueta+";\n";
+                            result.cadena+=etc+":\n";
+                            result.cadena+="if("+result2.u_etiqueta+">1) goto "+etv+";\n";
+                            result.cadena+="goto "+etf+";\n";
+                            result.cadena+=etv+":\n";
+                            result.cadena+=result2.u_etiqueta+"="+result2.u_etiqueta+"-1;\n";
+                            result.cadena+=result.u_etiqueta+"="+result.u_etiqueta+"*"+result1.u_etiqueta+";\n";
+                            result.cadena+="goto "+etc+";\n";
+                            result.cadena+=etf+":\n";
                             this.tipoprimitivo=PrimitiveType.INTEGER;
                             return result;
                         }else if(tipo=="DOUBLE"){
                             var result=new Result();
-                            result.u_etiqueta=generarEtiqueta();
                             result.cadena=result1.cadena+result2.cadena;
-                            result.cadena+=result.u_etiqueta+"="+result1.u_etiqueta+"^"+result2.u_etiqueta+";\n";
-                            this.tipoprimitivo=PrimitiveType.DOUBLE;
+                            var etc=generarSalto();
+                            var etv=generarSalto();
+                            var etf=generarSalto();
+                            result.u_etiqueta=generarEtiqueta();
+                            result.cadena+=result.u_etiqueta+"="+result1.u_etiqueta+";\n";
+                            result.cadena+=etc+":\n";
+                            result.cadena+="if("+result2.u_etiqueta+">=0) goto "+etv+";\n";
+                            result.cadena+="goto "+etf+";\n";
+                            result.cadena+=etv+":\n";
+                            result.cadena+=result2.u_etiqueta+"="+result2.u_etiqueta+"-1;\n";
+                            result.cadena+=result.u_etiqueta+"="+result.u_etiqueta+"*"+result.u_etiqueta+";\n";
+                            result.cadena+="goto "+etc+";\n";
+                            result.cadena+=etf+":\n";
+                            this.tipoprimitivo=PrimitiveType.INTEGER;
                             return result;
                         }else if(tipo=="CHAR"){
                             var result=new Result();
-                            result.u_etiqueta=generarEtiqueta();
                             result.cadena=result1.cadena+result2.cadena;
-                            result.cadena+=result.u_etiqueta+"="+result1.u_etiqueta+"^"+result2.u_etiqueta+";\n";
-                            this.tipoprimitivo=PrimitiveType.CHAR;
+                            var etc=generarSalto();
+                            var etv=generarSalto();
+                            var etf=generarSalto();
+                            result.u_etiqueta=generarEtiqueta();
+                            result.cadena+=result.u_etiqueta+"="+result1.u_etiqueta+";\n";
+                            result.cadena+=etc+":\n";
+                            result.cadena+="if("+result2.u_etiqueta+">=0) goto "+etv+";\n";
+                            result.cadena+="goto "+etf+";\n";
+                            result.cadena+=etv+":\n";
+                            result.cadena+=result2.u_etiqueta+"="+result2.u_etiqueta+"-1;\n";
+                            result.cadena+=result.u_etiqueta+"="+result.u_etiqueta+"*"+result.u_etiqueta+";\n";
+                            result.cadena+="goto "+etc+";\n";
+                            result.cadena+=etf+":\n";
+                            this.tipoprimitivo=PrimitiveType.INTEGER;
                             return result;
                         }else{
                             console.log("Error semantico: Operacion no soportada");
@@ -212,6 +259,12 @@ class Aritmetica{
                     result.u_etiqueta=generarEtiqueta();
                     if(this.tipoprimitivo==PrimitiveType.CHAR){
                         result.valor=this.valor.charCodeAt(1);
+                    }else if(this.tipoprimitivo==PrimitiveType.BOOLEAN){
+                        if(this.valor=='true'){
+                            result.valor=1;
+                        }else{
+                            result.valor=0;
+                        }
                     }else{
                         result.valor=this.valor;
                     }
@@ -233,6 +286,7 @@ function numerico(tipo){
         return false;
     }
 }
+
 function generarString(cadena,bandera){
     var respuesta="";
     cadena=String(cadena).replace(/['"]+/g, '');

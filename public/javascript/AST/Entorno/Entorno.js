@@ -1,10 +1,10 @@
 class Simbolo{
-    constructor(nombre,tipo,ambito,rol,apuntador,tamanio,tamdimensiones,visibilidad,modificadores){
+    constructor(nombre,tipo,ambito,rol,posRel,tamanio,tamdimensiones,visibilidad,modificadores){
         this.nombre=nombre;
         this.tipo=tipo;
         this.ambito=ambito;
         this.rol=rol;
-        this.apuntador=apuntador;
+        this.posRel=posRel;
         this.tamanio=tamanio;
         this.dim=tamdimensiones;
         this.visibilidad=visibilidad;

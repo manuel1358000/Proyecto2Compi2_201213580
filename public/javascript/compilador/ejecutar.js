@@ -1,10 +1,16 @@
 var cont_e=-1;
+var cont_s=-1;
 /** FUNCION QUE SE MANDA A LLAMAR PARA COMPILAR EL AREA ACTUAL*/
 function generarEtiqueta(){
     cont_e++;
     return "t"+cont_e;
 
 }
+function generarSalto(){
+    cont_s++;
+    return "L"+cont_s;
+}
+
 function btn_compilar(){
     cont_e=-1;
     //vamos a traer al activo del contenedor
@@ -19,6 +25,8 @@ function btn_compilar(){
     }
     var cm = $('.CodeMirror')[indice].CodeMirror;
     var ast=calculadora.parse(cm.getValue());
+    cont_e=-1;
+    cont_s=-1;
     for(var i=0;i<ast.length;i++){
         ejecutar(ast[i]);
     }

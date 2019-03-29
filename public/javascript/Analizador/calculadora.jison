@@ -31,17 +31,28 @@
 "]"                   return ']'
 "["                   return '['
 ";"                   return ';'
+"=="                  return '=='
 "="                   return '='
+//aritmeticas
 "*"                   return '*'
 "/"                   return '/'
 "-"                   return '-'
 "+"                   return '+'
-"^"                   return '^'
-"!"                   return '!'
+"pow"                 return 'POW'
+"!="                  return '!='
 "%"                   return '%'
+//relacionales
+"<="                  return '<='
+">="                  return '>='
+">"                   return '>'
+"<"                   return '<'
+//operaciones logicas
+"&&"                  return '&&'
+"||"                  return '||'
+"!"                   return '!'
 "("                   return '('
 ")"                   return ')'
-"true"               return 'TRUE'
+"true"                return 'TRUE'
 "false"               return 'FALSE'
 [0-9]+("."[0-9]+)\b   return 'DECIMAL'
 [0-9]+                return 'NUMBER'
@@ -56,12 +67,12 @@
 /* operator associations and precedence */
 
 %left '+' '-'
-%left '*' '/'
-%left '^'
+%left '*' '/' '%'
+%left 'pow'
+%left '(' ')'
+%left '==' '!=' '>' '>=' '<' '<='
 %right '!'
-%right '%'
-%left UMINUS
-
+%left '&&' '||'
 %start expressions
 
 %% /* language grammar */
@@ -185,7 +196,43 @@ tipo: INT{$$=PrimitiveType.INTEGER;}
     | BOOLEAN{$$=PrimitiveType.BOOLEAN;};
 
 
-exp: exp '+' exp
+exp: '!' exp
+        {
+            $$=new Logica($2,null,true,null,"!",null,0,0);
+        }
+    | exp '&&' exp
+        {
+            $$=new Logica($1,$3,false,null,"&&",0,0);
+        }  
+    | exp '||' exp
+        {
+            $$=new Logica($1,$3,false,null,"||",0,0);
+        }  
+    | exp '>' exp
+        {
+            $$=new Relacional($1,$3,false,null,">",0,0);
+        }
+    | exp '<' exp
+        {
+            $$=new Relacional($1,$3,false,null,"<",0,0);
+        }
+    | exp '>=' exp
+        {
+            $$=new Relacional($1,$3,false,null,">=",0,0);
+        }
+    | exp '<=' exp
+        {
+            $$=new Relacional($1,$3,false,null,"<=",0,0);
+        }
+    | exp '==' exp
+        {
+            $$=new Relacional($1,$3,false,null,"==",0,0);
+        }
+    | exp '!=' exp
+        {
+            $$=new Relacional($1,$3,false,null,"!=",0,0);
+        }
+    | exp '+' exp
         {
             $$=new Aritmetica($1,$3,false,null,"+",null,0,0);
         }
@@ -201,9 +248,9 @@ exp: exp '+' exp
         {
             $$=new Aritmetica($1,$3,false,null,"/",null,0,0);
         }
-    | exp '^' exp
+    | POW '(' exp ',' exp ')'
         {
-            $$=new Aritmetica($1,$3,false,null,"^",null,0,0);
+            $$=new Aritmetica($3,$5,false,null,"^",null,0,0);
         }
     | exp '%' exp
         {
