@@ -18,13 +18,18 @@
         <script src="/javascript/AST/Auxiliares/Estructurasaux.js"></script>
         
         <!--Modulo que Controla el ast-->
-        <script src="/javascript/AST/Entorno/Entorno.js"></script>
-        <script src="/javascript/AST/Entorno/Result.js"></script>
-        <script src="/javascript/AST/Instrucciones/Declaracionclase.js"></script>
-        <script src="/javascript/AST/Instrucciones/Declaracion.js"></script>
+        
         <script src="/javascript/AST/Expresiones/Operaciones/Aritmetica.js"></script>
         <script src="/javascript/AST/Expresiones/Operaciones/Relacional.js"></script>
+        <script src="/javascript/AST/Expresiones/Operaciones/Logica.js"></script>
+        <script src="/javascript/AST/Instrucciones/Declaracion.js"></script>
+        <script src="/javascript/AST/Instrucciones/Declaracionclase.js"></script>
+        <script src="/javascript/AST/Instrucciones/Metodo.js"></script>
+        <script src="/javascript/AST/Entorno/Entorno.js"></script>
+        <script src="/javascript/AST/Entorno/Result.js"></script>
         <script src="/javascript/AST/AST.js"></script>
+        
+        
         <!--Modulo de llamada al compilador-->
         <script src="/javascript/compilador/script.js"></script>
         <!--Modulo que controla la interfaz-->
@@ -107,6 +112,7 @@
                                     <ul class="nav nav-pills">
                                         <li class="active"><a data-toggle="pill" href="#id_errores">ERRORES</a></li>
                                         <li><a data-toggle="pill" href="#id_consola">CONSOLA</a></li>
+                                        <li><a data-toggle="pill" href="#id_tabla" id="tabla_simbolos">TABLA SIMBOLOS</a></li>
                                     </ul>          
                                     <div class="tab-content">
                                         <div id="id_errores" class="tab-pane fade in active">
@@ -121,23 +127,11 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                    <th scope="row">Semantico</th>
-                                                    <td>Error semantico</td>
-                                                    <td>0</td>
-                                                    <td>0</td>
-                                                  </tr>
-                                                    <tr>
-                                                    <th scope="row">Lexico</th>
-                                                    <td>Error Lexico</td>
-                                                    <td>0</td>
-                                                    <td>0</td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th scope="row">Lexico</th>
-                                                    <td>Error Lexico</td>
-                                                    <td>0</td>
-                                                    <td>0</td>
-                                                  </tr>
+                                                      <th scope="row">Semantico</th>
+                                                      <td>Error semantico</td>
+                                                      <td>0</td>
+                                                      <td>0</td>
+                                                    </tr>
                                                 </tbody>
                                           </table>
                                         </div>
@@ -146,6 +140,29 @@
                                                 <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="10"></textarea>
                                             </div>
                                         </div>
+                                        <div id="id_tabla" class="tab-pane fade">
+                                          <table class="table">
+                                            <thead class="thead-light">
+                                              <tr>
+                                                <!--<th scope="col">CLAVE</th>-->
+                                                <th scope="col">NOMBRE</th>
+                                                <th scope="col">TIPO</th>
+                                                <th scope="col">AMBITO</th>
+                                                <th scope="col">ROL</th>
+                                                <th scope="col">POSREL</th>
+                                                <th scope="col">TAMAÑO</th>
+                                                <th scope="col">DIMENSIONES</th>
+                                                <th scope="col">VISIBILIDAD</th>
+                                                <th scope="col">MODIFICADORES</th>
+                                                <th scope="col">INICIALIZADO</th>
+                                                <th scope="col">EXTIENDE</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody id="cuerpo_tabla">
+                                                
+                                            </tbody>
+                                          </table>
+                                      </div>
                                     </div>
                                 </div>
                             </div>

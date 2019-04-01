@@ -1,13 +1,18 @@
 class Simbolo{
-    constructor(nombre,tipo,ambito,rol,posRel,tamanio,tamdimensiones,visibilidad,modificadores){
+    constructor(nombre,tipo,ambito,rol,posRel,tamanio,dim,visibilidad,modificadores){
         this.nombre=nombre;
         this.tipo=tipo;
         this.ambito=ambito;
         this.rol=rol;
         this.posRel=posRel;
         this.tamanio=tamanio;
-        this.dim=tamdimensiones;
-        this.visibilidad=visibilidad;
+        this.dim=dim;
+        if(visibilidad==null||visibilidad==""){
+            this.visibilidad=Visibilidad.PUBLIC;
+        }else{
+            this.visibilidad=visibilidad;
+        }
+        this.extiende="";
         //los modificadores son una lista de valores separadas por _
         this.modificadores=modificadores;
         this.inicializado=false;
@@ -16,28 +21,13 @@ class Simbolo{
 
 class HashTable{
     constructor(){
-        this.valores=new Array();
+        this.valores={};
     }
     put(clave,sim){
-        var numerohash=this.obtenerHash(clave);
-        this.valores[numerohash]=sim;
-        //alert("El numero hash es "+numerohash);
+        this.valores[clave]=sim;
     }
     get(clave){
-        var numerohash=this.obtenerHash(clave);
-        return this.valores[numerohash];
-    }
-    obtenerHash(clave){
-        var hash = 0;
-        if (clave.length == 0) {
-            return hash;
-        }
-        for (var i = 0; i < clave.length; i++) {
-            var char = clave.charCodeAt(i);
-            hash = ((hash<<5)-hash)+char;
-            hash = hash & hash; // Convert to 32bit integer
-        }
-        return hash;
+        return this.valores[clave];
     }
     getTam(){
         return this.valores.length;
@@ -60,9 +50,14 @@ class Entorno{
         if(com==null){
             this.tabla.put(clave,sim);
         }else{
-            alert("Error semantico: ya existe una declaracion con la clave "+clave);
+            if(sim.ambito==com.ambito){
+                alert("Error semantico: ya existe una declaracion con la clave "+clave);
+            }else{
+                this.tabla.put(clave,sim);
+            }
         }
     }
+
     agregarparametro(clave,sim){
         this.tabla.put(clave,sim);
     }

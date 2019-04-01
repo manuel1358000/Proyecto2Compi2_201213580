@@ -1,3 +1,5 @@
+
+
 var cont_e=-1;
 var cont_s=-1;
 /** FUNCION QUE SE MANDA A LLAMAR PARA COMPILAR EL AREA ACTUAL*/
@@ -12,6 +14,7 @@ function generarSalto(){
 }
 
 function btn_compilar(){
+    
     cont_e=-1;
     //vamos a traer al activo del contenedor
     var elementoDiv=document.querySelector("#contenedor_pesta > div.active");
@@ -27,9 +30,7 @@ function btn_compilar(){
     var ast=calculadora.parse(cm.getValue());
     cont_e=-1;
     cont_s=-1;
-    for(var i=0;i<ast.length;i++){
-        ejecutar(ast[i]);
-    }
+    ejecutar(ast);
     alert("Se finalizo la ejecucion");
 }
 
@@ -50,4 +51,37 @@ function agregar_contenido(contenido,indice){
     doc.replaceRange(contenido, cursor);
 
 }
+
+function agregarTablaSimbolos(entorno){
+    var tabla=document.getElementById("cuerpo_tabla");
+    tabla.innerHTML = "";
+    var fila="";
+    for(var e=entorno;e!=null;e=e.padre){
+        for(var clave in e.tabla.valores) {
+            if(typeof e.tabla.valores[clave]!="undefined"){
+                fila+="<tr>";
+                //fila+="<td>"+clave+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].nombre+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].tipo+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].ambito+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].rol+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].posRel+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].tamanio+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].dim+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].visibilidad+"</td>";
+                var modificadores="";
+                for(var f=0;f<e.tabla.valores[clave].modificadores.length;f++){
+                    modificadores+=e.tabla.valores[clave].modificadores[f]+"-";
+                }
+                modificadores = modificadores.substring(0,modificadores.length-1);
+                fila+="<td>"+modificadores+"</td>";
+                fila+="<td>"+e.tabla.valores[clave].inicializado+"</td>"
+                fila+="<td>"+e.tabla.valores[clave].extiende+"</td>";
+                fila+="</tr>";
+            }
+        }
+    }
+    tabla.insertAdjacentHTML('beforeend',fila);
+}
+
 

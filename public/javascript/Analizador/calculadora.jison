@@ -7,23 +7,27 @@
 
 \s+                   /* skip whitespace */
 
-
+"variable"          return 'VARIABLE'
+"metodo"            return 'METODO'
+"constructor"       return 'CONSTRUCTOR'
 "int"               return 'INT'
 "string"            return 'STRING'
 "double"            return 'DOUBLE'
 "char"              return 'CHAR'
 "boolean"           return 'BOOLEAN'
-
+"void"              return 'VOID'
 "public"            return 'PUBLIC'
 "static"            return 'STATIC'
 "final"             return 'FINAL'
 "private"           return 'PRIVATE'
 "protected"         return 'PROTECTED'
 "abstract"          return 'ABSTRACT'
-
+"new"               return 'NEW'
 "class"             return 'CLASS'
 "extends"           return 'EXTENDS'
-
+"import"            return 'IMPORT'
+"println"           return 'PRINTLN'
+"print"             return 'PRINT'
 //simbolos del lenguaje
 "{"                   return '{'
 "}"                   return '}'
@@ -56,6 +60,7 @@
 "false"               return 'FALSE'
 [0-9]+("."[0-9]+)\b   return 'DECIMAL'
 [0-9]+                return 'NUMBER'
+
 "\""[^\"\n]*"\""      return 'STRING'
 "'"[a-zA-Z][^''\n]*"'" return 'CHAR'
 ([a-zA-Z]|["_"])([a-zA-Z]|[0-9]|["_"])* return 'ID'
@@ -82,48 +87,42 @@ expressions
         { return $1; }
     ;
 
-//e: sentencias_globales{$$=$1;};
-e: exp{
-    $$=[];
-    $$.push($1);
-    };
+e: sentencias_globales{$$=$1;};
 
-sentencias_globales: declaraciones_clase{$$=$1;};
+sentencias_globales: declaraciones_import sentencias_generales{
+                                                            $$=$1;
+                                                            for(var i=0;i<$2.length;i++){
+                                                                $$.push($2);
+                                                            }
+                                                            }
+                    | sentencias_generales{$$=$1;};
+
+declaraciones_import: declaraciones_import declaracion_import 
+                    | declaracion_impor;
+
+declaracion_import: IMPORT STRING ';';
+
+sentencias_generales: declaraciones_clase{$$=$1;};
+
+
 
 declaraciones_clase: declaraciones_clase declaracion_clase{
                                                             $$=$1;
                                                             $$.push($2);
-                                                        }
+                                                            }
                    | declaracion_clase{
                                         $$=[];
                                         $$.push($1);
-                                    };
+                                        };
 
 declaracion_clase: modificadores_clase CLASS ID '{' cuerpo_clase '}'{
-                                                                        $$=new Declaracionclase($3,$1,null,$5);
+                                                                    $$=new Declaracionclase($3,$1,"",$5);
                                                                     }
                  | modificadores_clase CLASS ID EXTENDS ID '{' cuerpo_clase '}'{
                                                                                 $$=new Declaracionclase($3,$1,$5,$7);
-                                                                            }; 
-
-cuerpo_clase: cuerpo_clase cuerpo_clase_declaraciones{
-                                                        $$=$1;
-                                                        for(var i=0;i<$2.length;i++){
-                                                            $$.push($2[i]);
-                                                        }                
-                                                    }
-            | cuerpo_clase_declaraciones{
-                                        $$=[];
-                                        for(var i=0;i<$1.length;i++){
-                                            $$.push($1[i]);
-                                        }
-                                        };
-
-//aqui vamos a definir las variables,metodos, constructor, clases
-cuerpo_clase_declaraciones:declaracion_variables{$$=$1;};
-
+                                                                                }; 
 modificadores_clase:{$$=[];}
-                    | modificadores_clase2{$$=$1};
+                    | modificadores_clase2{$$=$1;};
 modificadores_clase2: modificadores_clase2 modificador_clase{
                                                             $$=$1;
                                                             $$.push($2);
@@ -140,61 +139,162 @@ modificador_clase: PUBLIC{$$=Visibilidad.PUBLIC;}
                  | STATIC{$$=Visibilidad.STATIC;}
                  | FINAL{$$=Visibilidad.FINAL;};
 
-declaracion_variables: modificadores_variables tipo declaraciones_var ';'{
-                                                                          for(var i=0;i<$3.length;i++){
-                                                                              $3[i].modificadores=$1;
-                                                                              $3[i].tipo=$2;
-                                                                          }
-                                                                          $$=$3;
-                                                                        };
 
-declaraciones_var: declaraciones_var ',' declaracion_var{$$=$1
-                                                        $$.push($3);
-                                                        }
-                |  declaracion_var{$$=[];
-                                    $$.push($1);
+cuerpo_clase: cuerpo_clase cuerpo_clase_sentencias{
+                                                $$=$1;
+                                                for(var i=0;i<$2.length;i++){
+                                                    $$.push($2[i]);
+                                                }
+                                                }
+            | cuerpo_clase_sentencias{
+                                    $$=$1;
                                     };
 
-declaracion_var: variable_id '=' variable_inicializada{
-                                                        $1.iniValue=$3
-                                                        $1.inicializado=true;
-                                                        $$=$1;
-                                                    }
-                | variable_id{$$=$1;};
+cuerpo_clase_sentencias: modificadores declaracion_metodos{
+                                                            $$=[];
+                                                            $2.modificadores=$1;
+                                                            $$.push($2);
+                                                        }
+                        | declaracion_metodos{
+                            $$=[];
+                            $$.push($1);
+                        }
+                        | declaracion_variables{$$=$1;};
 
-variable_id:  variable_id '[' ']'{$1.dimensiones=$1.dimensiones+1;
+declaracion_variables: modificadores variables{
+                                                for(var i=0;i<$2.length;i++){
+                                                    $2[i].modificadores=$1;
+                                                }
+                                                $$=$2;
+                                              }
+                    | variables{
                                 $$=$1;
+                               };
+
+variables: tipo lista_id ';'{
+                                //DECLARACION DE UNA VARIABLE
+                                for(var i=0;i<$2.length;i++){
+                                    $2[i].tipo=$1;
                                 }
-            | ID{$$=new Declaracion(yytext,PrimitiveType.NULO,null,0,0,0);};
+                                $$=$2;
+                            }
+         | ID lista_id ';'{
+                            //DECLARACION DE UN OBJETO
+                            for(var i=0;i<$2.length;i++){
+                                $2[i].tipo=$1;
+                            }
+                            $$=$2;
+                            }
+         | tipo lista_id '=' exp ';'{
+                                    //DECLARACION ASIGNACION DE UNA VARIABLE
+                                    for(var i=0;i<$2.length;i++){
+                                        $2[i].tipo=$1;
+                                    }
+                                    $2[($2.length-1)].iniValue=$4;
+                                    $$=$2;
+                                    }
+         | ID lista_id '=' exp ';'{ 
+                                    //DECLARACION ASIGNACION DE UN OBJETO
+                                    //aca queda normal, en la parte de expresiones tenemos que agregar las declaracion new objeto();
+                                    for(var i=0;i<$2.length;i++){
+                                        $2[i].tipo=$1;
+                                    }
+                                    $2[($2.length-1)].iniValue=$4;
+                                    $$=$2;
+                                    };
 
-variable_inicializada: exp{
-                            $$=$1;
-                            };
+lista_id: lista_id ',' ID{
+                        $$=$1;
+                        $$.push(new Declaracion(yytext,PrimitiveType.NULO,null,null,0,0,0));
+                        }
+        | ID{
+            $$=[];
+            $$.push(new Declaracion(yytext,PrimitiveType.NULO,null,[],0,0,0));
+            };
+
+declaracion_metodos: tipo ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
+                                                                            //UN METODO NORMAL
+                                                                            $$=new Metodo($2,$1,$7,$4);
+                                                                            } 
+                   | tipo ID '(' lista_parametros ')' ';'{
+                                                        //UN METODO ABSTRACTO NORMAL
+                                                        //id,tipo,nodos,parametros
+                                                        $$=new Metodo($2,$1,[],$4);
+                                                        }
+                   | ID ID '(' lista_parametros ')' ';'{
+                                                        //UN METODO ABSTRACTO QUE DEVUELVE UN OBJETO
+                                                        $$=new Metodo($2,$1,[],$4);
+                                                        }
+                   | ID ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
+                                                                            //METODO QUE DEVUELVE UN OBJETO
+                                                                            $$=new Metodo($2,$1,$7,$4);
+                                                                        }
+                   | ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
+                                                                        //CONSTRUCTOR
+                                                                        $$=new Metodo($1,"VOID",$7,$4);
+                                                                        $$.constructor=true;
+                                                                    };
+
+cuerpo_metodo: cuerpo_metodo sentencias_metodo{
+                                                $$=$1;
+                                                for(var i=0;i<$2.length;i++){
+                                                    $$.push($2[i]);
+                                                }
+                                            }
+            | sentencias_metodo{
+                                $$=$1;
+                                };
+
+//-------------------------sentencias dentro de un metodo
+
+sentencias_metodo: variables{$$=$1;};
 
 
-modificadores_variables: {$$=[];}
-                        | modificadores_variables2{$$=$1;};
-modificadores_variables2: modificadores_variables2 modificador_variable{
-                                                                        $$=$1;
-                                                                        $$.push($2);
-                                                                       }
-                         | modificador_variable{
-                                                $$=[];
-                                                $$.push($1);       
-                         };
+//------------------------- finalizan las sentencias que van dentro de un metodo
 
-modificador_variable: STATIC{$$=Visibilidad.STATIC;}
-                    | FINAL{$$=Visibilidad.FINAL;}
-                    | PUBLIC{$$=Visibilidad.PUBLIC;}
-                    | PRIVATE{$$=Visibilidad.PRIVATE;}
-                    | PROTECTED{$$=Visibilidad.PROTECTED;};
+
+
+//aqui se tiene que agregar las asignaciones
+lista_parametros: {$$=[];}
+                | parametros{$$=$1;};
+parametros: parametros ',' parametro{
+                                    $$=$1;
+                                    $$.push($3);
+                                    }
+            | parametro{
+                        $$=[];
+                        $$.push($1);
+                       };
+
+parametro: tipo ID{$$=new Declaracion($2,$1,null,[],0,0,0);}
+         | ID ID{$$=new Declaracion($2,$1,null,[],0,0,0);};
+
+
+modificadores: modificadores modificador{
+                                        $$=$1;
+                                        $$.push($2);
+                                        }
+            | modificador{
+                        $$=[];
+                        $$.push($1);
+                        };
+
+modificador: ABSTRACT{$$=Visibilidad.ABSTRACT;}
+             | STATIC{$$=Visibilidad.STATIC;}
+             | FINAL{$$=Visibilidad.FINAL;}
+             | visibilidad{$$=$1;};
+
+visibilidad: PUBLIC{$$=Visibilidad.PUBLIC;}
+           | PRIVATE{$$=Visibilidad.PRIVATE;}
+           | PROTECTED{$$=Visibilidad.PROTECTED;};
+
 
 tipo: INT{$$=PrimitiveType.INTEGER;}
     | STRING{$$=PrimitiveType.STRING;}
     | DOUBLE{$$=PrimitiveType.DOUBLE;}
     | CHAR{$$=PrimitiveType.CHAR;}
-    | BOOLEAN{$$=PrimitiveType.BOOLEAN;};
-
+    | BOOLEAN{$$=PrimitiveType.BOOLEAN;}
+    | VOID{$$=PrimitiveType.VOID;};
 
 exp: '!' exp
         {
