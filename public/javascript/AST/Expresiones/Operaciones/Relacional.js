@@ -8,11 +8,14 @@ class Relacional{
         this.tipoprimitivo=tipoprimitivo;
         this.linea=linea;
         this.columna=columna;
+        this.ambitos="";
     }
     getValue(entorno){
         if(this.exp1!=null&&this.exp2!=null){
+            this.exp1.ambitos=this.ambitos;
             var result1=this.exp1.getValue(entorno);
             var tipo1=this.exp1.getTipe(entorno);
+            this.exp2.ambitos=this.ambitos;
             var result2=this.exp2.getValue(entorno);
             var tipo2=this.exp2.getTipe(entorno);
             var tipo=generarTipoRelacional(tipo1,tipo2);

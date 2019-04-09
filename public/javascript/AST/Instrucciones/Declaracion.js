@@ -9,22 +9,23 @@ class Declaracion{
         this.inicializado=false;
         this.linea=linea;
         this.columna=columna;
+        this.ambitos="";
     }
     execute(entorno){
-        var respuesta="";
-        console.log(this.iniValue);
+        var respuesta=null;
         if(this.iniValue instanceof Aritmetica){
+            this.iniValue.ambitos=this.ambitos;
             respuesta=this.iniValue.getValue(entorno);
-            console.log(respuesta.cadena);
-            console.log("El temporal del heap es "+respuesta.u_etiqueta);
+            respuesta.tipo=this.iniValue.getTipe(entorno);
         }else if(this.iniValue instanceof Relacional){
+            this.iniValue.ambitos=this.ambitos;
             respuesta=this.iniValue.getValue(entorno);
-            console.log(respuesta.cadena);
-            console.log("El temporal del heap es "+respuesta.u_etiqueta);
+            respuesta.tipo=this.iniValue.getTipe(entorno);
         }else if(this.iniValue instanceof Logica){
+            this.iniValue.ambitos=this.ambitos;
             respuesta=this.iniValue.getValue(entorno);
-            console.log(respuesta.cadena);
-            console.log("El temporal del heap es "+respuesta.u_etiqueta);
+            respuesta.tipo=this.iniValue.getTipe(entorno);
+        }else{
         }
         return respuesta;
     }

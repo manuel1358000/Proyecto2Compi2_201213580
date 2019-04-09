@@ -4,6 +4,10 @@
 /** funcion que agrega una pestaña nueva al editor de texto */
 var editor;
 function crearPesta(nombre){
+    if(nombre==null){
+        var nombre_modal=document.getElementById("nombre_pesta");
+        nombre=nombre_modal.value;    
+    }
     var d=new Date();
     var n=d.getTime();
     var content=document.getElementById("contenedor_pesta");
@@ -22,12 +26,28 @@ function crearPesta(nombre){
     settextarea(indice);
     return content.childNodes.length-3;
 }
-
 function settextarea(id){
     editor=CodeMirror.fromTextArea(document.getElementById(id), {
                 lineNumbers : true,
                 matchBrackets : true,
                 height:"350px",
-                });
-    
+                });   
 }
+function cerrarPesta(){
+    var content=document.getElementById("contenedor_pesta");
+    var nav=document.getElementById("nav_pesta");
+    var elemento_tab=document.querySelector('#nav_pesta > li.active');
+    var elemento_campo=document.querySelector("#contenedor_pesta > div.active");
+    if(elemento_campo.id!="pesta_1"){
+        elemento_tab.remove();
+        elemento_campo.remove();
+        var nav2=document.getElementById("pesta_1");
+        nav2.className="tab-pane fade active show in";
+        var nav3=document.getElementById("nav_inicio");
+        nav3.className="active";
+        
+    }else{
+        alert("Esta pesta;a no de puede eliminar");
+    }
+}
+

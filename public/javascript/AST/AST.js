@@ -1,22 +1,47 @@
 function ejecutar(nodoast,entorno){
     var respuesta="";
     var entorno=new Entorno(null);
-    //primera pasada vamos a cargar todas las clases a la tabla de simbolos, son su contenido
+
+    //--------------------------EMPIEZA PRIMERA PASADA, VAMOS A REALIZAR LAS IMPORTACIONES 
+
+
+
+
+    //------------------------- EMPIEZA SEGUNDA PASADA, VAMOS A CARGAR TODOS LOS SIMBOLOS A LA TABLA DE SIMBOLOS
+    //------------------------- SE AGREGAN, CLASES, ATRIBUTOS, METODOS
     for(var i=0;i<nodoast.length;i++){
         cargarTablaSimbolos(nodoast[i],entorno,"GLOBAL",0);
     }
-    /*
+    agregarTablaSimbolos(entorno);
+    //------------------------- EMPIEZA TERCERA PASADA, SE REALIZA LA GENERACION DE CODIGO INTERMEDIO
+    //vamos a recorrer la tabla de simbolo en busca del metodo main
     for(var i=0;i<nodoast.length;i++){
-        if(nodoast[i] instanceof Declaracionclase){
-            //nombre,tipo,ambito,rol,porRel,tamanio,tamdimensiones,visibilidad,modificadores
-            console.log("Paso por acui");
-            respuesta=nodoast[i].execute(entorno);
-        }else{
-            alert("Es una instancia rara");
+        var clases=nodoast[i];
+        if(clases instanceof Declaracionclase){
+            for(var a=0;a<clases.nodos.length;a++){
+                var metodo=clases.nodos[a];
+                if(metodo instanceof Metodo){
+                    if(metodo.id=="main"){
+                        clases.nodos.splice(a,1)
+                        clases.nodos.unshift(metodo);
+                        var temp=clases;
+                        nodoast.splice(i,1);
+                        nodoast.unshift(temp);
+                    }
+                }
+            }
         }
     }
-    */
+    for(var i=0;i<nodoast.length;i++){
+        if(nodoast[i] instanceof Declaracionclase){
+            respuesta=nodoast[i].execute(entorno);
+        }else{
+            alert("Instancias no validas, posiblemente son instancias de import");
+        }
+    }
+    //------------------------
     agregarTablaSimbolos(entorno);
+    anidarErrores();
     return respuesta;
 }
 function cargarTablaSimbolos(nodoast,entorno,ambito,posicion){
@@ -53,8 +78,7 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion){
         }
 
     }else{
-        console.log("Aqui se tienen que agregar las otras instancias");
-
+        //instancias extras
     }
 }
 

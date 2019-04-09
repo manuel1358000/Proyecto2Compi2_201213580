@@ -7,21 +7,61 @@ class Declaracionclase{
     }
     execute(entorno){
         var respuesta="";
-        var pos=0;
-        console.log(this.nodos.length);
+        var variables_globales="void globales_"+this.id+"(){\n";
         for(var i=0;i<this.nodos.length;i++){
-            if(this.nodos[i] instanceof Declaracion){
-                 //nombre,tipo,ambito,rol,apuntador,tamanio,tamdimensiones,visibilidad,modificadores
-                var sim=new Simbolo(this.nodos[i].id,this.nodos[i].tipo,this.id,"ATRIBUTO",pos,1,this.nodos[i].dimensiones,this.nodos[i].getVisibilidad(),this.nodos[i].modificadores);
-                pos++;
-                entorno.agregar(sim.nombre,sim);
-                console.log(this.nodos[i].iniValue.valor);
-                respuesta+=this.nodos[i].execute(entorno);
-            }else{
+            var nodo=this.nodos[i];
+            if(nodo instanceof Declaracion){
+                var result=nodo.execute(entorno);
+                if(result.tipo==nodo.tipo){
+                    var temp="";
+                    if(result.cadena!=null){
+                        temp+=result.cadena;
+                    }
+                    //respuesta+=nodo.execute(entorno);
+                    temp+="//EMPIEZA LA INICIALIZACION\n";
+                    var eti_this=generarEtiqueta();
+                    temp+=eti_this+"=p+1;//se mueve una posicion por el this\n";
+                    var eti_aux=generarEtiqueta();
+                    temp+=eti_aux+"=stack["+eti_this+"]; //puntero del objeto\n";
+                    var eti_aux2=generarEtiqueta();
+                    var sim_aux=entorno.obtener(nodo.id+"_"+this.id);
+                    temp+=eti_aux2+"="+eti_aux+"+"+sim_aux.posRel+";//direccion de "+nodo.id+"\n";
+                    if(result.u_etiqueta==null){
+                        temp+="heap["+eti_aux2+"]=0;//asignacion del valor al heap\n";
+                    }else{
+                        temp+="heap["+eti_aux2+"]="+result.u_etiqueta+";//asignacion del valor al heap\n";
+                    }
+                    temp+="//Finalizo la signacion \n";
+                    //finalizado
+                    variables_globales+=temp;
+                    }else{
+                        var c_error="No se puede generar el codigo 3d de la variable "+nodo.id+" Se le quiere asignar un valor "+result.tipo;
+                        var error=new Errores("SEMANTICO",c_error,0,0);
+                        agregarErrores(error);
+                    }
+            }else if(nodo instanceof Metodo){
                 //metodos
-                console.log("Es otra instancia");
+                nodo.ambitos=this.id;
+                var result=nodo.execute(entorno);
+                var temp="";
+                temp+="\n//INICIA LA CREACION DEL METODO\n";
+                temp+=nodo.tipo +" " + nodo.id + "(){\n";
+                temp+=result.cadena;
+                temp+="\n}\n";
+                respuesta+=temp;
+            }else if(nodo instanceof Imprimir){
+                var result_imprimir=nodo.execute(entorno);
+                console.log("-----------------------imprimir ------------------------");
+                console.log(result_imprimir.cadena);
+                console.log("----------------------- fin imprimir -------------------");
+            }else{
+                
             }
+
         }
+        variables_globales+="}\n";
+        respuesta=variables_globales+respuesta;
+
         return respuesta;
     }
     getTipe(){
@@ -36,7 +76,8 @@ class Declaracionclase{
                     this.modificadores.splice(i,1);
                 }else{
                     this.modificadores.splice(i,1);
-                    alert("Solo puede existir un elemento de visibilidad");
+                    var c_error="Solo puede existir un elemento de visibilidad";
+                    agregarErrores(new Errores("SEMANTICO",c_error,0,0));
                 }
             }
         }

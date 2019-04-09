@@ -74,10 +74,11 @@
 %left '+' '-'
 %left '*' '/' '%'
 %left 'pow'
-%left '(' ')'
-%left '==' '!=' '>' '>=' '<' '<='
 %right '!'
 %left '&&' '||'
+%left '==' '!=' '>' '>=' '<' '<='
+%left '(' ')'
+
 %start expressions
 
 %% /* language grammar */
@@ -88,7 +89,6 @@ expressions
     ;
 
 e: sentencias_globales{$$=$1;};
-
 sentencias_globales: declaraciones_import sentencias_generales{
                                                             $$=$1;
                                                             for(var i=0;i<$2.length;i++){
@@ -231,7 +231,7 @@ declaracion_metodos: tipo ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
                                                                         }
                    | ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
                                                                         //CONSTRUCTOR
-                                                                        $$=new Metodo($1,"VOID",$7,$4);
+                                                                        $$=new Metodo($1,"VOID",$6,$3);
                                                                         $$.constructor=true;
                                                                     };
 
@@ -247,9 +247,19 @@ cuerpo_metodo: cuerpo_metodo sentencias_metodo{
 
 //-------------------------sentencias dentro de un metodo
 
-sentencias_metodo: variables{$$=$1;};
+sentencias_metodo: variables{$$=$1;}
+                 | sentencia_imprimir{
+                                    $$=[];
+                                    $$.push($1);
+                                    };
 
 
+sentencia_imprimir: PRINT '(' exp ')' ';'{
+                                        $$=new Imprimir($3,false);
+                                        }
+                    | PRINTLN '(' exp ')' ';'{
+                                            $$=new Imprimir($3,true);
+                                            };
 //------------------------- finalizan las sentencias que van dentro de un metodo
 
 

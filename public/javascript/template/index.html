@@ -16,6 +16,7 @@
         <script type='text/javascript' src="/javascript/editortexto/codemirror-5.45.0/lib/codemirror.js"></script>
         <!--Se definen las estructuras auxiliares,heap, stack-->
         <script src="/javascript/AST/Auxiliares/Estructurasaux.js"></script>
+        <script src="/javascript/AST/Auxiliares/Errores.js"></script>
         
         <!--Modulo que Controla el ast-->
         
@@ -25,6 +26,7 @@
         <script src="/javascript/AST/Instrucciones/Declaracion.js"></script>
         <script src="/javascript/AST/Instrucciones/Declaracionclase.js"></script>
         <script src="/javascript/AST/Instrucciones/Metodo.js"></script>
+        <script src="/javascript/AST/Instrucciones/Imprimir.js"></script>
         <script src="/javascript/AST/Entorno/Entorno.js"></script>
         <script src="/javascript/AST/Entorno/Result.js"></script>
         <script src="/javascript/AST/AST.js"></script>
@@ -38,10 +40,60 @@
         <script src="/javascript/compilador/ejecutar.js"></script>
         <!--Modulo jison-->
         <script src="/javascript/Analizador/calculadora.js"></script>
+        <script src="/javascript/Analizador/parser3d.js"></script>
         <!--El orden tiene que cuidarse-->
         <title>Proyecto 2 Compi 2</title>
     </head>
     <body>
+        <div class="modal fade" id="modalLoginAvatar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+          <!--Content-->
+          <div class="modal-content">
+            <!--Body-->
+            <div class="modal-body text-center mb-1">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="white-text">&times;</span>
+              </button>
+              <h5 class="mt-1 mb-2">Ingrese nombre pestaña</h5>
+      
+              <div class="md-form ml-0 mr-0">
+                <input type="text" type="text" id="nombre_pesta" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+              </div>
+              <div class="text-center mt-4">
+                <button class="btn btn-success" onclick="crearPesta()">CREAR PESTAÑA</button>
+              </div>
+            </div>
+      
+          </div>
+          <!--/.Content-->
+        </div>
+      </div>
+      <div class="modal fade" id="nom_archivo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+          <!--Content-->
+          <div class="modal-content">
+            <!--Body-->
+            <div class="modal-body text-center mb-1">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="white-text">&times;</span>
+              </button>
+              <h5 class="mt-1 mb-2">Ingrese nombre del archivo a guardar</h5>
+      
+              <div class="md-form ml-0 mr-0">
+                <input type="text" type="text" id="nombre_archivo" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+              </div>
+              <div class="text-center mt-4">
+                <button class="btn btn-success" onclick="btn_guardar()">CREAR PESTAÑA</button>
+              </div>
+            </div>
+      
+          </div>
+          <!--/.Content-->
+        </div>
+      </div>
+      <!--Modal: Login with Avatar Form-->
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <a class="navbar-brand" href="#">COMPI 2</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,10 +106,10 @@
                                 ARCHIVO
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <input id="fileInput" accept=".coline" type="file" size="50" onchange="processFiles(this.files)">
-                                <a class="dropdown-item" href="#" onclick="crearPesta()">CREAR PESTAÑA</a>
-                                <a class="dropdown-item" href="#" id="id_guardar" onclick="obtenerAritmetica()">CERRAR PESTAÑA ACTUAL</a>
-                                <a class="dropdown-item" href="#" id="id_guardar">GUARDAR</a>
+                                <input id="fileInput" accept=".coline,*" type="file" size="50" onchange="processFiles(this.files)">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modalLoginAvatar">CREAR PESTAÑA</a>
+                                <a class="dropdown-item" href="#" id="id_guardar" onclick="cerrarPesta()">CERRAR PESTAÑA ACTUAL</a>
+                                <a class="dropdown-item" href="#" id="id_guardar" data-toggle="modal" data-target="#nom_archivo">GUARDAR</a>
                             </div>
                         </li>                        
                         <li class="nav-item dropdown">
@@ -73,7 +125,7 @@
                               EJECUCION DE CODIGO 3D
                            </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="#" id="id_ejecutar">EJECUTAR</a>
+                              <a class="dropdown-item" href="#" id="id_ejecutar" onclick="btn_3dcompilar()">EJECUTAR</a>
                               <a class="dropdown-item" href="#" id="id_depurar">DEPURAR</a>
                             </div>
                         </li>
@@ -85,6 +137,7 @@
                               <a class="dropdown-item" href="#" id="id_reporteerrores">REPORTE ERRORES</a>
                               <a class="dropdown-item" href="#" id="id_reportets">REPORTE TABLA DE SIMBOLOS</a>
                               <a class="dropdown-item" href="#" id="id_generarast">GENERAR AST</a>
+                              <a class="dropdown-item" href="https://drive.google.com/drive/folders/1zVaOLjs2_Ffqo00BwGmCfJJvyRvSnMDy" target="_blank" id="idejemplos">ARCHIVOS EJEMPLO</a>
                             </div>
                        </li>
                       </ul>
@@ -96,7 +149,7 @@
                             <div class="col">
                                 <div class="container-fluid">
                                     <ul class="nav nav-pills" id="nav_pesta">
-                                        <li class="active"><a data-toggle="pill" href="#pesta_1">INICIO</a></li>
+                                        <li class="active" id="nav_inicio"><a data-toggle="pill" href="#pesta_1">INICIO</a></li>
                                     </ul>          
                                     <div class="tab-content" id="contenedor_pesta">
                                             <div id="pesta_1" class="tab-pane fade in active">
@@ -125,13 +178,8 @@
                                                     <th scope="col">Columna</th>
                                                   </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <tr>
-                                                      <th scope="row">Semantico</th>
-                                                      <td>Error semantico</td>
-                                                      <td>0</td>
-                                                      <td>0</td>
-                                                    </tr>
+                                                <tbody id="cuerpo_tabla_errores">
+                                                
                                                 </tbody>
                                           </table>
                                         </div>
@@ -144,7 +192,7 @@
                                           <table class="table">
                                             <thead class="thead-light">
                                               <tr>
-                                                <!--<th scope="col">CLAVE</th>-->
+                                                <th scope="col">CLAVE</th>
                                                 <th scope="col">NOMBRE</th>
                                                 <th scope="col">TIPO</th>
                                                 <th scope="col">AMBITO</th>

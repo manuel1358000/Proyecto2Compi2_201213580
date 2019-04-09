@@ -8,17 +8,52 @@ class Metodo{
         this.retorno=null;
         this.modificadores=[];
         this.constructor=false;
+        this.ambitos="";
     }
-
-
-
     execute(entorno){
         //aqui queda pendiente
-
-
-
+        var result=new Result();
+        //tengo que crear el nuevo nodo
+        for(var i=0;i<this.nodos.length;i++){
+            if(this.nodos[i] instanceof Declaracion){
+                var ambi=this.ambitos+"/"+this.id;
+                this.nodos[i].ambitos=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                if(result_temp!=null){
+                    result.cadena+=result_temp.cadena;
+                    var temp="//declaracion variable local\n";
+                    var temph=generarEtiqueta();
+                    temp+=temph+"=h;\n";
+                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                    temp+="h=h+1;\n";
+                    var simulado=generarEtiqueta();
+                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                    temp+="stack["+simulado+"]="+temph+";\n";
+                    temp+="//fin declaracion variable local\n";
+                }else{
+                    var temp="//declaracion variable local\n";
+                    var temph=generarEtiqueta();
+                    temp+=temph+"=h;\n";
+                    temp+="heap[h]=0;\n";
+                    temp+="h=h+1;\n";
+                    var simulado=generarEtiqueta();
+                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                    temp+="stack["+simulado+"]="+temph+";\n";
+                    temp+="//fin declaracion variable local\n";
+                }
+                result.cadena+=temp;
+            }else if(this.nodos[i] instanceof Imprimir){
+                this.nodos[i].ambitos=this.ambitos+"/"+this.id;
+                var result_temp=this.nodos[i].execute(entorno);
+                result.cadena+=result_temp.cadena;
+            }else{
+                //es cualquier otra instancia como una asignacion,llamada a metodo
+            }
+        }
+        return result;
     }
-
 
     getTipe(){
         return this.tipo;
