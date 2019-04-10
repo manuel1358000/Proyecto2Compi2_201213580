@@ -7,7 +7,7 @@ class Declaracionclase{
     }
     execute(entorno){
         var respuesta="";
-        var variables_globales="void globales_"+this.id+"(){\n";
+        var variables_globales="proc globales_"+this.id+" begin\n";
         for(var i=0;i<this.nodos.length;i++){
             var nodo=this.nodos[i];
             if(nodo instanceof Declaracion){
@@ -45,9 +45,9 @@ class Declaracionclase{
                 var result=nodo.execute(entorno);
                 var temp="";
                 temp+="\n//INICIA LA CREACION DEL METODO\n";
-                temp+=nodo.tipo +" " + nodo.id + "(){\n";
+                temp+="proc " + nodo.id + " begin\n";
                 temp+=result.cadena;
-                temp+="\n}\n";
+                temp+="\nend\n";
                 respuesta+=temp;
             }else if(nodo instanceof Imprimir){
                 var result_imprimir=nodo.execute(entorno);
@@ -59,7 +59,7 @@ class Declaracionclase{
             }
 
         }
-        variables_globales+="}\n";
+        variables_globales+="end\n";
         respuesta=variables_globales+respuesta;
 
         return respuesta;

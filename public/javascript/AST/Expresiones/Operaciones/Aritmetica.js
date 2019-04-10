@@ -386,7 +386,7 @@ function generarString(cadena,bandera,tipo){
         respuesta+=puntero_simulado+"="+puntero_simulado+"+1;\n";
         respuesta+="stack["+puntero_simulado+"]="+cadena+";\n";
         respuesta+="p=p+2;\n";
-        respuesta+="call enteroString();\n";
+        respuesta+="call enteroString;\n";
         var temp=generarEtiqueta();
         respuesta+=temp+"=p+0;\n";
         var temp2=generarEtiqueta();//aqui se encuentra el puntero a heap que tiene el entero ya convertido

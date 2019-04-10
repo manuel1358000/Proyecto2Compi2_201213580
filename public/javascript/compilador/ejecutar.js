@@ -71,7 +71,8 @@ function btn_3dcompilar(){
         indice=indice-3;
     }
     var cm = $('.CodeMirror')[indice].CodeMirror;
-    parser3d.parse(cm.getValue());
+    var ast3d=parser3d.parse(cm.getValue());
+    ejecutar3D(ast3d);
     alert("Finalizo el analisis");
 }
 

@@ -19,7 +19,7 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+result_aux.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas();\n";
+            armar+="call impresion_cadenas;\n";
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//----------------------finaliza impresion numero\n";
             result.cadena+=armar;
@@ -32,7 +32,7 @@ class Imprimir{
             armar+="stack["+puntero_simulado+"]="+result_aux.u_etiqueta+";\n";
             armar+="p=p+2;//cambio de ambito real\n";
             //se manda a llamar al metodo que convierte el entero en cadena
-            armar+="call enteroString();\n";
+            armar+="call enteroString;\n";
             //finaliza y se manda a traer el resultado en la posicion 0 del stack
             var temp=generarEtiqueta();
             armar+=temp+"=p+0;\n";
@@ -45,7 +45,7 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+temp2+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas();\n";
+            armar+="call impresion_cadenas;\n";
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion numero\n";
             result.cadena+=armar;
@@ -60,7 +60,7 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+temp_result.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas();\n";
+            armar+="call impresion_cadenas;\n";
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion char\n";
             result.cadena+=armar;
@@ -73,7 +73,7 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+temp_result.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas();\n";
+            armar+="call impresion_cadenas;\n";
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion boolean\n";
             result.cadena+=armar;
@@ -86,7 +86,7 @@ class Imprimir{
 
 
 function enteroString(){
-    var temp="void enteroString(){\n";
+    var temp="proc enteroString begin\n";
     var t0=generarEtiqueta();
     temp+=t0+"=p+1;\n";
     var t1=generarEtiqueta();
@@ -153,12 +153,12 @@ function enteroString(){
     var t9=generarEtiqueta();
     temp+=t9+"=p+0;\n";
     temp+="stack["+t9+"]="+t8+";\n";
-    temp+="}\n";
+    temp+="end\n";
     return temp;
 }   
 
 function generaImpresion(){
-    var temp="void impresion_cadenas(){\n";
+    var temp="proc impresion_cadenas begin\n";
     var etip=generarSalto();
     var puntero_h=generarEtiqueta();
     var etiv=generarSalto();//finaliza la impresion de la cadena
@@ -175,6 +175,6 @@ function generaImpresion(){
     temp+=puntero_h+"="+puntero_h+"+1;\n";
     temp+="goto "+etip+";\n";
     temp+=etiv+":\n//finaliza la impresion\n"
-    temp+="}\n";
+    temp+="end\n";
     return temp;
 }

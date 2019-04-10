@@ -6,6 +6,8 @@
 %%
 
 \s+                   /* skip whitespace */
+"//"[^\r\n]*[^\r\n]   return ;
+"/*"[^'*']*"*/" return;
 
 "void"                return 'VOID'
 "\"%c\""              return 'C'
@@ -14,11 +16,15 @@
 "h"                   return 'H'
 "p"                   return 'P'
 "print"               return 'PRINT'
-"if"               return 'IF'
+"iffalse"             return 'IFFALSE'
+"if"                  return 'IF'
 "heap"                return 'HEAP'
 "stack"               return 'STACK'
 "goto"                return 'GOTO'  
 "call"                return 'CALL'
+"proc"                return 'PROC'
+"begin"               return 'BEGIN'
+"end"                 return 'END'
 //simbolos del lenguaje
 "["                   return '['                
 "]"                   return ']'
@@ -78,75 +84,112 @@
 
 e: sentencias EOF{ return $1; };
 
-sentencias:sentencias sentencias_generales
-        | sentencias_generales;
+sentencias:sentencias sentencias_generales{
+                                        $$=$1;
+                                        $$.push($2);
+                                        }
+        | sentencias_generales{
+                                $$=[];
+                                $$.push($1);
+                                };
 
 
-sentencias_generales: metodo
-                    | sentencias_globales;
+sentencias_generales: metodo{$$=$1;}
+                    | sentencias_globales{$$=$1;};
 
-sentencias_globales: asignacion
-                    | salto
-                    | sentencia_goto
-                    | llamada_metodo
-                    | sentencia_print
-                    | sentencia_if
-                    /*
-                    | sentencia_iffalse*/;
+sentencias_globales: asignacion{$$=$1;}
+                    | salto{$$=$1;}
+                    | sentencia_goto{$$=$1;}
+                    | llamada_metodo{$$=$1;}
+                    | sentencia_print{$$=$1;}
+                    | sentencia_if{$$=$1;}
+                    | sentencia_iffalse{$$=$1;};
 
+sentencia_iffalse: IFFALSE '(' expresion simbolo_RL expresion ')' GOTO LNUMBER ';'{
+                                                                        //exp1,exp2,operador,unario,acceso,tipo
+                                                                        var condicion=new Expresion3D($3,$5,$4,false,false,"EXPRESION");
+                                                                        $$=new Iffalse3D(condicion,new Goto3D($8));
+                                                                        };
 
-sentencia_if: IF '(' expresion simbolo_RL expresion ')' GOTO LNUMBER ';';
-
-
-sentencia_global: sentencia_global sentencias_globales
-                | sentencias_globales;
-
-
-
-metodo: VOID ID '(' ')' '{' sentencia_global '}'
-        | VOID ID '(' ')' '{' '}';
-
-sentencia_print: PRINT '(' tipos_print ',' TNUMBER ')' ';';
-
-tipos_print: E
-           | D
-           | C;
-
-llamada_metodo: CALL ID '(' ')' ';';
-
-sentencia_goto: GOTO LNUMBER ';';
-
-salto: LNUMBER ':';
+sentencia_if: IF '(' expresion simbolo_RL expresion ')' GOTO LNUMBER ';'{
+                                                                        //exp1,exp2,operador,unario,acceso,tipo
+                                                                        var condicion=new Expresion3D($3,$5,$4,false,false,"EXPRESION");
+                                                                        $$=new If3D(condicion,new Goto3D($8));
+                                                                        };
+sentencia_global: sentencia_global sentencias_globales{
+                                                        $$=$1;
+                                                        $$.push($2);
+                                                        }
+                | sentencias_globales{
+                                        $$=[];
+                                        $$.push($1);
+                                        };
 
 
-asignacion: expresion '=' expresion simbolo expresion ';'
-        | expresion '=' expresion ';'
-        | expresion '=' '-' expresion ';';
+
+metodo: PROC ID BEGIN sentencia_global END{$$=new Metodo3D($2,$4);}
+        | PROC ID BEGIN END{$$=new Metodo3D($2,[]);};
+
+sentencia_print: PRINT '(' tipos_print ',' TNUMBER ')' ';'{$$=new Imprimir3D($3,$5);};
+
+tipos_print: E{$$=$1;}
+           | D{$$=$1;}
+           | C{$$=$1;};
+
+llamada_metodo: CALL ID ';'{$$=new Llamada_Metodo3D($2);};
+
+sentencia_goto: GOTO LNUMBER ';'{$$=new Goto3D($2);};
+
+salto: LNUMBER ':'{$$=new Salto3D($1);};
+
+//id,exp1,tipo,acceso
+asignacion: expresion_asignar '=' expresion simbolo expresion ';'{
+                                                                $$=$1;
+                                                                $$.exp1=new Asignacion3D($3,$5,$4,false,null,"EXPRESION");
+                                                                }
+        | expresion_asignar '=' expresion ';'{
+                                                $$=$1;
+                                                $$.exp1=new Asignacion3D($3,null,null,true,null,"EXPRESION");
+                                                }
+        | expresion_asignar '=' '-' expresion ';'{
+                                                $$=$1;
+                                                $$.exp1=new Asignacion3D($4,null,$3,true,null,"EXPRESION");                          
+                                                };
+
+//exp1,exp2,operador,unario,acceso,tipo
+expresion: TNUMBER{$$=new Expresion3D($1,null,null,null,null,"ETIQUETA");}
+        | NUMBER{$$=new Expresion3D($1,null,null,null,null,"NUMERO");}
+        | 'H'{$$=new Expresion3D($1,null,null,null,null,"H");}
+        | 'P'{$$=new Expresion3D($1,null,null,null,null,"P");}
+        | HEAP '[' contenido_hs ']'{$$=new Expresion3D($1,null,null,null,$3,"HEAP");}
+        | STACK '[' contenido_hs ']'{$$=new Expresion3D($1,null,null,null,$3,"STACK");};
+
+//id,exp1,tipo,acceso
+expresion_asignar:TNUMBER{$$=new Asignacion3D($1,null,"ETIQUETA",null);}
+                | 'H'{$$=new Asignacion3D($1,null,"H",null);}
+                | 'P'{$$=new Asignacion3D($1,null,"P",null);}
+                | HEAP '[' contenido_hs ']'{$$=new Asignacion3D($1,null,"HEAP",$3);}
+                | STACK '[' contenido_hs ']'{$$=new Asignacion3D($1,null,"STACK",$3);};
 
 
-expresion: TNUMBER
-        | NUMBER
-        | 'H'
-        | 'P'
-        | HEAP '[' contenido_heap ']'
-        | STACK '[' contenido_heap ']';
 
-contenido_heap: TNUMBER
-                | NUMBER
-                | 'H';
+contenido_hs: TNUMBER{$$=$1;}
+                | NUMBER{$$=$1;}
+                | 'H'{$$=$1;}
+                | 'P'{$$=$1;};
 
-simbolo: '+'
-        | '-'
-        | '/'
-        | '*'
-        | '^'
-        | '%';
+simbolo: '+'{$$=$1;}
+        | '-'{$$=$1;}
+        | '/'{$$=$1;}
+        | '*'{$$=$1;}
+        | '^'{$$=$1;}
+        | '%'{$$=$1;};
 
-simbolo_RL: '=='
-           | '!='
-           | '>'
-           | '<'
-           | '>='
-           | '<='
-           | '&&'
-           | '||';
+simbolo_RL: '=='{$$=$1;}
+           | '!='{$$=$1;}
+           | '>'{$$=$1;}
+           | '<'{$$=$1;}
+           | '>='{$$=$1;}
+           | '<='{$$=$1;}
+           | '&&'{$$=$1;}
+           | '||'{$$=$1;};
