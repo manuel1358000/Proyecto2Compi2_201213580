@@ -4,11 +4,9 @@
 /* lexical grammar */
 %lex
 %%
-
 \s+                   /* skip whitespace */
 "//"[^\r\n]*[^\r\n]   return ;
-"/*"[^'*']*"*/" return;
-
+"/*"[^'*']*"*/"       return;
 "void"                return 'VOID'
 "\"%c\""              return 'C'
 "\"%d\""              return 'D'
@@ -25,6 +23,7 @@
 "proc"                return 'PROC'
 "begin"               return 'BEGIN'
 "end"                 return 'END'
+"var"                 return 'VAR'
 //simbolos del lenguaje
 "["                   return '['                
 "]"                   return ']'
@@ -82,7 +81,48 @@
 
 %% /* language grammar */
 
-e: sentencias EOF{ return $1; };
+e: sentencias_principio EOF{ return $1; };
+
+sentencias_principio: sentencias_variables sentencias{
+                                                        $$=$1;
+                                                        for(var i=0;i<$2.length;i++){
+                                                                $$.push($2[i]);
+                                                        }
+                                                        }
+                | sentencias{$$=$1;};
+
+sentencias_variables:sentencias_variables sentencia_variable{
+                                                        $$=$1;
+                                                        for(var i=0;i<$2.length;i++){
+                                                                $$.push($2[i]);
+                                                        }
+                                                        }
+                    | sentencia_variable{$$=$1;};
+sentencia_variable: VAR lista_tnumber ';'{$$=$2;}
+                   | VAR H '=' NUMBER ';'{
+                                        $$=[];
+                                        $$.push(new Declaracion3D($2,$4,"H"));}
+                   | VAR P '=' NUMBER ';'{
+                                        $$=[];
+                                        $$.push(new Declaracion3D($2,$4,"P"));
+                                        }
+                   | VAR HEAP '[' ']' ';'{
+                                        $$=[];
+                                        $$.push(new Declaracion3D($2,0,"HEAP"));
+                                        }
+                   | VAR STACK '[' ']' ';'{
+                                        $$=[];
+                                        $$.push(new Declaracion3D($2,0,"STACK"));
+                                        };
+
+lista_tnumber: lista_tnumber ',' TNUMBER{
+                                        $$=$1;
+                                        $$.push(new Declaracion3D($3,0,"ETIQUETA"));
+                                        }
+                | TNUMBER{
+                        $$=[];
+                        $$.push(new Declaracion3D($2,0,"ETIQUETA"));
+                        };
 
 sentencias:sentencias sentencias_generales{
                                         $$=$1;
@@ -92,8 +132,6 @@ sentencias:sentencias sentencias_generales{
                                 $$=[];
                                 $$.push($1);
                                 };
-
-
 sentencias_generales: metodo{$$=$1;}
                     | sentencias_globales{$$=$1;};
 
