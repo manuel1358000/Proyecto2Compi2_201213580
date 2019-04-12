@@ -5,6 +5,11 @@ var cont_s=-1;
 /** FUNCION QUE SE MANDA A LLAMAR PARA COMPILAR EL AREA ACTUAL*/
 function generarEtiqueta(){
     cont_e++;
+    if(cont_e==0){
+        lista_temporales+="var t"+cont_e;
+    }else{
+        lista_temporales+=",t"+cont_e;
+    }
     return "t"+cont_e;
 
 }
@@ -82,6 +87,7 @@ function btn_3dcompilar(){
 
 function btn_compilar(){
     cont_e=-1;
+    lista_temporales="var heap[];\nvar stack[];\nvar h=0;\nvar p=0;\n";
     //vamos a traer al activo del contenedor
     var elementoDiv=document.querySelector("#contenedor_pesta > div.active");
     //vamos a traer el area de texto para poder enviarle la informacion al parser
@@ -97,9 +103,10 @@ function btn_compilar(){
     cont_e=-1;
     cont_s=-1;
     var codigo3d=ejecutar(ast);
+    
     codigo3d+=generaImpresion();
     codigo3d+=enteroString();
-
+    codigo3d=lista_temporales+";\n"+codigo3d;
     var elementoNav=document.querySelector("#nav_pesta > li.active >a");
     var nombrenuevo=elementoNav.innerHTML;
     var elementos2=nombrenuevo.split(".");

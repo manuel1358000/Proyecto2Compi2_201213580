@@ -8,4 +8,18 @@ class Expresion3D{
         this.acceso=acceso;
         this.tipo=tipo;
     }
+    getValue(entorno3d){
+        if(this.unario){
+            //si es un unario, esto aplica para cuando se realizan las negativas
+        }else{
+            //expresiones normales
+            if(this.exp1!=null&&this.exp2!=null){
+
+            }else{
+                //es un valor puntual
+                return this.exp1;
+            }
+
+        }
+    }
 }

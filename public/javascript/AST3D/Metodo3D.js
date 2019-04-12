@@ -1,6 +1,6 @@
 class Metodo3D{
-    constructor(id,nodos){
+    constructor(id,tipo){
         this.id=id;
-        this.nodos=nodos;
+        this.tipo=tipo;
     }
 }

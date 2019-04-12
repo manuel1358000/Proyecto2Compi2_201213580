@@ -88,7 +88,7 @@ sentencias_principio: sentencias_variables sentencias{
                                                         for(var i=0;i<$2.length;i++){
                                                                 $$.push($2[i]);
                                                         }
-                                                        }
+                                                }
                 | sentencias{$$=$1;};
 
 sentencias_variables:sentencias_variables sentencia_variable{
@@ -96,44 +96,57 @@ sentencias_variables:sentencias_variables sentencia_variable{
                                                         for(var i=0;i<$2.length;i++){
                                                                 $$.push($2[i]);
                                                         }
-                                                        }
-                    | sentencia_variable{$$=$1;};
+                                                }
+                    | sentencia_variable{
+                                        $$=$1;
+                                        };
 sentencia_variable: VAR lista_tnumber ';'{$$=$2;}
                    | VAR H '=' NUMBER ';'{
                                         $$=[];
-                                        $$.push(new Declaracion3D($2,$4,"H"));}
+                                        var temp=new Declaracion3D($2,$4,"H");
+                                        $$.push(temp);
+                                        }
                    | VAR P '=' NUMBER ';'{
                                         $$=[];
-                                        $$.push(new Declaracion3D($2,$4,"P"));
+                                        var temp=new Declaracion3D($2,$4,"P");
+                                        $$.push(temp);
                                         }
                    | VAR HEAP '[' ']' ';'{
                                         $$=[];
-                                        $$.push(new Declaracion3D($2,0,"HEAP"));
+                                        var temp=new Declaracion3D($2,0,"HEAP");
+                                        $$.push(temp);
                                         }
                    | VAR STACK '[' ']' ';'{
                                         $$=[];
-                                        $$.push(new Declaracion3D($2,0,"STACK"));
+                                        var temp=new Declaracion3D($2,0,"STACK");
+                                        $$.push(temp);
                                         };
 
 lista_tnumber: lista_tnumber ',' TNUMBER{
                                         $$=$1;
-                                        $$.push(new Declaracion3D($3,0,"ETIQUETA"));
+                                        var temp=new Declaracion3D($3,0,"ETIQUETA");
+                                        $$.push(temp);
                                         }
                 | TNUMBER{
                         $$=[];
-                        $$.push(new Declaracion3D($2,0,"ETIQUETA"));
+                        var temp=new Declaracion3D($1,0,"ETIQUETA");
+                        $$.push(temp);
                         };
 
 sentencias:sentencias sentencias_generales{
-                                        $$=$1;
-                                        $$.push($2);
+                                        $$=$2;
+                                        for(var i=0;i<$1.length;i++){
+                                                $$.push($1[i]);
+                                        }
                                         }
         | sentencias_generales{
-                                $$=[];
-                                $$.push($1);
+                                $$=$1;
                                 };
 sentencias_generales: metodo{$$=$1;}
-                    | sentencias_globales{$$=$1;};
+                    | sentencias_globales{
+                            $$=[];
+                            $$.push($1);
+                    };
 
 sentencias_globales: asignacion{$$=$1;}
                     | salto{$$=$1;}
@@ -165,8 +178,19 @@ sentencia_global: sentencia_global sentencias_globales{
 
 
 
-metodo: PROC ID BEGIN sentencia_global END{$$=new Metodo3D($2,$4);}
-        | PROC ID BEGIN END{$$=new Metodo3D($2,[]);};
+metodo: PROC ID BEGIN sentencia_global END{
+                                          $$=[];
+                                          $$.push(new Metodo3D($2,"INICIO"));
+                                          for(var i=0;i<$4.length;i++){
+                                                  $$.push($4[i]);
+                                          }
+                                          $$.push(new Metodo3D($2,"FIN"));
+                                        }
+        | PROC ID BEGIN END{
+                        $$=[];
+                        $$.push(new Metodo3D($2,"INICIO"));
+                        $$.push(new Metodo3D($2,"FIN"));
+                        };
 
 sentencia_print: PRINT '(' tipos_print ',' TNUMBER ')' ';'{$$=new Imprimir3D($3,$5);};
 
@@ -183,15 +207,16 @@ salto: LNUMBER ':'{$$=new Salto3D($1);};
 //id,exp1,tipo,acceso
 asignacion: expresion_asignar '=' expresion simbolo expresion ';'{
                                                                 $$=$1;
-                                                                $$.exp1=new Asignacion3D($3,$5,$4,false,null,"EXPRESION");
+                                                                $$.exp1=new Expresion($3,$5,$4,false,null,"EXPRESION");
                                                                 }
         | expresion_asignar '=' expresion ';'{
                                                 $$=$1;
-                                                $$.exp1=new Asignacion3D($3,null,null,true,null,"EXPRESION");
+                                                $$.exp1=$3;
                                                 }
         | expresion_asignar '=' '-' expresion ';'{
                                                 $$=$1;
-                                                $$.exp1=new Asignacion3D($4,null,$3,true,null,"EXPRESION");                          
+                                                $$.exp1=$3;
+                                                $$.unario=true;                          
                                                 };
 
 //exp1,exp2,operador,unario,acceso,tipo
@@ -211,10 +236,10 @@ expresion_asignar:TNUMBER{$$=new Asignacion3D($1,null,"ETIQUETA",null);}
 
 
 
-contenido_hs: TNUMBER{$$=$1;}
-                | NUMBER{$$=$1;}
-                | 'H'{$$=$1;}
-                | 'P'{$$=$1;};
+contenido_hs: TNUMBER{$$=new Expresion3D($1,null,null,null,null,"ETIQUETA");}
+                | NUMBER{$$=new Expresion3D($1,null,null,null,null,"NUMERO");}
+                | 'H'{$$=new Expresion3D($1,null,null,null,null,"H");}
+                | 'P'{$$=new Expresion3D($1,null,null,null,null,"P");};
 
 simbolo: '+'{$$=$1;}
         | '-'{$$=$1;}

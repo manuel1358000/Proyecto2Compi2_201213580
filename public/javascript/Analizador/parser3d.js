@@ -92,10 +92,15 @@ case 2: case 4:
                                                         for(var i=0;i<$$[$0].length;i++){
                                                                 this.$.push($$[$0][i]);
                                                         }
-                                                        
+                                                
 break;
-case 3: case 5: case 15: case 16: case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 31: case 32: case 33: case 51: case 52: case 53: case 54: case 55: case 56: case 57: case 58: case 59: case 60: case 61: case 62: case 63: case 64: case 65: case 66: case 67: case 68:
+case 3: case 15: case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 31: case 32: case 33: case 55: case 56: case 57: case 58: case 59: case 60: case 61: case 62: case 63: case 64: case 65: case 66: case 67: case 68:
 this.$=$$[$0];
+break;
+case 5:
+
+                                        this.$=$$[$0];
+                                        
 break;
 case 6:
 this.$=$$[$0-1];
@@ -103,49 +108,63 @@ break;
 case 7:
 
                                         this.$=[];
-                                        this.$.push(new Declaracion3D($$[$0-3],$$[$0-1],"H"));
+                                        var temp=new Declaracion3D($$[$0-3],$$[$0-1],"H");
+                                        this.$.push(temp);
+                                        
 break;
 case 8:
 
                                         this.$=[];
-                                        this.$.push(new Declaracion3D($$[$0-3],$$[$0-1],"P"));
+                                        var temp=new Declaracion3D($$[$0-3],$$[$0-1],"P");
+                                        this.$.push(temp);
                                         
 break;
 case 9:
 
                                         this.$=[];
-                                        this.$.push(new Declaracion3D($$[$0-3],0,"HEAP"));
+                                        var temp=new Declaracion3D($$[$0-3],0,"HEAP");
+                                        this.$.push(temp);
                                         
 break;
 case 10:
 
                                         this.$=[];
-                                        this.$.push(new Declaracion3D($$[$0-3],0,"STACK"));
+                                        var temp=new Declaracion3D($$[$0-3],0,"STACK");
+                                        this.$.push(temp);
                                         
 break;
 case 11:
 
                                         this.$=$$[$0-2];
-                                        this.$.push(new Declaracion3D($$[$0],0,"ETIQUETA"));
+                                        var temp=new Declaracion3D($$[$0],0,"ETIQUETA");
+                                        this.$.push(temp);
                                         
 break;
 case 12:
 
                         this.$=[];
-                        this.$.push(new Declaracion3D($$[$01],0,"ETIQUETA"));
+                        var temp=new Declaracion3D($$[$0],0,"ETIQUETA");
+                        this.$.push(temp);
                         
 break;
 case 13:
 
-                                        this.$=$$[$0-1];
-                                        this.$.push($$[$0]);
+                                        this.$=$$[$0];
+                                        for(var i=0;i<$$[$0-1].length;i++){
+                                                this.$.push($$[$0-1][i]);
+                                        }
                                         
 break;
 case 14:
 
-                                this.$=[];
-                                this.$.push($$[$0]);
+                                this.$=$$[$0];
                                 
+break;
+case 16:
+
+                            this.$=[];
+                            this.$.push($$[$0]);
+                    
 break;
 case 24:
 
@@ -174,10 +193,21 @@ case 27:
                                         
 break;
 case 28:
-this.$=new Metodo3D($$[$0-3],$$[$0-1]);
+
+                                          this.$=[];
+                                          this.$.push(new Metodo3D($$[$0-3],"INICIO"));
+                                          for(var i=0;i<$$[$0-1].length;i++){
+                                                  this.$.push($$[$0-1][i]);
+                                          }
+                                          this.$.push(new Metodo3D($$[$0-3],"FIN"));
+                                        
 break;
 case 29:
-this.$=new Metodo3D($$[$0-2],[]);
+
+                        this.$=[];
+                        this.$.push(new Metodo3D($$[$0-2],"INICIO"));
+                        this.$.push(new Metodo3D($$[$0-2],"FIN"));
+                        
 break;
 case 30:
 this.$=new Imprimir3D($$[$0-4],$$[$0-2]);
@@ -194,31 +224,32 @@ break;
 case 37:
 
                                                                 this.$=$$[$0-5];
-                                                                this.$.exp1=new Asignacion3D($$[$0-3],$$[$0-1],$$[$0-2],false,null,"EXPRESION");
+                                                                this.$.exp1=new Expresion($$[$0-3],$$[$0-1],$$[$0-2],false,null,"EXPRESION");
                                                                 
 break;
 case 38:
 
                                                 this.$=$$[$0-3];
-                                                this.$.exp1=new Asignacion3D($$[$0-1],null,null,true,null,"EXPRESION");
+                                                this.$.exp1=$$[$0-1];
                                                 
 break;
 case 39:
 
                                                 this.$=$$[$0-4];
-                                                this.$.exp1=new Asignacion3D($$[$0-1],null,$$[$0-2],true,null,"EXPRESION");                          
+                                                this.$.exp1=$$[$0-2];
+                                                this.$.unario=true;                          
                                                 
 break;
-case 40:
+case 40: case 51:
 this.$=new Expresion3D($$[$0],null,null,null,null,"ETIQUETA");
 break;
-case 41:
+case 41: case 52:
 this.$=new Expresion3D($$[$0],null,null,null,null,"NUMERO");
 break;
-case 42:
+case 42: case 53:
 this.$=new Expresion3D($$[$0],null,null,null,null,"H");
 break;
-case 43:
+case 43: case 54:
 this.$=new Expresion3D($$[$0],null,null,null,null,"P");
 break;
 case 44:
