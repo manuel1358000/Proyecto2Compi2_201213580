@@ -315,22 +315,23 @@ function ejecutar3D(nodos){
                     alert("El valor "+t_nodo.id+", No existe en la tabla de simbolos3D");
                 }
             }else if(t_nodo instanceof Imprimir3D){
+
                 var sim=entorno3d.obtener(t_nodo.exp1);
                 if(sim!=null){
                     if(t_nodo.tipo=="\"%c\""){
                         if(sim.valor!=null){
                             var res = String.fromCharCode(sim.valor);
-                            console.log("CONSOLA>"+res);
+                            escribirConsola(res);
                         }else{
                             alert("Error Semantico, La etiqueta tiene un valor nulo");
                         }
                         
                     }else if(t_nodo.tipo=="\"%d\""){
                         var res = sim.valor;
-                        console.log("CONSOLA>"+res);
+                        escribirConsola(res);
                     }else if(t_nodo.tipo=="\"%e\""){
                         var res = sim.valor;
-                        console.log("CONSOLA>"+res);
+                        escribirConsola(res);
                     }   
                 }else{
                     alert("Error semantico la etiqueta "+t_nodo.exp1+" no existe.");

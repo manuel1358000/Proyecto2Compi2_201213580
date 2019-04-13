@@ -66,6 +66,7 @@ function descargarArchivo(contenidoEnBlob,nombreArchivo){
 }
 
 function btn_3dcompilar(){
+    limpiarConsola();
     var elementoDiv=document.querySelector("#contenedor_pesta > div.active");
     //vamos a traer el area de texto para poder enviarle la informacion al parser
     var elementos=elementoDiv.id.split("_");
@@ -191,5 +192,11 @@ function agregarTablaSimbolos(entorno){
     }
     tabla.insertAdjacentHTML('beforeend',fila);
 }
-
-
+function limpiarConsola(){
+    var consola=document.getElementById("consola");
+    consola.value="";
+}
+function escribirConsola(contenido){
+    var consola=document.getElementById("consola");
+    consola.value+=contenido;
+}
