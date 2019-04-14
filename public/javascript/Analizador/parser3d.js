@@ -170,14 +170,14 @@ case 24:
 
                                                                         //exp1,exp2,operador,unario,acceso,tipo
                                                                         var condicion=new Expresion3D($$[$0-6],$$[$0-4],$$[$0-5],false,false,"EXPRESION");
-                                                                        this.$=new Iffalse3D(condicion,new Goto3D($$[$0-1]));
+                                                                        this.$=new Iffalse3D(condicion,$$[$0-1]);
                                                                         
 break;
 case 25:
 
                                                                         //exp1,exp2,operador,unario,acceso,tipo
                                                                         var condicion=new Expresion3D($$[$0-6],$$[$0-4],$$[$0-5],false,false,"EXPRESION");
-                                                                        this.$=new If3D(condicion,new Goto3D($$[$0-1]));
+                                                                        this.$=new If3D(condicion,$$[$0-1]);
                                                                         
 break;
 case 26:

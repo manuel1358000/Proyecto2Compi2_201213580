@@ -38,7 +38,8 @@ class Expresion3D{
                     var temp_val1=obtenerValor(this.exp1,entorno3d);
                     var temp_val2=obtenerValor(this.exp2,entorno3d);
                     if(temp_val1!=null&&temp_val2!=null){
-                        return parseFloat(temp_val1)/parseFloat(temp_val2);
+                        var temp=parseFloat(temp_val1)/parseFloat(temp_val2);
+                        return temp;
                     }
                 }else if(this.operador=="^"){
                     var temp_val1=obtenerValor(this.exp1,entorno3d);
@@ -51,6 +52,42 @@ class Expresion3D{
                     var temp_val2=obtenerValor(this.exp2,entorno3d);
                     if(temp_val1!=null&&temp_val2!=null){
                         return parseFloat(temp_val1)%parseFloat(temp_val2);
+                    }
+                }else if(this.operador=="=="){
+                    var temp_val1=obtenerValor(this.exp1,entorno3d);
+                    var temp_val2=obtenerValor(this.exp2,entorno3d);
+                    if(temp_val1!=null&&temp_val2!=null){
+                        return temp_val1==temp_val2;
+                    }
+                }else if(this.operador=="!="){
+                    var temp_val1=obtenerValor(this.exp1,entorno3d);
+                    var temp_val2=obtenerValor(this.exp2,entorno3d);
+                    if(temp_val1!=null&&temp_val2!=null){
+                        return temp_val1!=temp_val2;
+                    }
+                }else if(this.operador==">"){
+                    var temp_val1=obtenerValor(this.exp1,entorno3d);
+                    var temp_val2=obtenerValor(this.exp2,entorno3d);
+                    if(temp_val1!=null&&temp_val2!=null){
+                        return temp_val1>temp_val2;
+                    }
+                }else if(this.operador=="<"){
+                    var temp_val1=obtenerValor(this.exp1,entorno3d);
+                    var temp_val2=obtenerValor(this.exp2,entorno3d);
+                    if(temp_val1!=null&&temp_val2!=null){
+                        return temp_val1<temp_val2;
+                    }
+                }else if(this.operador==">="){
+                    var temp_val1=obtenerValor(this.exp1,entorno3d);
+                    var temp_val2=obtenerValor(this.exp2,entorno3d);
+                    if(temp_val1!=null&&temp_val2!=null){
+                        return temp_val1>=temp_val2;
+                    }
+                }else if(this.operador=="<="){
+                    var temp_val1=obtenerValor(this.exp1,entorno3d);
+                    var temp_val2=obtenerValor(this.exp2,entorno3d);
+                    if(temp_val1!=null&&temp_val2!=null){
+                        return temp_val1<=temp_val2;
                     }
                 }else{
                     alert("Operacion no valida, expresiones3d");
@@ -70,24 +107,24 @@ function obtenerValor(exp,entorno3d){
     }else if(exp.tipo=="ETIQUETA"){
         var temp_eti=exp.getValue(entorno3d);
         var temp_sim=entorno3d.obtener(temp_eti);
-        if(temp_sim.valor!=null){
+        if(temp_sim!=null){
             return temp_sim.valor;
         }else{
-            alert("Error Semantico, no tiene valor la etiqueta en operandos");
+            alert("Error Semantico, no tiene valor la etiqueta en operandos,etiqueta "+temp_eti);
         }
     }else if(exp.tipo=="HEAP"){
         var temp_indice=obtenerIndice(t_nodo,entorno3d);
         if(temp_indice!=null){
                 return heap[temp_indice];
         }else{
-            alert("Error Semantico, no tiene valor la etiqueta en operandos");
+            alert("Error Semantico, no tiene valor la etiqueta en operandos,heap");
         }
     }else if(exp.tipo=="STACK"){
         var temp_indice=obtenerIndice(t_nodo,entorno3d);
         if(temp_indice!=null){
                 return stack[temp_indice];
         }else{
-            alert("Error Semantico, no tiene valor la etiqueta en operandos");
+            alert("Error Semantico, no tiene valor la etiqueta en operandos,stack");
         }
     }else if(exp.tipo=="H"){
         return ptr_h;

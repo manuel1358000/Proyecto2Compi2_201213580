@@ -118,11 +118,11 @@ function enteroString(){
     temp+=t7+"="+t1+"%10;\n";
     var L4=generarSalto();
     var L5=generarSalto();
-    temp+="if("+t1+"==0) goto "+L4+";\n";
+    temp+="if("+t1+"<1) goto "+L4+";\n";
     temp+="goto "+L5+";\n";
     temp+=L4+":\n";
     var L6=generarSalto();
-    temp+="if("+t7+"==0) goto "+L6+";\n";
+    temp+="if("+t7+"<1) goto "+L6+";\n";
     temp+="goto "+L5+";\n";
     temp+=L5+":\n";
     temp+=t7+"="+t7+"+48;\n";

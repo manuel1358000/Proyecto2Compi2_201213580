@@ -380,16 +380,58 @@ function ejecutar3D(nodos){
                     alert("Error semantico la etiqueta "+t_nodo.exp1+" no existe.");
                 }
             }else if(t_nodo instanceof Goto3D){
-                console.log("Goto3D");
+                var temp_sim=entorno3d.obtener(t_nodo.id);
+                if(temp_sim!=null){
+                    f=temp_sim.indice;
+                }else{
+                    alert("Error Semantico, la etiqueta "+t_nodo.id+" No existe,goto");
+                }
             }else if(t_nodo instanceof If3D){
-                console.log("If3D");
+                //tenemos que evaluar la operacion y si es verdadera vamos a mandar a llamar a la etiqueta que tenga,
+                //si es falsa no se realiza nada
+                var temp_condicion=t_nodo.condicion.getValue(entorno3d);
+                if(temp_condicion==true){
+                    var temp_sim=entorno3d.obtener(t_nodo.salto);
+                    if(temp_sim!=null){
+                        f=temp_sim.indice;
+                    }else{
+                        alert("Error Semantico, la etiqueta "+t_nodo.salto+" No existe,if");
+                    }
+                }//si no cumple con la condicion no pasa nada y sigue con la ejecucion de las instrucciones
             }else if(t_nodo instanceof Iffalse3D){
-                console.log("Iffalse3D");
+                //tenemos que evaluar la operacion y si es falsa vamos a mandar a llamar a la etiqueta que tenga.
+                //si es verdadera no se realiza nada
+                var temp_condicion=t_nodo.condicion.getValue(entorno3d);
+                if(temp_condicion==false){
+                    var temp_sim=entorno3d.obtener(t_nodo.salto);
+                    if(temp_sim!=null){
+                        f=temp_sim.indice;
+                    }else{
+                        alert("Error Semantico, la etiqueta "+t_nodo.salto+" No existe, iffalse");
+                    }
+                }//si cumple con la condicion no pasa nada y sigue con la ejecucion de las instrucciones
             }else if(t_nodo instanceof Llamada_Metodo3D){
-                console.log("Llamada_Metodo3D");
+                pila.push((f));
+                var temp_sim=entorno3d.obtener(t_nodo.id);
+                if(temp_sim!=null){
+                    f=temp_sim.indice;
+                }else{
+                    alert("Error Semantico, No existe el metodo "+t_nodo.id+", Llamada Metodo");
+                }
+            }else if(t_nodo instanceof Salto3D){
+                //aqui no realiza ninguna accion, ya que se consulta la informacion en la tabla de simbolos
+            }else if(t_nodo instanceof Metodo3D){
+                //aqui vamos a analizar cuando llegue al nodo final
+                if(t_nodo.tipo=="FIN"){
+                    if(pila.length>0){
+                        var temp_indice=pila.pop();
+                        f=temp_indice;
+                    }else{
+                        f=200;
+                    }
+                }
             }else{
-                //console.log("Es otro nodo");
-                //console.log(f);
+                console.log("Error semantico, es alguna instancia no permitida");
             }
         }
     }else{

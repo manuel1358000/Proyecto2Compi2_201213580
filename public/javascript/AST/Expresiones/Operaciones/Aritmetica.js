@@ -458,6 +458,7 @@ function generarString2(cadena){
     var respuesta="";
     cadena=String(cadena).replace(/['"]+/g, '');
     for(var i=0;i<cadena.length;i++){
+        console.log(i);
         respuesta+="heap[h]="+cadena.charCodeAt(i)+";\n";
         respuesta+="h=h+1;\n";
     }

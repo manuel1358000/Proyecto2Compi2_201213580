@@ -159,13 +159,13 @@ sentencias_globales: asignacion{$$=$1;}
 sentencia_iffalse: IFFALSE '(' expresion simbolo_RL expresion ')' GOTO LNUMBER ';'{
                                                                         //exp1,exp2,operador,unario,acceso,tipo
                                                                         var condicion=new Expresion3D($3,$5,$4,false,false,"EXPRESION");
-                                                                        $$=new Iffalse3D(condicion,new Goto3D($8));
+                                                                        $$=new Iffalse3D(condicion,$8);
                                                                         };
 
 sentencia_if: IF '(' expresion simbolo_RL expresion ')' GOTO LNUMBER ';'{
                                                                         //exp1,exp2,operador,unario,acceso,tipo
                                                                         var condicion=new Expresion3D($3,$5,$4,false,false,"EXPRESION");
-                                                                        $$=new If3D(condicion,new Goto3D($8));
+                                                                        $$=new If3D(condicion,$8);
                                                                         };
 sentencia_global: sentencia_global sentencias_globales{
                                                         $$=$1;
