@@ -236,27 +236,28 @@ break;
 case 39:
 
                                                 this.$=$$[$0-4];
-                                                this.$.exp1=$$[$0-2];
-                                                this.$.unario=true;                          
+                                                $$[$0-1].unario=true;
+                                                $$[$0-1].operador="-";
+                                                this.$.exp1=$$[$0-1];                
                                                 
 break;
-case 40: case 51:
-this.$=new Expresion3D($$[$0],null,null,null,null,"ETIQUETA");
+case 40:
+this.$=new Expresion3D($$[$0],null,null,false,null,"ETIQUETA");
 break;
-case 41: case 52:
-this.$=new Expresion3D($$[$0],null,null,null,null,"NUMERO");
+case 41:
+this.$=new Expresion3D($$[$0],null,null,false,null,"NUMERO");
 break;
-case 42: case 53:
-this.$=new Expresion3D($$[$0],null,null,null,null,"H");
+case 42:
+this.$=new Expresion3D($$[$0],null,null,false,null,"H");
 break;
-case 43: case 54:
-this.$=new Expresion3D($$[$0],null,null,null,null,"P");
+case 43:
+this.$=new Expresion3D($$[$0],null,null,false,null,"P");
 break;
 case 44:
-this.$=new Expresion3D($$[$0-3],null,null,null,$$[$0-1],"HEAP");
+this.$=new Expresion3D($$[$0-3],null,null,false,$$[$0-1],"HEAP");
 break;
 case 45:
-this.$=new Expresion3D($$[$0-3],null,null,null,$$[$0-1],"STACK");
+this.$=new Expresion3D($$[$0-3],null,null,false,$$[$0-1],"STACK");
 break;
 case 46:
 this.$=new Asignacion3D($$[$0],null,"ETIQUETA",null);
@@ -272,6 +273,18 @@ this.$=new Asignacion3D($$[$0-3],null,"HEAP",$$[$0-1]);
 break;
 case 50:
 this.$=new Asignacion3D($$[$0-3],null,"STACK",$$[$0-1]);
+break;
+case 51:
+this.$=new Expresion3D($$[$0],null,null,null,null,"ETIQUETA");
+break;
+case 52:
+this.$=new Expresion3D($$[$0],null,null,null,null,"NUMERO");
+break;
+case 53:
+this.$=new Expresion3D($$[$0],null,null,null,null,"H");
+break;
+case 54:
+this.$=new Expresion3D($$[$0],null,null,null,null,"P");
 break;
 }
 },

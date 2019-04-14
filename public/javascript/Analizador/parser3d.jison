@@ -215,17 +215,18 @@ asignacion: expresion_asignar '=' expresion simbolo expresion ';'{
                                                 }
         | expresion_asignar '=' '-' expresion ';'{
                                                 $$=$1;
-                                                $$.exp1=$3;
-                                                $$.unario=true;                          
+                                                $4.unario=true;
+                                                $4.operador="-";
+                                                $$.exp1=$4;                
                                                 };
 
 //exp1,exp2,operador,unario,acceso,tipo
-expresion: TNUMBER{$$=new Expresion3D($1,null,null,null,null,"ETIQUETA");}
-        | NUMBER{$$=new Expresion3D($1,null,null,null,null,"NUMERO");}
-        | 'H'{$$=new Expresion3D($1,null,null,null,null,"H");}
-        | 'P'{$$=new Expresion3D($1,null,null,null,null,"P");}
-        | HEAP '[' contenido_hs ']'{$$=new Expresion3D($1,null,null,null,$3,"HEAP");}
-        | STACK '[' contenido_hs ']'{$$=new Expresion3D($1,null,null,null,$3,"STACK");};
+expresion: TNUMBER{$$=new Expresion3D($1,null,null,false,null,"ETIQUETA");}
+        | NUMBER{$$=new Expresion3D($1,null,null,false,null,"NUMERO");}
+        | 'H'{$$=new Expresion3D($1,null,null,false,null,"H");}
+        | 'P'{$$=new Expresion3D($1,null,null,false,null,"P");}
+        | HEAP '[' contenido_hs ']'{$$=new Expresion3D($1,null,null,false,$3,"HEAP");}
+        | STACK '[' contenido_hs ']'{$$=new Expresion3D($1,null,null,false,$3,"STACK");};
 
 //id,exp1,tipo,acceso
 expresion_asignar:TNUMBER{$$=new Asignacion3D($1,null,"ETIQUETA",null);}

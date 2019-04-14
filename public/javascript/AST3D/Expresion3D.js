@@ -13,6 +13,28 @@ class Expresion3D{
     getValue(entorno3d){
         if(this.unario){
             //si es un unario, esto aplica para cuando se realizan las negativas
+            if(this.operador=="-"){
+                var temp_val1;
+                if(this.tipo=="NUMERO"){
+                    temp_val1=this.exp1;
+                }else if(this.tipo=="ETIQUETA"){
+                    temp_val1=entorno3d.obtener(this.exp1);
+                }
+                if(temp_val1!=null){
+                    return parseFloat(temp_val1)*(-1);
+                }
+            }else if(this.operador=="!"){
+                var temp_val1=obtenerValor(this.exp1,entorno3d);
+                if(temp_val1!=null){
+                    if(temp_val1==0){
+                        return 1;
+                    }else if(temp_val1==1){
+                        return 0;
+                    }
+                }
+            }else{
+                alert("Error Semantico: Operador unario invalido "+this.operador);
+            }
         }else{
             //expresiones normales
             if(this.exp1!=null&&this.exp2!=null){

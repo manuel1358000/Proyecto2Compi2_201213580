@@ -100,8 +100,7 @@ function ejecutar3D(nodos){
                                 alert("Error semantico, el valor a asignar no existe o es nulo");
                             }
                         }else{
-                            
-                            alert("Error semantico, operacion incorrecta para etiqueta");
+                            alert("Error semantico, operacion incorrecta para etiqueta,tipo:"+t_nodo.exp1.tipo);
                         }
                         entorno3d.actualizar(sim.id,sim);
                     }else if(sim.tipo=="H"){
@@ -358,11 +357,11 @@ function ejecutar3D(nodos){
                     alert("El valor "+t_nodo.id+", No existe en la tabla de simbolos3D");
                 }
             }else if(t_nodo instanceof Imprimir3D){
-
                 var sim=entorno3d.obtener(t_nodo.exp1);
                 if(sim!=null){
                     if(t_nodo.tipo=="\"%c\""){
                         if(sim.valor!=null){
+                            alert(sim.valor);
                             var res = String.fromCharCode(sim.valor);
                             escribirConsola(res);
                         }else{
@@ -371,6 +370,7 @@ function ejecutar3D(nodos){
                         
                     }else if(t_nodo.tipo=="\"%d\""){
                         var res = sim.valor;
+                        alert(res);
                         escribirConsola(res);
                     }else if(t_nodo.tipo=="\"%e\""){
                         var res = sim.valor;
