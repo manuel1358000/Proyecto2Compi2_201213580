@@ -207,7 +207,7 @@ salto: LNUMBER ':'{$$=new Salto3D($1);};
 //id,exp1,tipo,acceso
 asignacion: expresion_asignar '=' expresion simbolo expresion ';'{
                                                                 $$=$1;
-                                                                $$.exp1=new Expresion($3,$5,$4,false,null,"EXPRESION");
+                                                                $$.exp1=new Expresion3D($3,$5,$4,false,null,"EXPRESION");
                                                                 }
         | expresion_asignar '=' expresion ';'{
                                                 $$=$1;

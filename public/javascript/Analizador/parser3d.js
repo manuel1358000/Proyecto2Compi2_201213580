@@ -224,7 +224,7 @@ break;
 case 37:
 
                                                                 this.$=$$[$0-5];
-                                                                this.$.exp1=new Expresion($$[$0-3],$$[$0-1],$$[$0-2],false,null,"EXPRESION");
+                                                                this.$.exp1=new Expresion3D($$[$0-3],$$[$0-1],$$[$0-2],false,null,"EXPRESION");
                                                                 
 break;
 case 38:
