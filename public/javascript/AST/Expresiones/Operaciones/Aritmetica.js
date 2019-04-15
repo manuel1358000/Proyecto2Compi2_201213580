@@ -53,6 +53,8 @@ class Aritmetica{
                                     result_temp=generarString(result2.u_etiqueta,true,"CHAR");
                                 }else if(tipo2=="BOOLEAN"){
                                     result_temp=generarString(result2.u_etiqueta,true,"BOOLEAN");
+                                }else if(tipo2=="DOUBLE"){
+                                    result_temp=generarString(result2.u_etiqueta,true,"DOUBLE");
                                 }
                                 result.cadena+=result_temp.cadena;
                                 var temp_unir=unirString(result1.u_etiqueta,result_temp.u_etiqueta);
@@ -66,6 +68,8 @@ class Aritmetica{
                                     result_temp=generarString(result1.u_etiqueta,true,"CHAR");
                                 }else if(tipo1=="BOOLEAN"){
                                     result_temp=generarString(result1.u_etiqueta,true,"BOOLEAN");
+                                }else if(tipo1=="DOUBLE"){
+                                    result_temp=generarString(result1.u_etiqueta,true,"DOUBLE");
                                 }
                                 result.cadena+=result_temp.cadena;
                                 var temp_unir=unirString(result_temp.u_etiqueta,result2.u_etiqueta);
@@ -445,7 +449,33 @@ function generarString(cadena,bandera,tipo){
         respuesta+=etif+":\n";
         result.u_etiqueta=temp_heap;
     }else if(tipo=="DOUBLE"){
-        alert("Es un double");
+        var puntero_simulado=generarEtiqueta();
+        respuesta+=puntero_simulado+"=p+2;\n";//ambito simulado
+        respuesta+=puntero_simulado+"="+puntero_simulado+"+1;\n";
+        respuesta+="stack["+puntero_simulado+"]="+cadena+";\n";
+        respuesta+="p=p+2;\n";
+        respuesta+="call doubleString;\n";
+        var temp=generarEtiqueta();
+        respuesta+=temp+"=p+0;\n";
+        var temp2=generarEtiqueta();//aqui se encuentra el puntero a heap que tiene el entero ya convertido
+        respuesta+=temp2+"=stack["+temp+"];//en esta posicion se encuentra el puntero h del numero que se convirtio\n";
+        respuesta+="p=p-2;//se regresa al ambito actual, se mueven dos posiciones por el this y el return\n";
+        respuesta+="//-------------------------finaliza casteo entero a cadena\n";
+        //inicia el cambio de posiciones del anterior heap al nuevo heap
+        var temp_heap=generarEtiqueta();
+        respuesta+=temp_heap+"=h;\n";
+        var etig=generarSalto();
+        respuesta+=etig+":\n";
+        var t1=generarEtiqueta();
+        respuesta+=t1+"=heap["+temp2+"];\n";
+        var etisalida=generarSalto();
+        respuesta+="if("+t1+"==0) goto "+etisalida+";\n";
+        respuesta+="heap[h]="+t1+";\n";
+        respuesta+="h=h+1;\n";
+        respuesta+=temp2+"="+temp2+"+1;\n";
+        respuesta+="goto "+etig+";\n";
+        respuesta+=etisalida+":\n";
+        result.u_etiqueta=temp_heap;
     }
     if(bandera==true){
         respuesta+="heap[h]=0;\n";
@@ -458,7 +488,6 @@ function generarString2(cadena){
     var respuesta="";
     cadena=String(cadena).replace(/['"]+/g, '');
     for(var i=0;i<cadena.length;i++){
-        console.log(i);
         respuesta+="heap[h]="+cadena.charCodeAt(i)+";\n";
         respuesta+="h=h+1;\n";
     }

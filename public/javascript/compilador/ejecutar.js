@@ -81,11 +81,6 @@ function btn_3dcompilar(){
     ejecutar3D(ast3d);
     alert("Finalizo el analisis");
 }
-
-
-
-
-
 function btn_compilar(){
     cont_e=-1;
     lista_temporales="var heap[];\nvar stack[];\nvar h=0;\nvar p=0;\n";
@@ -106,6 +101,8 @@ function btn_compilar(){
     var codigo3d=ejecutar(ast);
     
     codigo3d+=generaImpresion();
+    codigo3d+=doubleString();
+    codigo3d+=obtenerInt();
     codigo3d+=enteroString();
     codigo3d=lista_temporales+";\n"+codigo3d;
     var elementoNav=document.querySelector("#nav_pesta > li.active >a");

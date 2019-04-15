@@ -33,7 +33,7 @@ class Expresion3D{
                     }
                 }
             }else{
-                alert("Error Semantico: Operador unario invalido "+this.operador);
+                console.log("Error Semantico: Operador unario invalido "+this.operador);
             }
         }else{
             //expresiones normales
@@ -112,7 +112,7 @@ class Expresion3D{
                         return temp_val1<=temp_val2;
                     }
                 }else{
-                    alert("Operacion no valida, expresiones3d");
+                    console.log("Operacion no valida, expresiones3d");
                     return null;
                 }
             }else{
@@ -132,28 +132,28 @@ function obtenerValor(exp,entorno3d){
         if(temp_sim!=null){
             return temp_sim.valor;
         }else{
-            alert("Error Semantico, no tiene valor la etiqueta en operandos,etiqueta "+temp_eti);
+            console.log("Error Semantico, no tiene valor la etiqueta en operandos,etiqueta "+temp_eti);
         }
     }else if(exp.tipo=="HEAP"){
         var temp_indice=obtenerIndice(t_nodo,entorno3d);
         if(temp_indice!=null){
                 return heap[temp_indice];
         }else{
-            alert("Error Semantico, no tiene valor la etiqueta en operandos,heap");
+            console.log("Error Semantico, no tiene valor la etiqueta en operandos,heap");
         }
     }else if(exp.tipo=="STACK"){
         var temp_indice=obtenerIndice(t_nodo,entorno3d);
         if(temp_indice!=null){
                 return stack[temp_indice];
         }else{
-            alert("Error Semantico, no tiene valor la etiqueta en operandos,stack");
+            console.log("Error Semantico, no tiene valor la etiqueta en operandos,stack");
         }
     }else if(exp.tipo=="H"){
         return ptr_h;
     }else if(exp.tipo=="P"){
         return ptr_p;
     }else{
-        alert("Error Semantico, Operador no soportado");
+        console.log("Error Semantico, Operador no soportado");
         return null;
     }
 }

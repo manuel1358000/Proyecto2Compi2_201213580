@@ -62,14 +62,14 @@ function ejecutar3D(nodos){
                             if(temp_indice!=null){
                                 sim.valor=stack[temp_indice];
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
                             }
                         }else if(t_nodo.exp1.tipo=="HEAP"){
                             var temp_indice=obtenerIndice(t_nodo.exp1,entorno3d);
                             if(temp_indice!=null){
                                 sim.valor=heap[temp_indice];
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
                             }
                         }else if(t_nodo.exp1.tipo=="ETIQUETA"){
                             var temp_eti=t_nodo.exp1.getValue(entorno3d);
@@ -77,14 +77,14 @@ function ejecutar3D(nodos){
                             if(temp_sim.valor!=null){
                                 sim.valor=temp_sim.valor;
                             }else{
-                                alert("1Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
+                                console.log("1Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
                             }
                         }else if(t_nodo.exp1.tipo=="NUMERO"){
                             var temp_valor=t_nodo.exp1.getValue(entorno3d);
                             if(temp_valor!=null){
                                 sim.valor=temp_valor;
                             }else{
-                                alert("Error semantico, el valor a asignar no existe o es nulo,NUMERO");
+                                console.log("Error semantico, el valor a asignar no existe o es nulo,NUMERO");
                             }
                         }else if(t_nodo.exp1.tipo=="EXPRESION"){
                             var temp_valor=t_nodo.exp1.getValue(entorno3d);
@@ -93,14 +93,14 @@ function ejecutar3D(nodos){
                                 if(temp_exp!=null){
                                     sim.valor=temp_exp;
                                 }else{
-                                    alert("Error Semantico, No se puede realizar la operacion,ETIQUETA->EXPRESION");
+                                    console.log("Error Semantico, No se puede realizar la operacion,ETIQUETA->EXPRESION");
                                 }
                             }else{
                                 
-                                alert("Error semantico, el valor a asignar no existe o es nulo");
+                                console.log("Error semantico, el valor a asignar no existe o es nulo");
                             }
                         }else{
-                            alert("Error semantico, operacion incorrecta para etiqueta,tipo:"+t_nodo.exp1.tipo);
+                            console.log("Error semantico, operacion incorrecta para etiqueta,tipo:"+t_nodo.exp1.tipo);
                         }
                         entorno3d.actualizar(sim.id,sim);
                     }else if(sim.tipo=="H"){
@@ -113,14 +113,14 @@ function ejecutar3D(nodos){
                             if(temp_indice!=null){
                                 ptr_h=stack[temp_indice];
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
                             }
                         }else if(t_nodo.exp1.tipo=="HEAP"){
                             var temp_indice=obtenerIndice(t_nodo.exp1,entorno3d);
                             if(temp_indice!=null){
                                 ptr_h=heap[temp_indice];
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
                             }
                         }else if(t_nodo.exp1.tipo=="ETIQUETA"){
                             var temp_eti=t_nodo.exp1.getValue(entorno3d);
@@ -128,25 +128,25 @@ function ejecutar3D(nodos){
                             if(temp_sim.valor!=null){
                                 ptr_h=temp_sim.valor;
                             }else{
-                                alert("2Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
+                                console.log("2Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
                             }
                         }else if(t_nodo.exp1.tipo=="NUMERO"){
                             var temp_valor=t_nodo.exp1.getValue(entorno3d);
                             if(temp_valor!=null){
                                 ptr_h=temp_valor;
                             }else{
-                                alert("Error semantico, el valor a asignar no existe o es nulo,NUMERO");
+                                console.log("Error semantico, el valor a asignar no existe o es nulo,NUMERO");
                             }
                         }else if(t_nodo.exp1.tipo=="EXPRESION"){
                             var temp_valor=t_nodo.exp1.getValue(entorno3d);
                             if(temp_valor!=null){
                                 ptr_h=temp_valor;
                             }else{
-                                alert("aqui "+tmep_valor);
-                                alert("Error Semantico, No se puede realizar la operacion,H->EXPRESION");
+                                console.log("aqui "+tmep_valor);
+                                console.log("Error Semantico, No se puede realizar la operacion,H->EXPRESION");
                             }
                         }else{
-                            alert("Error semantico, operacion incorrecta para h");
+                            console.log("Error semantico, operacion incorrecta para h");
                         }
                     }else if(sim.tipo=="P"){
                         if(t_nodo.exp1.tipo=="H"){
@@ -158,14 +158,14 @@ function ejecutar3D(nodos){
                             if(temp_indice!=null){
                                 ptr_p=stack[temp_indice];
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
                             }
                         }else if(t_nodo.exp1.tipo=="HEAP"){
                             var temp_indice=obtenerIndice(t_nodo.exp1,entorno3d);
                             if(temp_indice!=null){
                                 ptr_p=heap[temp_indice];
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
                             }
                         }else if(t_nodo.exp1.tipo=="ETIQUETA"){
                             var temp_eti=t_nodo.exp1.getValue(entorno3d);
@@ -173,24 +173,24 @@ function ejecutar3D(nodos){
                             if(temp_sim.valor!=null){
                                 ptr_p=temp_sim.valor;
                             }else{
-                                alert("3Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
+                                console.log("3Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
                             }
                         }else if(t_nodo.exp1.tipo=="NUMERO"){
                             var temp_valor=t_nodo.exp1.getValue(entorno3d);
                             if(temp_valor!=null){
                                 ptr_p=temp_valor;
                             }else{
-                                alert("Error semantico, el valor a asignar no existe o es nulo,NUMERO");
+                                console.log("Error semantico, el valor a asignar no existe o es nulo,NUMERO");
                             }
                         }else if(t_nodo.exp1.tipo=="EXPRESION"){
                             var temp_valor=t_nodo.exp1.getValue(entorno3d);
                             if(temp_valor!=null){
                                 ptr_p=temp_valor;
                             }else{
-                                alert("Error Semantico, No se puede realizar la operacion,P->EXPRESION");
+                                console.log("Error Semantico, No se puede realizar la operacion,P->EXPRESION");
                             }
                         }else{
-                            alert("Error semantico, operacion incorrecta para p");
+                            console.log("Error semantico, operacion incorrecta para p");
                         }
                     }else if(sim.tipo=="STACK"){
                         if(t_nodo.exp1.tipo=="H"){
@@ -198,14 +198,14 @@ function ejecutar3D(nodos){
                             if(temp_indice!=null){
                                 stack[temp_indice]=ptr_h;
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, H");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, H");
                             }
                         }else if(t_nodo.exp1.tipo=="P"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
                             if(temp_indice!=null){
                                 stack[temp_indice]=ptr_p;
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, P");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, P");
                             }
                         }else if(t_nodo.exp1.tipo=="STACK"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -214,10 +214,10 @@ function ejecutar3D(nodos){
                                 if(temp_indice2!=null){
                                     stack[temp_indice]=stack[temp_indice2];
                                 }else{
-                                    alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
+                                    console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
                                 }
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,STACK");
                             }
                         }else if(t_nodo.exp1.tipo=="HEAP"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -226,11 +226,11 @@ function ejecutar3D(nodos){
                                 if(temp_indice2!=null){
                                     stack[temp_indice]=heap[temp_indice2];
                                 }else{
-                                    alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
+                                    console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
                                 }
                                 
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
                             }
                         }else if(t_nodo.exp1.tipo=="ETIQUETA"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -240,10 +240,10 @@ function ejecutar3D(nodos){
                                 if(temp_sim.valor!=null){
                                     stack[temp_indice]=temp_sim.valor;
                                 }else{
-                                    alert("4Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
+                                    console.log("4Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
                                 }
                             }else{
-                                alert("5Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
+                                console.log("5Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
                             }
                         }else if(t_nodo.exp1.tipo=="NUMERO"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -252,10 +252,10 @@ function ejecutar3D(nodos){
                                 if(temp_valor!=null){
                                     stack[temp_indice]=temp_valor;
                                 }else{
-                                    alert("Error semantico, el valor a asignar no existe o es nulo, NUMERO");
+                                    console.log("Error semantico, el valor a asignar no existe o es nulo, NUMERO");
                                 }
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,NUMERO");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,NUMERO");
                             }
                         }else if(t_nodo.exp1.tipo=="EXPRESION"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -264,13 +264,13 @@ function ejecutar3D(nodos){
                                 if(temp_valor!=null){
                                     stack[temp_indice]=temp_valor;
                                 }else{
-                                    alert("Error Semantico, No se puede realizar la operacion,STACK->EXPRESION");
+                                    console.log("Error Semantico, No se puede realizar la operacion,STACK->EXPRESION");
                                 }
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, EXPRESION");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, EXPRESION");
                             }
                         }else{
-                            alert("Error semantico, operacion incorrecta para stack");
+                            console.log("Error semantico, operacion incorrecta para stack");
                         }
                     }else if(sim.tipo=="HEAP"){
                         if(t_nodo.exp1.tipo=="H"){
@@ -278,14 +278,14 @@ function ejecutar3D(nodos){
                             if(temp_indice!=null){
                                 heap[temp_indice]=ptr_h;
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al heap es nulo o no existe,H");
+                                console.log("Error semantico, la posicion que quiere acceder al heap es nulo o no existe,H");
                             }
                         }else if(t_nodo.exp1.tipo=="P"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
                             if(temp_indice!=null){
                                 heap[temp_indice]=ptr_p;
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al heap es nulo o no existe,P");
+                                console.log("Error semantico, la posicion que quiere acceder al heap es nulo o no existe,P");
                             }
                         }else if(t_nodo.exp1.tipo=="STACK"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -294,10 +294,10 @@ function ejecutar3D(nodos){
                                 if(temp_indice2!=null){
                                     heap[temp_indice]=stack[temp_indice2];
                                 }else{
-                                    alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, STACK");
+                                    console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, STACK");
                                 }
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, STACK");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe, STACK");
                             }
                         }else if(t_nodo.exp1.tipo=="HEAP"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -306,10 +306,10 @@ function ejecutar3D(nodos){
                                 if(temp_indice2!=null){
                                     heap[temp_indice]=heap[temp_indice2];
                                 }else{
-                                    alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
+                                    console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
                                 }
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
+                                console.log("Error semantico, la posicion que quiere acceder al stack es nulo o no existe,HEAP");
                             }
                         }else if(t_nodo.exp1.tipo=="ETIQUETA"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -319,10 +319,10 @@ function ejecutar3D(nodos){
                                 if(temp_sim.valor!=null){
                                     heap[temp_indice]=temp_sim.valor;
                                 }else{
-                                    alert("6Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
+                                    console.log("6Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
                                 }
                             }else{
-                                alert("7Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
+                                console.log("7Error semantico, el valor a asignar no existe o es nulo, ETIQUETA: "+t_nodo.exp1.getValue(entorno3d));
                             }
                         }else if(t_nodo.exp1.tipo=="NUMERO"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -331,10 +331,10 @@ function ejecutar3D(nodos){
                                 if(temp_valor!=null){
                                     heap[temp_indice]=temp_valor;
                                 }else{
-                                    alert("Error semantico, el valor a asignar no existe o es nulo,NUMERO");
+                                    console.log("Error semantico, el valor a asignar no existe o es nulo,NUMERO");
                                 }
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al heap es nulo o no existe,NUMERO");
+                                console.log("Error semantico, la posicion que quiere acceder al heap es nulo o no existe,NUMERO");
                             }
                         }else if(t_nodo.exp1.tipo=="EXPRESION"){
                             var temp_indice=obtenerIndice(t_nodo,entorno3d);
@@ -343,48 +343,47 @@ function ejecutar3D(nodos){
                                 if(temp_valor!=null){
                                     heap[temp_indice]=temp_valor;
                                 }else{
-                                    alert(temp_valor+"Verificar aqui");
-                                    alert("Error Semantico, No se puede realizar la operacion,HEAP->EXPRESION");
+                                    console.log(temp_valor+"Verificar aqui");
+                                    console.log("Error Semantico, No se puede realizar la operacion,HEAP->EXPRESION");
                                 }
                             }else{
-                                alert("Error semantico, la posicion que quiere acceder al heap es nulo o no existe,EXPRESION");
+                                console.log("Error semantico, la posicion que quiere acceder al heap es nulo o no existe,EXPRESION");
                             }
                         }else{
-                            alert("Error semantico, operacion incorrecta para heap");
+                            console.log("Error semantico, operacion incorrecta para heap");
                         }
                     }
                 }else{
-                    alert("El valor "+t_nodo.id+", No existe en la tabla de simbolos3D");
+                    console.log("El valor "+t_nodo.id+", No existe en la tabla de simbolos3D");
                 }
             }else if(t_nodo instanceof Imprimir3D){
                 var sim=entorno3d.obtener(t_nodo.exp1);
                 if(sim!=null){
                     if(t_nodo.tipo=="\"%c\""){
                         if(sim.valor!=null){
-                            alert(sim.valor);
                             var res = String.fromCharCode(sim.valor);
                             escribirConsola(res);
                         }else{
-                            alert("Error Semantico, La etiqueta tiene un valor nulo");
+                            console.log("Error Semantico, La etiqueta tiene un valor nulo");
                         }
                         
                     }else if(t_nodo.tipo=="\"%d\""){
                         var res = sim.valor;
-                        alert(res);
+                        console.log(res);
                         escribirConsola(res);
                     }else if(t_nodo.tipo=="\"%e\""){
                         var res = sim.valor;
                         escribirConsola(res);
                     }   
                 }else{
-                    alert("Error semantico la etiqueta "+t_nodo.exp1+" no existe.");
+                    console.log("Error semantico la etiqueta "+t_nodo.exp1+" no existe.");
                 }
             }else if(t_nodo instanceof Goto3D){
                 var temp_sim=entorno3d.obtener(t_nodo.id);
                 if(temp_sim!=null){
                     f=temp_sim.indice;
                 }else{
-                    alert("Error Semantico, la etiqueta "+t_nodo.id+" No existe,goto");
+                    console.log("Error Semantico, la etiqueta "+t_nodo.id+" No existe,goto");
                 }
             }else if(t_nodo instanceof If3D){
                 //tenemos que evaluar la operacion y si es verdadera vamos a mandar a llamar a la etiqueta que tenga,
@@ -395,7 +394,7 @@ function ejecutar3D(nodos){
                     if(temp_sim!=null){
                         f=temp_sim.indice;
                     }else{
-                        alert("Error Semantico, la etiqueta "+t_nodo.salto+" No existe,if");
+                        console.log("Error Semantico, la etiqueta "+t_nodo.salto+" No existe,if");
                     }
                 }//si no cumple con la condicion no pasa nada y sigue con la ejecucion de las instrucciones
             }else if(t_nodo instanceof Iffalse3D){
@@ -407,7 +406,7 @@ function ejecutar3D(nodos){
                     if(temp_sim!=null){
                         f=temp_sim.indice;
                     }else{
-                        alert("Error Semantico, la etiqueta "+t_nodo.salto+" No existe, iffalse");
+                        console.log("Error Semantico, la etiqueta "+t_nodo.salto+" No existe, iffalse");
                     }
                 }//si cumple con la condicion no pasa nada y sigue con la ejecucion de las instrucciones
             }else if(t_nodo instanceof Llamada_Metodo3D){
@@ -416,7 +415,7 @@ function ejecutar3D(nodos){
                 if(temp_sim!=null){
                     f=temp_sim.indice;
                 }else{
-                    alert("Error Semantico, No existe el metodo "+t_nodo.id+", Llamada Metodo");
+                    console.log("Error Semantico, No existe el metodo "+t_nodo.id+", Llamada Metodo");
                 }
             }else if(t_nodo instanceof Salto3D){
                 //aqui no realiza ninguna accion, ya que se consulta la informacion en la tabla de simbolos
@@ -427,7 +426,7 @@ function ejecutar3D(nodos){
                         var temp_indice=pila.pop();
                         f=temp_indice;
                     }else{
-                        f=200;
+                        f=nodo.length+10;
                     }
                 }
             }else{
@@ -435,10 +434,9 @@ function ejecutar3D(nodos){
             }
         }
     }else{
-        alert("No existe el metodo main para empezar la ejecucion");
+        console.log("No existe el metodo main para empezar la ejecucion");
     }
 }
-
 function obtenerIndice(t_nodo,entorno3d){
     var temp_indice;
     if(t_nodo.acceso.tipo=="H"){
