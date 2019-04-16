@@ -19,7 +19,11 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+result_aux.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas;\n";
+            if(this.salto){
+                armar+="call impresion_cadenas2;\n";
+            }else{
+                armar+="call impresion_cadenas;\n";
+            }
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//----------------------finaliza impresion numero\n";
             result.cadena+=armar;
@@ -45,7 +49,11 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+temp2+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas;\n";
+            if(this.salto){
+                armar+="call impresion_cadenas2;\n";
+            }else{
+                armar+="call impresion_cadenas;\n";
+            }
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion numero\n";
             result.cadena+=armar;
@@ -71,7 +79,11 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+temp2+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas;\n";
+            if(this.salto){
+                armar+="call impresion_cadenas2;\n";
+            }else{
+                armar+="call impresion_cadenas;\n";
+            }
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion double\n";
             result.cadena+=armar;
@@ -84,7 +96,11 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+temp_result.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas;\n";
+            if(this.salto){
+                armar+="call impresion_cadenas2;\n";
+            }else{
+                armar+="call impresion_cadenas;\n";
+            }
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion char\n";
             result.cadena+=armar;
@@ -97,7 +113,11 @@ class Imprimir{
             var direc_para1=generarEtiqueta();
             armar+=direc_para1+"=p+1;//posicion del parametro\n";
             armar+="stack["+direc_para1+"]="+temp_result.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            armar+="call impresion_cadenas;\n";
+            if(this.salto){
+                armar+="call impresion_cadenas2;\n";
+            }else{
+                armar+="call impresion_cadenas;\n";
+            }
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion boolean\n";
             result.cadena+=armar;
@@ -204,6 +224,30 @@ function generaImpresion(){
     temp+=puntero_h+"="+puntero_h+"+1;\n";
     temp+="goto "+etip+";\n";
     temp+=etiv+":\n//finaliza la impresion\n"
+    temp+="end\n";
+    return temp;
+}
+function generaImpresion2(){
+    var temp="proc impresion_cadenas2 begin\n";
+    var etip=generarSalto();
+    var puntero_h=generarEtiqueta();
+    var etiv=generarSalto();//finaliza la impresion de la cadena
+    var etif=generarSalto();
+    var eti_contenido=generarEtiqueta();
+    temp+=puntero_h+"=p+1;//se tiene la posicion del puntero h de la cadena\n";
+    temp+=puntero_h+"=stack["+puntero_h+"];\n";
+    temp+=etip+"://etiqueta del ciclo\n";
+    temp+=eti_contenido+"=heap["+puntero_h+"];\n//accedo a la posicion del caracter que forma la letra\n";;
+    temp+="if("+eti_contenido+"==0) goto "+etiv+";\n";
+    temp+="goto "+etif+";\n";
+    temp+=etif+":\n";
+    temp+="print(\"%c\","+eti_contenido+");\n";
+    temp+=puntero_h+"="+puntero_h+"+1;\n";
+    temp+="goto "+etip+";\n";
+    temp+=etiv+":\n//finaliza la impresion\n"
+    var salto_linea=generarEtiqueta();
+    temp+=salto_linea+"=10;\n";
+    temp+="print(\"%c\","+salto_linea+");\n";
     temp+="end\n";
     return temp;
 }

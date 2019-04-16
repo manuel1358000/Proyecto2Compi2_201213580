@@ -28,12 +28,22 @@
 "import"            return 'IMPORT'
 "println"           return 'PRINTLN'
 "print"             return 'PRINT'
+//sentencias control
+"if"                return 'IF'
+"else"              return 'ELSE'
+"switch"            return 'SWITCH'
+"case"              return 'CASE'
+"do"                return 'DO'
+"while"             return 'WHILE'
+"for"               return 'FOR'
+"default"           return 'DEFAULT'
 //simbolos del lenguaje
 "{"                   return '{'
 "}"                   return '}'
 ","                   return ','
 "]"                   return ']'
 "["                   return '['
+":"                   return ':'
 ";"                   return ';'
 "=="                  return '=='
 "="                   return '='
@@ -161,31 +171,31 @@ cuerpo_clase_sentencias: modificadores declaracion_metodos{
                         }
                         | declaracion_variables{$$=$1;};
 
-declaracion_variables: modificadores variables{
+declaracion_variables: modificadores variables ';'{
                                                 for(var i=0;i<$2.length;i++){
                                                     $2[i].modificadores=$1;
                                                 }
                                                 $$=$2;
                                               }
-                    | variables{
+                    | variables ';'{
                                 $$=$1;
                                };
 
-variables: tipo lista_id ';'{
+variables: tipo lista_id {
                                 //DECLARACION DE UNA VARIABLE
                                 for(var i=0;i<$2.length;i++){
                                     $2[i].tipo=$1;
                                 }
                                 $$=$2;
                             }
-         | ID lista_id ';'{
+         | ID lista_id {
                             //DECLARACION DE UN OBJETO
                             for(var i=0;i<$2.length;i++){
                                 $2[i].tipo=$1;
                             }
                             $$=$2;
                             }
-         | tipo lista_id '=' exp ';'{
+         | tipo lista_id '=' exp {
                                     //DECLARACION ASIGNACION DE UNA VARIABLE
                                     for(var i=0;i<$2.length;i++){
                                         $2[i].tipo=$1;
@@ -193,7 +203,7 @@ variables: tipo lista_id ';'{
                                     $2[($2.length-1)].iniValue=$4;
                                     $$=$2;
                                     }
-         | ID lista_id '=' exp ';'{ 
+         | ID lista_id '=' exp{ 
                                     //DECLARACION ASIGNACION DE UN OBJETO
                                     //aca queda normal, en la parte de expresiones tenemos que agregar las declaracion new objeto();
                                     for(var i=0;i<$2.length;i++){
@@ -251,7 +261,62 @@ sentencias_metodo: variables{$$=$1;}
                  | sentencia_imprimir{
                                     $$=[];
                                     $$.push($1);
-                                    };
+                                    }
+                 | sentencia_if
+                 | sentencia_switch
+                 | sentencia_while
+                 | sentencia_for
+                 | sentencia_dowhile
+                 | sentencia_asignacion ';';
+
+sentencia_asignacion: ID '=' exp;
+
+//-------------------------------------------SENTENCIA SWITCH
+sentencia_switch: SWITCH '(' exp ')' '{' listas_cases case_default '}'
+                | SWITCH '(' exp ')' '{' listas_cases '}';
+listas_cases: listas_cases lista_case
+            | lista_case;
+lista_case: CASE exp ':' cuerpo_metodo;
+case_default: DEFAULT ':' cuerpo_metodo;
+//-------------------------------------------FIN SWITCH
+
+//-------------------------------------------SENTENCIA WHILE
+sentencia_while: WHILE '(' exp ')' '{' cuerpo_metodo '}';
+//-------------------------------------------FIN WHILE
+
+//-------------------------------------------SENTENCIA FOR
+sentencia_for:FOR '(' for_inicio ';' exp ';' exp ')' '{' cuerpo_metodo '}'
+            | FOR '(' for_inicio ':' exp ')' '{' cuerpo_metodo '}';
+for_inicio: variables
+            | sentencia_asignacion;
+//-------------------------------------------FIN FOR 
+
+//-------------------------------------------SENTENCIA DOWHILE
+sentencia_dowhile: '{' cuerpo_metodo '}' DO WHILE '(' exp ')' ';';
+//-------------------------------------------FIN DOWHILE
+
+//--------------------------------------------SENTENCIA IF
+sentencia_if: IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_elseif sentencia_else
+            | IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_elseif
+            | IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_else
+            | IF '(' exp ')' '{' cuerpo_metodo '}' ;
+
+sentencia_else: ELSE '{' cuerpo_metodo '}';
+
+sentencia_elseif: sentencia_elseif ELSE IF '(' exp ')' '{' cuerpo_metodo '}'
+                | ELSE IF '(' exp ')' '{' cuerpo_metodo '}';
+
+
+//-------------------------------------------FIN SENTENCIA IF
+
+
+
+
+
+
+
+
+
 
 
 sentencia_imprimir: PRINT '(' exp ')' ';'{
