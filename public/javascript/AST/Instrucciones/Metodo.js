@@ -48,6 +48,27 @@ class Metodo{
                 this.nodos[i].ambitos=this.ambitos+"/"+this.id;
                 var result_temp=this.nodos[i].execute(entorno);
                 result.cadena+=result_temp.cadena;
+            }else if(this.nodos[i] instanceof Asignacion){
+                var ambi=this.ambitos+"/"+this.id;
+                this.nodos[i].ambitos=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                if(result_temp!=null){
+                    result.cadena+=result_temp.cadena;
+                    var temp="//empieza la asignacion variable local\n";
+                    var temph=generarEtiqueta();
+                    temp+=temph+"=h;\n";
+                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                    temp+="h=h+1;\n";
+                    var simulado=generarEtiqueta();
+                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                    alert(sim.posRel);
+                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                    temp+="stack["+simulado+"]="+temph+";\n";
+                    temp+="//fin asignacion variable local\n";
+                }else{
+                   
+                }
+                result.cadena+=temp;
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
             }

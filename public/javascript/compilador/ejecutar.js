@@ -98,7 +98,7 @@ function btn_compilar(){
     var ast=calculadora.parse(cm.getValue());
     cont_e=-1;
     cont_s=-1;
-    /*
+    
     var codigo3d=ejecutar(ast);
     codigo3d+=generaImpresion();
     codigo3d+=doubleString();
@@ -106,7 +106,6 @@ function btn_compilar(){
     codigo3d+=enteroString();
     codigo3d+=generaImpresion2();
     codigo3d=lista_temporales+";\n"+codigo3d;
-    */
     var elementoNav=document.querySelector("#nav_pesta > li.active >a");
     var nombrenuevo=elementoNav.innerHTML;
     var elementos2=nombrenuevo.split(".");

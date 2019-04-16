@@ -257,7 +257,7 @@ cuerpo_metodo: cuerpo_metodo sentencias_metodo{
 
 //-------------------------sentencias dentro de un metodo
 
-sentencias_metodo: variables{$$=$1;}
+sentencias_metodo: variables ';'{$$=$1;}
                  | sentencia_imprimir{
                                     $$=[];
                                     $$.push($1);
@@ -267,9 +267,14 @@ sentencias_metodo: variables{$$=$1;}
                  | sentencia_while
                  | sentencia_for
                  | sentencia_dowhile
-                 | sentencia_asignacion ';';
+                 | sentencia_asignacion ';'{
+                                            $$=[];
+                                            $$.push($1);
+                                           };
 
-sentencia_asignacion: ID '=' exp;
+sentencia_asignacion: ID '=' exp{
+                                $$=new Asignacion($1,$3,0);
+                                };
 
 //-------------------------------------------SENTENCIA SWITCH
 sentencia_switch: SWITCH '(' exp ')' '{' listas_cases case_default '}'
@@ -305,8 +310,6 @@ sentencia_else: ELSE '{' cuerpo_metodo '}';
 
 sentencia_elseif: sentencia_elseif ELSE IF '(' exp ')' '{' cuerpo_metodo '}'
                 | ELSE IF '(' exp ')' '{' cuerpo_metodo '}';
-
-
 //-------------------------------------------FIN SENTENCIA IF
 
 
