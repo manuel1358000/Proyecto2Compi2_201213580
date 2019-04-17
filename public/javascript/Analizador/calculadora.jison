@@ -262,8 +262,14 @@ sentencias_metodo: variables ';'{$$=$1;}
                                     $$=[];
                                     $$.push($1);
                                     }
-                 | sentencia_if
-                 | sentencia_switch
+                 | sentencia_if{
+                                    $$=[];
+                                    $$.push($1);
+                                }
+                 | sentencia_switch{
+                                    $$=[];
+                                    $$.push($1);
+                                    }
                  | sentencia_while
                  | sentencia_for
                  | sentencia_dowhile
@@ -277,12 +283,26 @@ sentencia_asignacion: ID '=' exp{
                                 };
 
 //-------------------------------------------SENTENCIA SWITCH
-sentencia_switch: SWITCH '(' exp ')' '{' listas_cases case_default '}'
-                | SWITCH '(' exp ')' '{' listas_cases '}';
-listas_cases: listas_cases lista_case
-            | lista_case;
-lista_case: CASE exp ':' cuerpo_metodo;
-case_default: DEFAULT ':' cuerpo_metodo;
+sentencia_switch: SWITCH '(' exp ')' '{' listas_cases case_default '}'{
+                                                                    $$=new Selecciona($3,$6,$7);
+                                                                    }
+                | SWITCH '(' exp ')' '{' listas_cases '}'{
+                                                            $$=new Selecciona($3,$6,null);
+                                                        };
+listas_cases: listas_cases lista_case{
+                                        $$=$1;
+                                        $$.push($2);
+                                    }
+            | lista_case{
+                        $$=[];
+                        $$.push($1);
+                        };
+lista_case: CASE exp ':' cuerpo_metodo{
+                                        $$=new Caso($2,$4);
+                                        };
+case_default: DEFAULT ':' cuerpo_metodo{
+                                        $$=new Caso(null,$3);
+                                        };
 //-------------------------------------------FIN SWITCH
 
 //-------------------------------------------SENTENCIA WHILE
@@ -301,15 +321,35 @@ sentencia_dowhile: '{' cuerpo_metodo '}' DO WHILE '(' exp ')' ';';
 //-------------------------------------------FIN DOWHILE
 
 //--------------------------------------------SENTENCIA IF
-sentencia_if: IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_elseif sentencia_else
-            | IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_elseif
-            | IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_else
-            | IF '(' exp ')' '{' cuerpo_metodo '}' ;
+sentencia_if: IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_elseif sentencia_else{
+                                                                                    //condicion,nodos,subifs,defecto
+                                                                                    $$=new Si($3,$6,$8,$9);
+                                                                                    }
+            | IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_elseif{
+                                                                    //condicion,nodos,subifs,defecto
+                                                                    $$=new Si($3,$6,$8,null);
+                                                                    }
+            | IF '(' exp ')' '{' cuerpo_metodo '}' sentencia_else{
+                                                                //condicion,nodos,subifs,defecto
+                                                                $$=new Si($3,$6,[],$8);
+                                                                }
+            | IF '(' exp ')' '{' cuerpo_metodo '}'{
+                                                    //condicion,nodos,subifs,defecto
+                                                    $$=new Si($3,$6,[],null);
+                                                    };
 
-sentencia_else: ELSE '{' cuerpo_metodo '}';
+sentencia_else: ELSE '{' cuerpo_metodo '}'{
+                                            $$=new Subsi(null,$3);
+                                        };
 
-sentencia_elseif: sentencia_elseif ELSE IF '(' exp ')' '{' cuerpo_metodo '}'
-                | ELSE IF '(' exp ')' '{' cuerpo_metodo '}';
+sentencia_elseif: sentencia_elseif ELSE IF '(' exp ')' '{' cuerpo_metodo '}'{
+                                                                            $$=$1;
+                                                                            $$.push(new Subsi($5,$8));
+                                                                            }
+                | ELSE IF '(' exp ')' '{' cuerpo_metodo '}'{
+                                                            $$=[];
+                                                            $$.push(new Subsi($4,$7));
+                                                            };
 //-------------------------------------------FIN SENTENCIA IF
 
 

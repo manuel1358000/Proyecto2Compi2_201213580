@@ -61,7 +61,6 @@ class Metodo{
                     temp+="h=h+1;\n";
                     var simulado=generarEtiqueta();
                     var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
-                    alert(sim.posRel);
                     temp+=simulado+"=p+"+sim.posRel+";\n";
                     temp+="stack["+simulado+"]="+temph+";\n";
                     temp+="//fin asignacion variable local\n";
@@ -69,8 +68,13 @@ class Metodo{
                    
                 }
                 result.cadena+=temp;
+            }else if(this.nodos[i] instanceof Si){
+                console.log("Es un if");
+            }else if(this.nodos[i] instanceof Selecciona){
+                console.log("Es un switch");
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
+                console.log("Es otra instancia");
             }
         }
         return result;

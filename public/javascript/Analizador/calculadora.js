@@ -278,11 +278,17 @@ break;
 case 43:
 this.$=$$[$0-1];
 break;
-case 44:
+case 44: case 46:
 
                                     this.$=[];
                                     this.$.push($$[$0]);
                                     
+break;
+case 45:
+
+                                    this.$=[];
+                                    this.$.push($$[$0]);
+                                
 break;
 case 50:
 
@@ -294,6 +300,79 @@ case 51:
 
                                 this.$=new Asignacion($$[$0-2],$$[$0],0);
                                 
+break;
+case 52:
+
+                                                                    this.$=new Selecciona($$[$0-5],$$[$0-2],$$[$0-1]);
+                                                                    
+break;
+case 53:
+
+                                                            this.$=new Selecciona($$[$0-4],$$[$0-1],null);
+                                                        
+break;
+case 54:
+
+                                        this.$=$$[$0-1];
+                                        this.$.push($$[$0]);
+                                    
+break;
+case 55: case 80:
+
+                        this.$=[];
+                        this.$.push($$[$0]);
+                        
+break;
+case 56:
+
+                                        this.$=new Caso($$[$0-2],$$[$0]);
+                                        
+break;
+case 57:
+
+                                        this.$=new Caso(null,$$[$0]);
+                                        
+break;
+case 64:
+
+                                                                                    //condicion,nodos,subifs,defecto
+                                                                                    this.$=new Si($$[$0-6],$$[$0-3],$$[$0-1],$$[$0]);
+                                                                                    
+break;
+case 65:
+
+                                                                    //condicion,nodos,subifs,defecto
+                                                                    this.$=new Si($$[$0-5],$$[$0-2],$$[$0],null);
+                                                                    
+break;
+case 66:
+
+                                                                //condicion,nodos,subifs,defecto
+                                                                this.$=new Si($$[$0-5],$$[$0-2],[],$$[$0]);
+                                                                
+break;
+case 67:
+
+                                                    //condicion,nodos,subifs,defecto
+                                                    this.$=new Si($$[$0-4],$$[$0-1],[],null);
+                                                    
+break;
+case 68:
+
+                                            this.$=new Subsi(null,$$[$0-1]);
+                                        
+break;
+case 69:
+
+                                                                            this.$=$$[$0-8];
+                                                                            this.$.push(new Subsi($$[$0-4],$$[$0-1]));
+                                                                            
+break;
+case 70:
+
+                                                            this.$=[];
+                                                            this.$.push(new Subsi($$[$0-4],$$[$0-1]));
+                                                            
 break;
 case 71:
 
@@ -325,12 +404,6 @@ case 79:
                                         this.$=$$[$0-1];
                                         this.$.push($$[$0]);
                                         
-break;
-case 80:
-
-                        this.$=[];
-                        this.$.push($$[$0]);
-                        
 break;
 case 88:
 this.$=PrimitiveType.INTEGER;

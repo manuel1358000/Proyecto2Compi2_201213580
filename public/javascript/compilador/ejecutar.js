@@ -98,8 +98,7 @@ function btn_compilar(){
     var ast=calculadora.parse(cm.getValue());
     cont_e=-1;
     cont_s=-1;
-    
-    var codigo3d=ejecutar(ast);
+    codigo3d=ejecutar(ast);
     codigo3d+=generaImpresion();
     codigo3d+=doubleString();
     codigo3d+=obtenerInt();

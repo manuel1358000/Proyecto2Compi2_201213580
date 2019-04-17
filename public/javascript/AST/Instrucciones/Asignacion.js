@@ -22,12 +22,10 @@ class Asignacion{
             respuesta.tipo=this.iniValue.getTipe(entorno);
         }   
         if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
-             
         }else{
             alert("Error semantico, asignacion erronea");
             respuesta=null;
         }
-
         return respuesta;
     }
     getTipe(entorno){
