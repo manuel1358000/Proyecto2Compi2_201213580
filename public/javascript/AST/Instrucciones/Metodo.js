@@ -69,7 +69,15 @@ class Metodo{
                 }
                 result.cadena+=temp;
             }else if(this.nodos[i] instanceof Si){
-                console.log("Es un if");
+                var ambi=this.ambitos+"/"+this.id;
+                this.nodos[i].ambito=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
+                if(result_temp!=null){
+                    result.cadena+="//EMPIEZA LA EJECUCION DE LA SENTENCIA IF";    
+                    result.cadena+=result_temp.cadena;
+                    result.cadena+="//TERMINA LA EJECUCION DE LA SENTENCIA IF";
+                }
             }else if(this.nodos[i] instanceof Selecciona){
                 console.log("Es un switch");
             }else{
