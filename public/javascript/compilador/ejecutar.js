@@ -83,6 +83,7 @@ function btn_3dcompilar(){
 }
 function btn_compilar(){
     cont_e=-1;
+    pool_salida=[];
     lista_temporales="var heap[];\nvar stack[];\nvar h=0;\nvar p=0;\n";
     //vamos a traer al activo del contenedor
     var elementoDiv=document.querySelector("#contenedor_pesta > div.active");

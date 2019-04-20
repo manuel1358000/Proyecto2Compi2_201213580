@@ -37,6 +37,7 @@
 "while"             return 'WHILE'
 "for"               return 'FOR'
 "default"           return 'DEFAULT'
+"break"             return 'BREAK'
 //simbolos del lenguaje
 "{"                   return '{'
 "}"                   return '}'
@@ -270,14 +271,27 @@ sentencias_metodo: variables ';'{$$=$1;}
                                     $$=[];
                                     $$.push($1);
                                     }
-                 | sentencia_while
-                 | sentencia_for
-                 | sentencia_dowhile
+                 | sentencia_while{
+                                    $$=[];
+                                    $$.push($1);
+                                    }
+                 | sentencia_for{
+                                $$=[];
+                                $$.push($1);
+                                }
+                 | sentencia_dowhile{
+                                    $$=[];
+                                    $$.push($1);
+                                    }
                  | sentencia_asignacion ';'{
                                             $$=[];
                                             $$.push($1);
-                                           };
-
+                                           }
+                 | sentencia_break ';'{
+                                    $$=[];
+                                    $$.push($1);
+                                };
+sentencia_break: BREAK{$$=new Detener($1);};
 sentencia_asignacion: ID '=' exp{
                                 $$=new Asignacion($1,$3,0);
                                 };
@@ -306,18 +320,24 @@ case_default: DEFAULT ':' cuerpo_metodo{
 //-------------------------------------------FIN SWITCH
 
 //-------------------------------------------SENTENCIA WHILE
-sentencia_while: WHILE '(' exp ')' '{' cuerpo_metodo '}';
+sentencia_while: WHILE '(' exp ')' '{' cuerpo_metodo '}'{$$=new Mientras($3,$6,true);};
 //-------------------------------------------FIN WHILE
 
 //-------------------------------------------SENTENCIA FOR
-sentencia_for:FOR '(' for_inicio ';' exp ';' exp ')' '{' cuerpo_metodo '}'
-            | FOR '(' for_inicio ':' exp ')' '{' cuerpo_metodo '}';
-for_inicio: variables
-            | sentencia_asignacion;
+sentencia_for:FOR '(' for_inicio ';' exp ';' exp ')' '{' cuerpo_metodo '}'{
+                                                                            //es un for normal  
+                                                                            //inicializado,condicion,aumento,nodos
+                                                                            $$=new Para($3,$5,$7,$9);
+                                                                            }
+            | FOR '(' for_inicio ':' exp ')' '{' cuerpo_metodo '}'{
+                                                                    //aqui se va a realizar el foreach
+                                                                    };
+for_inicio: variables{$$=$1;}
+            | sentencia_asignacion{$$=$1;};
 //-------------------------------------------FIN FOR 
 
 //-------------------------------------------SENTENCIA DOWHILE
-sentencia_dowhile: '{' cuerpo_metodo '}' DO WHILE '(' exp ')' ';';
+sentencia_dowhile: '{' cuerpo_metodo '}' DO WHILE '(' exp ')' ';'{$$=new Mientras($7,$2,false);};
 //-------------------------------------------FIN DOWHILE
 
 //--------------------------------------------SENTENCIA IF
