@@ -8,21 +8,46 @@ class Logica{
         this.tipoprimitivo=tipoprimitivo;
         this.linea=linea;
         this.columna=columna;
-        this.ambito="";
+        this.ambitos="";
     }
     getValue(entorno){
         if(this.unario){
-
+            var temp="";
+            this.exp1.ambitos=this.ambitos;
+            var result1=this.exp1.getValue(entorno);
+            var tipo1=this.exp1.getTipe(entorno);
+            var eti1=generarEtiqueta();
+            var etifalsa=generarSalto();
+            var etisalida=generarSalto();
+            if(this.operador=="!"){
+                var result=new Result();
+                if(tipo1=="BOOLEAN"){
+                    temp+=result1.cadena;
+                    temp+="if("+result1.u_etiqueta+"==0) goto "+etifalsa+";\n";
+                    temp+=eti1+"=0;\n";
+                    temp+="goto "+etisalida+";\n";
+                    temp+=etifalsa+":\n";
+                    temp+=eti1+"=1;\n";
+                    temp+=etisalida+":\n";
+                    result.cadena+=temp;
+                    result.u_etiqueta=eti1;
+                    this.tipoprimitivo=tipo1;
+                }else{
+                    alert("Error Semantico, La operacion unaria ! solo puede ser aplicada a boolean");
+                }
+                return result;
+            }else{  
+                console.log("Es algun otro operador unario");
+            }
         }else{
             if(this.exp1!=null&&this.exp2!=null){
-                this.exp1.ambito=this.ambito;
+                this.exp1.ambitos=this.ambitos;
                 var result1=this.exp1.getValue(entorno);
                 var tipo1=this.exp1.getTipe(entorno);
-                this.exp2.ambito=this.ambito;
+                this.exp2.ambitos=this.ambitos;
                 var result2=this.exp2.getValue(entorno);
                 var tipo2=this.exp2.getTipe(entorno);
                 var tipo=generarTipoLogica(tipo1,tipo2);
-                alert(tipo);
                 if(tipo!=null){
                     if(this.operador=="||"){
                         var salto_v=generarSalto();
@@ -77,6 +102,7 @@ class Logica{
                         result.cadena+="goto "+salto_s+";\n";
                         result.cadena+=salto_f+":\n";
                         result.cadena+=eti_aux+"=0;\n";
+                        result.cadena+=salto_s+":\n";
                         result.u_etiqueta=eti_aux;
                         this.tipoprimitivo=PrimitiveType.BOOLEAN;
                         return result;

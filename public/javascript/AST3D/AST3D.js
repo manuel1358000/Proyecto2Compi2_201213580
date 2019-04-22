@@ -401,7 +401,7 @@ function ejecutar3D(nodos){
                 //tenemos que evaluar la operacion y si es falsa vamos a mandar a llamar a la etiqueta que tenga.
                 //si es verdadera no se realiza nada
                 var temp_condicion=t_nodo.condicion.getValue(entorno3d);
-                if(temp_condicion==false){
+                if(temp_condicion==true){
                     var temp_sim=entorno3d.obtener(t_nodo.salto);
                     if(temp_sim!=null){
                         f=temp_sim.indice;

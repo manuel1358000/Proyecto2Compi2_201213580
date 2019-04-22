@@ -51,6 +51,8 @@
 //aritmeticas
 "*"                   return '*'
 "/"                   return '/'
+"++"                  return '++'
+"--"                  return '--'
 "-"                   return '-'
 "+"                   return '+'
 "pow"                 return 'POW'
@@ -82,6 +84,8 @@
 
 /* operator associations and precedence */
 
+
+%nonassoc '++' '--'
 %left '+' '-'
 %left '*' '/' '%'
 %left 'pow'
@@ -290,7 +294,27 @@ sentencias_metodo: variables ';'{$$=$1;}
                  | sentencia_break ';'{
                                     $$=[];
                                     $$.push($1);
-                                };
+                                }
+                 | sentencia_incre_decre{
+                                        $$=[];
+                                        $$.push($1);
+                                        };
+sentencia_incre_decre: ID '--' ';'{
+                                var temp=new Aritmetica(null,null,false,$1,null,Type.ID,0,0);
+                                $$=new Aritmetica(temp,null,true,null,"--",null,0,0);
+                                }
+                        | ID '++' ';'{
+                                    var temp=new Aritmetica(null,null,false,$1,null,Type.ID,0,0);
+                                    $$=new Aritmetica(temp,null,true,null,"++",null,0,0);
+                                }
+                        | '--' ID ';'{
+                                    var temp=new Aritmetica(null,null,false,$2,null,Type.ID,0,0);
+                                    $$=new Aritmetica(temp,null,true,null,"--",null,0,0);
+                                    }
+                        | '++' ID  ';'{
+                                    var temp=new Aritmetica(null,null,false,$2,null,Type.ID,0,0);
+                                    $$=new Aritmetica(temp,null,true,null,"++",null,0,0);
+                                    };
 sentencia_break: BREAK{$$=new Detener($1);};
 sentencia_asignacion: ID '=' exp{
                                 $$=new Asignacion($1,$3,0);
@@ -499,7 +523,23 @@ exp: '!' exp
                  }
     | '-' exp{
                 $$=new Aritmetica($2,null,true,null,"-",null,0,0);
-             }   
+             } 
+    | ID '--'{
+                var temp=new Aritmetica(null,null,false,$1,null,Type.ID,0,0);
+                $$=new Aritmetica(temp,null,true,null,"--",null,0,0);
+                }
+    | ID '++'{
+                var temp=new Aritmetica(null,null,false,$1,null,Type.ID,0,0);
+                $$=new Aritmetica(temp,null,true,null,"++",null,0,0);
+                }
+    | '--' ID {
+                var temp=new Aritmetica(null,null,false,$2,null,Type.ID,0,0);
+                $$=new Aritmetica(temp,null,true,null,"--",null,0,0);
+                }
+    | '++' ID  {
+                var temp=new Aritmetica(null,null,false,$2,null,Type.ID,0,0);
+                $$=new Aritmetica(temp,null,true,null,"++",null,0,0);
+                }
     | NUMBER
         {
             $$=new Aritmetica(null,null,false,Number(yytext),null,PrimitiveType.INTEGER,0,0);

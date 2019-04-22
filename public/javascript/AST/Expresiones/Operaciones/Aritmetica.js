@@ -12,19 +12,59 @@ class Aritmetica{
     }
     getValue(entorno){
         if(this.unario){
+            var temp="";
+            this.exp1.ambitos=this.ambitos;
             var result1=this.exp1.getValue(entorno);
             var tipo1=this.exp1.getTipe(entorno);
-            if(tipo1==PrimitiveType.INTEGER){
-                result1.cadena=result1.u_etiqueta+"=-"+result1.valor+";\n";
-                this.tipoprimitivo=tipo1;
-                return result1;
-            }else if(tipo1==PrimitiveType.DOUBLE){
-                result1.cadena=result1.u_etiqueta+"=-"+result1.valor+";\n";
-                this.tipoprimitivo=tipo1;
-                return result1;
-            }else{
-                console.log("Error semantico, en el tipo unario -");
-            }    
+            if(this.operador=="-"){
+                if(tipo1==PrimitiveType.INTEGER){
+                    result1.cadena=result1.u_etiqueta+"=-"+result1.valor+";\n";
+                    this.tipoprimitivo=tipo1;
+                    return result1;
+                }else if(tipo1==PrimitiveType.DOUBLE){
+                    result1.cadena=result1.u_etiqueta+"=-"+result1.valor+";\n";
+                    this.tipoprimitivo=tipo1;
+                    return result1;
+                }else{
+                    console.log("Error semantico, en el tipo unario -");
+                }
+            }else if(this.operador=="++"){
+                var result=new Result();
+                if(tipo1.toUpperCase()=="INTEGER"||tipo1.toUpperCase()=="DOUBLE"){
+                    temp+=result1.cadena;
+                    temp+=result1.u_etiqueta+"="+result1.u_etiqueta+"+1;\n";
+                    var sim=entorno.obtener(this.exp1.valor+"_"+this.ambitos);
+                    var temp1=generarEtiqueta();
+                    var simulado=generarEtiqueta();
+                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                    temp+=temp1+"=stack["+simulado+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
+                    temp+="heap["+temp1+"]="+result1.u_etiqueta+";\n";
+                    result.u_etiqueta=result1.u_etiqueta;
+                    result.cadena+=temp;
+                    this.tipoprimitivo=tipo1.toUpperCase();
+                }else{
+                    alert("Error Semantico, la operacion incrementar solo se puede realizar a integer y double");
+                }
+                return result;
+            }else if(this.operador=="--"){
+                var result=new Result();
+                if(tipo1.toUpperCase()=="INTEGER"||tipo1.toUpperCase()=="DOUBLE"){
+                    temp+=result1.cadena;
+                    temp+=result1.u_etiqueta+"="+result1.u_etiqueta+"-1;\n";
+                    var sim=entorno.obtener(this.exp1.valor+"_"+this.ambitos);
+                    var temp1=generarEtiqueta();
+                    var simulado=generarEtiqueta();
+                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                    temp+=temp1+"=stack["+simulado+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
+                    temp+="heap["+temp1+"]="+result1.u_etiqueta+";\n";
+                    result.u_etiqueta=temp1;
+                    result.cadena+=temp;
+                    this.tipoprimitivo=tipo1.toUpperCase();
+                }else{
+                    alert("Error Semantico, la operacion decrementar solo se puede realizar a integer y double");
+                }
+                return result;
+            }
         }else{
             if(this.exp1!=null&&this.exp2!=null){
                 this.exp1.ambitos=this.ambitos;
@@ -300,7 +340,6 @@ class Aritmetica{
                 }else if(this.tipoprimitivo=="ID"){
                     var result=new Result();
                     var temp="";
-                    console.log(this.valor+"_"+this.ambitos);
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     var temp1=generarEtiqueta();
                     var simulado=generarEtiqueta();

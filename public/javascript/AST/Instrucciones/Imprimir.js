@@ -11,8 +11,8 @@ class Imprimir{
         var result_aux=this.expresion.getValue(entorno);
         result_aux.tipo=this.expresion.getTipe(entorno);
         result.tipo=result_aux.tipo;
-        result.cadena=result_aux.cadena;
-        if(result.tipo=="STRING"){
+        result.cadena+=result_aux.cadena;
+        if(result.tipo.toUpperCase()=="STRING"){
             var armar="";
             armar+="//----------------------inicia impresion numero\n";
             armar+="p=p+2;//cambio de ambito real\n";
@@ -27,7 +27,7 @@ class Imprimir{
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//----------------------finaliza impresion numero\n";
             result.cadena+=armar;
-        }else if(result.tipo=="INTEGER"){
+        }else if(result.tipo.toUpperCase()=="INTEGER"){
             var armar="//--------------------inicia casteo entero a cadena\n";
             var puntero_simulado=generarEtiqueta();
             //se le setea el valor en el stack para cuando realize la llamada a la metodo
@@ -57,7 +57,7 @@ class Imprimir{
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion numero\n";
             result.cadena+=armar;
-        }else if(result.tipo=="DOUBLE"){
+        }else if(result.tipo.toUpperCase()=="DOUBLE"){
             var armar="//inicia el casteo de double a cadena\n";
             var puntero_simulado=generarEtiqueta();
             //se le setea el valor en el stack para cuando realize la llamada a la metodo
@@ -87,7 +87,7 @@ class Imprimir{
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion double\n";
             result.cadena+=armar;
-        }else if(result.tipo=="CHAR"){
+        }else if(result.tipo.toUpperCase()=="CHAR"){
             var armar="";
             var temp_result=generarString(result_aux.u_etiqueta,true,"CHAR");            
             armar+=temp_result.cadena;
@@ -104,7 +104,7 @@ class Imprimir{
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion char\n";
             result.cadena+=armar;
-        }else if(result.tipo=="BOOLEAN"){
+        }else if(result.tipo.toUpperCase()=="BOOLEAN"){
             var armar="";
             var temp_result=generarString(result_aux.u_etiqueta,true,"BOOLEAN");
             armar+=temp_result.cadena;
@@ -122,7 +122,7 @@ class Imprimir{
             armar+="//-------------------------finaliza impresion boolean\n";
             result.cadena+=armar;
         }else{
-            alert(result.tipo);
+            alert(result.tipo+"EL TIPO ES ");
         }
         return result;
     }
