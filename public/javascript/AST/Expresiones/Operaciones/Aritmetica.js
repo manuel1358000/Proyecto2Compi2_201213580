@@ -300,6 +300,7 @@ class Aritmetica{
                 }else if(this.tipoprimitivo=="ID"){
                     var result=new Result();
                     var temp="";
+                    console.log(this.valor+"_"+this.ambitos);
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     var temp1=generarEtiqueta();
                     var simulado=generarEtiqueta();

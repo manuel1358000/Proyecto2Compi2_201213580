@@ -8,6 +8,7 @@ class Subsi{
         var result=new Result();
         var local=new Entorno(entorno);
         var temp="";
+        this.u_etiqueta=false;
         if(this.condicion!=null){
             this.condicion.ambitos=this.ambitos;
             var result_condicion=this.condicion.getValue(entorno);
@@ -64,10 +65,10 @@ class Subsi{
                         //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
                         if(result_temp!=null){  
                             temp+=result_temp.cadena;
+                            this.u_etiqueta=result_temp.u_etiqueta;
                         }
                     }else if(this.nodos[i] instanceof Selecciona){
-                        var ambi=this.ambitos+"/"+this.id;
-                        console.log(ambi+" Seleccion raro");
+                        var ambi=this.ambitos;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -75,12 +76,11 @@ class Subsi{
                             temp+=result_temp.cadena;
                         }
                     }else if(this.nodos[i] instanceof Asignacion){
-                        var ambi=this.ambitos+"/"+this.id;
-                        console.log("revisar esto "+ambi);
+                        var ambi=this.ambitos;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         if(result_temp!=null){
-                            result.cadena+=result_temp.cadena;
+                            temp+=result_temp.cadena;
                             temp+="//empieza la asignacion variable local\n";
                             var temph=generarEtiqueta();
                             temp+=temph+"=h;\n";
@@ -98,9 +98,12 @@ class Subsi{
                         if(pool_salida.length>0){
                             temp+="//inicia detener -----------------------------\n";
                             var temp_salida=pool_salida.pop();
+                            pool_salida.push(temp_salida);
+                            this.u_etiqueta=true;
                             temp+="goto "+temp_salida+";\n";
                             temp+="//finaliza detener -----------------------------\n";
                         }else{
+                            console.log("tam pool "+pool_salida.length);
                             alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
                         }
                     }
@@ -109,6 +112,8 @@ class Subsi{
                 alert("Error Semantico, La condicion de un else if debe de ser boolean");
             }
         }else{
+            //esta entrando al ELSE
+            alert("ESTA ENTRANDO AL ELSE");
             //entonces es un else
             //primer pasada para cargar todas las variables
             cargarSimbolosif(this.nodos,local,this.ambitos);    
@@ -157,10 +162,10 @@ class Subsi{
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
                     if(result_temp!=null){  
                         temp+=result_temp.cadena;
+                        this.u_etiqueta=result_temp.u_etiqueta;
                     }
                 }else if(this.nodos[i] instanceof Selecciona){
-                    var ambi=this.ambitos+"/"+this.id;
-                    console.log(ambi+" Seleccion raro");
+                    var ambi=this.ambitos;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -168,12 +173,11 @@ class Subsi{
                         temp+=result_temp.cadena;
                     }
                 }else if(this.nodos[i] instanceof Asignacion){
-                    var ambi=this.ambitos+"/"+this.id;
-                    console.log("revisar esto "+ambi);
+                    var ambi=this.ambitos;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
-                        result.cadena+=result_temp.cadena;
+                        temp+=result_temp.cadena;
                         temp+="//empieza la asignacion variable local\n";
                         var temph=generarEtiqueta();
                         temp+=temph+"=h;\n";
@@ -184,17 +188,19 @@ class Subsi{
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin asignacion variable local\n";
-                    }else{
-                       
+                    }else{  
                     }
                 }else if(this.nodos[i] instanceof Detener){
                     if(pool_salida.length>0){
                         temp+="//inicia detener -----------------------------\n";
                         var temp_salida=pool_salida.pop();
+                        pool_salida.push(temp_salida);
+                        this.u_etiqueta=true;
                         temp+="goto "+temp_salida+";\n";
                         temp+="//finaliza detener -----------------------------\n";
                     }else{
                         alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
+                        console.log("tam pool "+pool_salida.length);
                     }
                 }
             }

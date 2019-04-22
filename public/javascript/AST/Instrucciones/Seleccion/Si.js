@@ -11,6 +11,7 @@ class Si{
         var temp="";
         var local=new Entorno(entorno);
         var result=new Result();
+        this.u_etiqueta=false;
         //vamos a evaluar la condicion del if principal
         this.condicion.ambitos=this.ambitos;
         var result_condi=this.condicion.getValue(entorno);
@@ -99,8 +100,7 @@ class Si{
                             temp+=result_temp.cadena;
                         }
                     }else if(this.nodos[i] instanceof Asignacion){
-                        var ambi=this.ambitos+"/"+this.id;
-                        console.log("revisar esto "+ambi);
+                        var ambi=this.ambitos;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         if(result_temp!=null){
@@ -122,10 +122,13 @@ class Si{
                         if(pool_salida.length>0){
                             temp+="//INICIA DETENER-------------------------\n";
                             var temp_salida=pool_salida.pop();
+                            pool_salida.push(temp_salida);
+                            this.u_etiqueta=true;
                             temp+="goto "+temp_salida+";\n";
                             temp+="//FINALIZA DETENER-------------------------\n";
                         }else{
                             alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
+                            console.log("tam pool "+pool_salida.length);
                         }
                     }
                 }
@@ -151,6 +154,11 @@ class Si{
             
         }
         if(this.defecto!=null){
+            if(condi){
+                temp+=etif+":\n";
+            }
+            condi=false;
+            var localif=new Entorno(entorno);
             this.defecto.ambitos=this.ambitos;
             var result_temp=this.defecto.execute(localif);
             if(result_temp!=null){

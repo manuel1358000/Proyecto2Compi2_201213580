@@ -10,6 +10,7 @@ class Caso{
         var temp_salida="";
         var result=new Result();
         var local=new Entorno(entorno);
+        this.u_etiqueta=false;
         //cargamos todas las variables locales a la tabla de simbolos
         cargarSimbolosif(this.nodos,local,this.ambitos); 
         //vamos a recorrer todos los nodos que estan dentro de el caso del switch
@@ -54,25 +55,30 @@ class Caso{
             }else if(this.nodos[i] instanceof Detener){
                 if(pool_salida.length>0){
                     var temp_salida=pool_salida.pop();
-                    temp="goto "+temp_salida+";\n";
+                    pool_salida.push(temp_salida);
+                    temp+="//------------------------------------------DETENER\n";
+                    temp+="goto "+temp_salida+";\n";
+                    temp+="//------------------------------------------DETENER\n";
+                    this.u_etiqueta=true;
                 }else{
                     alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
+                    console.log("tam pool "+pool_salida.length);
                 }
             }else if(this.nodos[i] instanceof Si){
                 var ambi=this.ambitos;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
+                this.u_etiqueta=result_temp.u_etiqueta;
                 if(result_temp!=null){  
                     temp+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Asignacion){
-                var ambi=this.ambitos+"/"+this.id;
-                console.log("revisar esto "+ambi);
+                var ambi=this.ambitos;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 if(result_temp!=null){
-                    result.cadena+=result_temp.cadena;
+                    temp+=result_temp.cadena;
                     temp+="//empieza la asignacion variable local\n";
                     var temph=generarEtiqueta();
                     temp+=temph+"=h;\n";

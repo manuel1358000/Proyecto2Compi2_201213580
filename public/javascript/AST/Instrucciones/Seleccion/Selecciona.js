@@ -19,20 +19,23 @@ class Selecciona{
             pool_salida.push(etisalida);
             if(this.lista_cases.length>0){
                 //aqui vamos a evaluar cada una de las condiciones
-                
+                var control_breakes_continuos=true;
                 for(var i=0;i<this.lista_cases.length;i++){
                     this.lista_cases[i].condicion.ambitos=this.ambitos;
                     var result_case=this.lista_cases[i].condicion.getValue(entorno);
                     var case_tipe=this.lista_cases[i].condicion.getTipe(entorno);
                     if(tipo_condi==case_tipe){
                         var etif=generarSalto();
-                        temp+=result_condi.cadena;
-                        temp+=result_case.cadena;
-                        temp+="if("+result_condi.u_etiqueta+"!="+result_case.u_etiqueta+") goto "+etif+";\n";
+                        if(control_breakes_continuos){
+                            temp+=result_condi.cadena;
+                            temp+=result_case.cadena;
+                            temp+="if("+result_condi.u_etiqueta+"!="+result_case.u_etiqueta+") goto "+etif+";\n";
+                        }
                         var result_case2=this.lista_cases[i].execute(entorno);
                         if(result_case2!=null){
                             temp+=result_case2.cadena;
                             temp+=etif+":\n";
+                            control_breakes_continuos=result_case2.u_etiqueta;
                         }
                     }
                 }
@@ -51,6 +54,7 @@ class Selecciona{
         }else{
             alert("Error Semantico, en la condicion del switch, tiene que ser una operacion logica o relacional");
         }
+        pool_salida.pop()
         result.cadena+=temp;
         return result;
     }

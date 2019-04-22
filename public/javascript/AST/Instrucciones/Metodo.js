@@ -53,7 +53,7 @@ class Metodo{
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 if(result_temp!=null){
-                    result.cadena+=result_temp.cadena;
+                    temp+=result_temp.cadena;
                     var temp="//empieza la asignacion variable local\n";
                     var temph=generarEtiqueta();
                     temp+=temph+"=h;\n";
@@ -78,7 +78,6 @@ class Metodo{
                 }
             }else if(this.nodos[i] instanceof Selecciona){
                 var ambi=this.ambitos+"/"+this.id;
-                var ambi=this.ambitos+"/"+this.id;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -86,7 +85,12 @@ class Metodo{
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Mientras){
-                alert("Es un mientras");
+                var ambi=this.ambitos+"/"+this.id;
+                this.nodos[i].ambitos=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                if(result_temp!=null){  
+                    result.cadena+=result_temp.cadena;
+                }
             }else if(this.nodos[i] instanceof Para){
                 alert("Es un para");
             }else{
