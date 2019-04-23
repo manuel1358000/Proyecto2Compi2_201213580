@@ -351,7 +351,7 @@ sentencia_while: WHILE '(' exp ')' '{' cuerpo_metodo '}'{$$=new Mientras($3,$6,t
 sentencia_for:FOR '(' for_inicio ';' exp ';' exp ')' '{' cuerpo_metodo '}'{
                                                                             //es un for normal  
                                                                             //inicializado,condicion,aumento,nodos
-                                                                            $$=new Para($3,$5,$7,$9);
+                                                                            $$=new Para($3,$5,$7,$10,true);
                                                                             }
             | FOR '(' for_inicio ':' exp ')' '{' cuerpo_metodo '}'{
                                                                     //aqui se va a realizar el foreach

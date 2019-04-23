@@ -100,6 +100,17 @@ class Caso{
                 if(result_temp!=null){  
                     temp+=result_temp.cadena;
                 }
+            }else if(this.nodos[i] instanceof Aritmetica){
+                if(this.nodos[i].unario){
+                    var ambi=this.ambitos;
+                    this.nodos[i].ambitos=ambi;
+                    var result_temp=this.nodos[i].getValue(entorno);
+                    if(result_temp!=null){  
+                        temp+=result_temp.cadena;
+                    }   
+                }else{
+                    alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
+                }
             }
         }
         result.cadena+=temp;

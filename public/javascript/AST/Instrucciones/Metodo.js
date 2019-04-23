@@ -91,13 +91,6 @@ class Metodo{
                 if(result_temp!=null){  
                     result.cadena+=result_temp.cadena;
                 }
-            }else if(this.nodos[i] instanceof Para){
-                var ambi=this.ambitos+"/"+this.id;
-                this.nodos[i].ambitos=ambi;
-                var result_temp=this.nodos[i].execute(entorno);
-                if(result_temp!=null){  
-                    result.cadena+=result_temp.cadena;
-                }
             }else if(this.nodos[i] instanceof Aritmetica){
                 if(this.nodos[i].unario){
                     var ambi=this.ambitos+"/"+this.id;
@@ -108,6 +101,13 @@ class Metodo{
                     }   
                 }else{
                     alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
+                }
+            }else if(this.nodos[i] instanceof Para){
+                var ambi=this.ambitos+"/"+this.id;
+                this.nodos[i].ambitos=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                if(result_temp!=null){  
+                    result.cadena+=result_temp.cadena;
                 }
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo

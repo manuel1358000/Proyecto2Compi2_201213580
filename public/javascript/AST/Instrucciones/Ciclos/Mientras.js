@@ -123,6 +123,24 @@ class Mientras{
                             }else{
                                 alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
                             }
+                        }else if(this.nodos[i] instanceof Aritmetica){
+                            if(this.nodos[i].unario){
+                                var ambi=this.ambitos;
+                                this.nodos[i].ambitos=ambi;
+                                var result_temp=this.nodos[i].getValue(local);
+                                if(result_temp!=null){  
+                                    temp+=result_temp.cadena;
+                                }   
+                            }else{
+                                alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
+                            }
+                        }else if(this.nodos[i] instanceof Para){
+                            var ambi=this.ambitos;
+                            this.nodos[i].ambitos=ambi;
+                            var result_temp=this.nodos[i].execute(local);
+                            if(result_temp!=null){  
+                                result.cadena+=result_temp.cadena;
+                            }
                         }
                     }
                     temp+="goto "+etiinicio+";\n";
@@ -237,6 +255,24 @@ class Mientras{
                         temp+="//FINALIZA DETENER-------------------------\n";
                     }else{
                         alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
+                    }
+                }else if(this.nodos[i] instanceof Aritmetica){
+                    if(this.nodos[i].unario){
+                        var ambi=this.ambitos;
+                        this.nodos[i].ambitos=ambi;
+                        var result_temp=this.nodos[i].getValue(local);
+                        if(result_temp!=null){  
+                            temp+=result_temp.cadena;
+                        }   
+                    }else{
+                        alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
+                    }
+                }else if(this.nodos[i] instanceof Para){
+                    var ambi=this.ambitos;
+                    this.nodos[i].ambitos=ambi;
+                    var result_temp=this.nodos[i].execute(local);
+                    if(result_temp!=null){  
+                        result.cadena+=result_temp.cadena;
                     }
                 }
             }

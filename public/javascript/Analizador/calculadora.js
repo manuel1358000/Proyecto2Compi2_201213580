@@ -379,7 +379,7 @@ case 66:
 
                                                                             //es un for normal  
                                                                             //inicializado,condicion,aumento,nodos
-                                                                            this.$=new Para($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-2]);
+                                                                            this.$=new Para($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-1],true);
                                                                             
 break;
 case 67:
