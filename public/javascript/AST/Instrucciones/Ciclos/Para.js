@@ -34,7 +34,6 @@ class Para{
                 temp+=simulado+"=p+"+sim.posRel+";\n";
                 temp+="stack["+simulado+"]="+temph+";\n";
                 temp+="//fin asignacion variable local\n";
-                
             }else{               
             }
             var eti_regresa=generarSalto();

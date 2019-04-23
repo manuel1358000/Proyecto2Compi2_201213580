@@ -17,9 +17,11 @@
         <!--Se definen las estructuras auxiliares,heap, stack-->
         <script src="/javascript/AST/Auxiliares/Estructurasaux.js"></script>
         <script src="/javascript/AST/Auxiliares/Errores.js"></script>
-        
+        <!--Modulo AWS DynamoDB-->
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+        <script src="/javascript/Conexiondinamo.js"></script>
         <!--Modulo que Controla el ast-->
-        
+        <script src="/javascript/AST/Expresiones/Operaciones/Ternario.js"></script>
         <script src="/javascript/AST/Expresiones/Operaciones/Aritmetica.js"></script>
         <script src="/javascript/AST/Expresiones/Operaciones/Relacional.js"></script>
         <script src="/javascript/AST/Expresiones/Operaciones/Logica.js"></script>
@@ -154,7 +156,7 @@
                               REPORTES
                            </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="#" id="id_reporteerrores">REPORTE ERRORES</a>
+                              <a class="dropdown-item" href="#" id="id_reporteerrores" onclick="createReporte();">CREARTABLA</a>
                               <a class="dropdown-item" href="#" id="id_reportets">REPORTE TABLA DE SIMBOLOS</a>
                               <a class="dropdown-item" href="#" id="id_generarast">GENERAR AST</a>
                               <a class="dropdown-item" href="https://drive.google.com/drive/folders/1zVaOLjs2_Ffqo00BwGmCfJJvyRvSnMDy" target="_blank" id="idejemplos">ARCHIVOS EJEMPLO</a>

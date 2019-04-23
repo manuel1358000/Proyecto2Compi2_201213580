@@ -82,6 +82,7 @@ function btn_3dcompilar(){
     alert("Finalizo el analisis");
 }
 function btn_compilar(){
+    deleteReporte();
     cont_e=-1;
     pool_salida=[];
     lista_temporales="var heap[];\nvar stack[];\nvar h=0;\nvar p=0;\n";

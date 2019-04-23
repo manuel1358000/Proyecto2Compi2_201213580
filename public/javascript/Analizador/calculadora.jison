@@ -58,6 +58,7 @@
 "pow"                 return 'POW'
 "!="                  return '!='
 "%"                   return '%'
+"?"                   return '?'
 //relacionales
 "<="                  return '<='
 ">="                  return '>='
@@ -84,7 +85,7 @@
 
 /* operator associations and precedence */
 
-
+%left '?'
 %nonassoc '++' '--'
 %left '+' '-'
 %left '*' '/' '%'
@@ -567,4 +568,7 @@ exp: '!' exp
     | ID{
             $$=new Aritmetica(null,null,false,yytext,null,Type.ID,0,0);
         }
+    | sentencia_ternario
     ;
+
+sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};

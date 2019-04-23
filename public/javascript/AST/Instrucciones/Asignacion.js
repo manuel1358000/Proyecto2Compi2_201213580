@@ -20,10 +20,12 @@ class Asignacion{
             this.iniValue.ambitos=this.ambitos;
             respuesta=this.iniValue.getValue(entorno);
             respuesta.tipo=this.iniValue.getTipe(entorno);
+        }else if(this.iniValue instanceof Ternario) {
+            alert("Asignacion ternaria");
         }   
         if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
         }else{
-            alert("Error semantico, asignacion erronea");
+            alert("Error semantico, asignacion erronea por tipos");
             respuesta=null;
         }
         return respuesta;
