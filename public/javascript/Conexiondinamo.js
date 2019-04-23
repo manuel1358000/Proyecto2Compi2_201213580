@@ -45,3 +45,7 @@ function deleteReporte() {
         }
     });
 }
+function agregarRegistro(){
+
+    
+}
