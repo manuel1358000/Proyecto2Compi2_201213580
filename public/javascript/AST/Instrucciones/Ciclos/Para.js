@@ -13,12 +13,18 @@ class Para{
         var result=new Result();
         var temp="";
         if(this.tipo){
-            this.inicializado.ambitos=this.ambitos;
-            var result_inicializado=this.inicializado.execute(entorno);
-            this.condicion.ambitos=this.ambitos;
-            var result_condicion=this.condicion.getValue(entorno);
-            this.aumento.ambitos=this.ambitos;
-            var result_aumento=this.aumento.getValue(entorno);
+            cargarSimbolosif(this.nodos,local,this.ambitos);
+            var result_inicializado=null;
+            if(this.inicializado.length>0){
+                var ambi=this.ambitos;
+                cargarSimbolosif(this.inicializado,entorno,this.ambitos);
+                this.inicializado=this.inicializado[0];
+                this.inicializado.ambitos=this.ambitos;
+                result_inicializado=this.inicializado.execute(local);
+            }else{
+                this.inicializado.ambitos=this.ambitos;
+                result_inicializado=this.inicializado.execute(local);
+            }
             var eti_salida=generarSalto();
             pool_salida.push(eti_salida);
             //ASIGNACION INICIA
@@ -36,6 +42,10 @@ class Para{
                 temp+="//fin asignacion variable local\n";
             }else{               
             }
+            this.condicion.ambitos=this.ambitos;
+            var result_condicion=this.condicion.getValue(local);
+            this.aumento.ambitos=this.ambitos;
+            var result_aumento=this.aumento.getValue(local);
             var eti_regresa=generarSalto();
             temp+=eti_regresa+":\n";
             if(result_condicion!=null){

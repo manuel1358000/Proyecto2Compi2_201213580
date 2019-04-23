@@ -17,6 +17,7 @@ class Mientras{
         if(this.tipo){
             if(result_condi!=null){
                 if(tipo_condi=="BOOLEAN"){
+                    cargarSimbolosif(this.nodos,local,this.ambitos);
                     temp+=etiinicio+":\n";
                     temp+=result_condi.cadena;
                     temp+="if("+result_condi.u_etiqueta+"==0) goto "+etisalida+";\n";
