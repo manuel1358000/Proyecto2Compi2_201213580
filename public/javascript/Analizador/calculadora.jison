@@ -353,7 +353,7 @@ elementos_this: elementos_this '.'  elemento_this
 
 elemento_this: ID
             | ID '(' lista_valores ')'
-            | ID '(' ')'; //se deben de agregar llamadas a metodos;;
+            | ID '(' ')'{$$=new Llamada_Metodo();};
 
 //-------------------------------------------SENTENCIA SWITCH
 sentencia_switch: SWITCH '(' exp ')' '{' listas_cases case_default '}'{

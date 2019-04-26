@@ -77,22 +77,31 @@ class Metodo{
                 var result_temp=this.nodos[i].execute(entorno);
                 result.cadena+=result_temp.cadena;
             }else if(this.nodos[i] instanceof Asignacion){
-                console.log("ESta pasando por aqui");
                 var ambi=this.ambitos;
-                this.nodos[i].ambitos=ambi;
+                var complemento="";
+                for(var f=0;f<this.parametros.length;f++){
+                    complemento+="_"+this.parametros[i].tipo;
+                }
+                this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
                 var result_temp=this.nodos[i].execute(entorno);
+                var temp="";
                 if(result_temp!=null){
-                    temp=result_temp.cadena;
-                    temp+="//empieza la asignacion variable local\n";
-                    var temph=generarEtiqueta();
-                    temp+=temph+"=h;\n";
-                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                    temp+="h=h+1;\n";
-                    var simulado=generarEtiqueta();
-                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
-                    temp+=simulado+"=p+"+sim.posRel+";\n";
-                    temp+="stack["+simulado+"]="+temph+";\n";
-                    temp+="//fin asignacion variable local\n";
+                    if(result_temp.tipo=="this"){
+                        temp+="//ACCESO A UN ELEMENTO DEL THIS\n";
+                        temp+="//FINALIZA ACCESO A UN ELEMENTO DEL THIS\n";
+                    }else{
+                        temp=result_temp.cadena;
+                        temp+="//empieza la asignacion variable local\n";
+                        var temph=generarEtiqueta();
+                        temp+=temph+"=h;\n";
+                        temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                        temp+="h=h+1;\n";
+                        var simulado=generarEtiqueta();
+                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                        temp+=simulado+"=p+"+sim.posRel+";\n";
+                        temp+="stack["+simulado+"]="+temph+";\n";
+                        temp+="//fin asignacion variable local\n";
+                    }
                 }else{
                    
                 }

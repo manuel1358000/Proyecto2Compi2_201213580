@@ -7,26 +7,34 @@ class Asignacion{
     }
     execute(entorno){
         var respuesta=null;
-        var tipo=this.getTipe(entorno);
-        if(this.iniValue instanceof Aritmetica){
-            this.iniValue.ambitos=this.ambitos;
-            respuesta=this.iniValue.getValue(entorno);
-            respuesta.tipo=this.iniValue.getTipe(entorno);
-        }else if(this.iniValue instanceof Relacional){
-            this.iniValue.ambitos=this.ambitos;
-            respuesta=this.iniValue.getValue(entorno);
-            respuesta.tipo=this.iniValue.getTipe(entorno);
-        }else if(this.iniValue instanceof Logica){
-            this.iniValue.ambitos=this.ambitos;
-            respuesta=this.iniValue.getValue(entorno);
-            respuesta.tipo=this.iniValue.getTipe(entorno);
-        }else if(this.iniValue instanceof Ternario) {
-            alert("Asignacion ternaria");
-        }   
-        if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
+        if(this.id instanceof Este){
+            respuesta=new Result();
+            respuesta.tipo="this";
+            var ambito_separado=this.ambitos.split('/');
+            this.id.ambitos=ambito_separado[0];
+            var result_this=this.id.execute(entorno);
         }else{
-            alert("Error semantico, asignacion erronea por tipos");
-            respuesta=null;
+            var tipo=this.getTipe(entorno);
+            if(this.iniValue instanceof Aritmetica){
+                this.iniValue.ambitos=this.ambitos;
+                respuesta=this.iniValue.getValue(entorno);
+                respuesta.tipo=this.iniValue.getTipe(entorno);
+            }else if(this.iniValue instanceof Relacional){
+                this.iniValue.ambitos=this.ambitos;
+                respuesta=this.iniValue.getValue(entorno);
+                respuesta.tipo=this.iniValue.getTipe(entorno);
+            }else if(this.iniValue instanceof Logica){
+                this.iniValue.ambitos=this.ambitos;
+                respuesta=this.iniValue.getValue(entorno);
+                respuesta.tipo=this.iniValue.getTipe(entorno);
+            }else if(this.iniValue instanceof Ternario) {
+                alert("Asignacion ternaria");
+            }   
+            if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
+            }else{
+                alert("Error semantico, asignacion erronea por tipos");
+                respuesta=null;
+            }
         }
         return respuesta;
     }
