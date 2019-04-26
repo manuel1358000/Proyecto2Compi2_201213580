@@ -124,6 +124,13 @@ class Mientras{
                             }else{
                                 alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
                             }
+                        }else if(this.nodos[i] instanceof Mientras){
+                            var ambi=this.ambitos+"/"+this.id;
+                            this.nodos[i].ambitos=ambi;
+                            var result_temp=this.nodos[i].execute(entorno);
+                            if(result_temp!=null){  
+                                temp+=result_temp.cadena;
+                            }
                         }else if(this.nodos[i] instanceof Aritmetica){
                             if(this.nodos[i].unario){
                                 var ambi=this.ambitos;

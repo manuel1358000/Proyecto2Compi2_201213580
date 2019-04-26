@@ -12,7 +12,8 @@ class Declaracionclase{
             var nodo=this.nodos[i];
             if(nodo instanceof Declaracion){
                 var result=nodo.execute(entorno);
-                if(result.tipo==nodo.tipo){
+                var tipo_result=nodo.getTipe(entorno);
+                if(tipo_result==nodo.tipo){
                     var temp="";
                     if(result.cadena!=null){
                         temp+=result.cadena;
@@ -34,28 +35,47 @@ class Declaracionclase{
                     temp+="//Finalizo la signacion \n";
                     //finalizado
                     variables_globales+=temp;
-                    }else{
-                        var c_error="No se puede generar el codigo 3d de la variable "+nodo.id+" Se le quiere asignar un valor "+result.tipo;
-                        var error=new Errores("SEMANTICO",c_error,0,0);
-                        agregarErrores(error);
-                    }
+                }else{
+                    var c_error="No se puede generar el codigo 3d de la variable "+nodo.id+" Se le quiere asignar un valor "+result.tipo;
+                    var error=new Errores("SEMANTICO",c_error,0,0);
+                    agregarErrores(error);
+                }
             }else if(nodo instanceof Metodo){
                 //metodos
-                nodo.ambitos=this.id;
-                var result=nodo.execute(entorno);
-                var temp="";
-                temp+="\n//INICIA LA CREACION DEL METODO\n";
-                temp+="proc " + nodo.id + " begin\n";
-                temp+=result.cadena;
-                temp+="\nend\n";
-                respuesta+=temp;
-            }else if(nodo instanceof Imprimir){
-                var result_imprimir=nodo.execute(entorno);
-                console.log("-----------------------imprimir ------------------------");
-                console.log(result_imprimir.cadena);
-                console.log("----------------------- fin imprimir -------------------");
-            }else{
+                if(this.id==nodo.id){
+                    var nombre_constructor=this.id+"_"+this.id;
+                    var val="";
+                    for(var j=0;j<nodo.parametros.length;j++){
+                        nodo.parametros[j].ambitos=this.id;
+                        nodo.parametros[j].execute(entorno);
+                        var tipo_parametro=nodo.parametros[j].getTipe(entorno);
+                        nombre_constructor+="_"+tipo_parametro;
+                        val+="_"+tipo_parametro;
+                    }
+                    nodo.ambitos=this.id+"/"+this.id+val;
+                    var result=nodo.execute(entorno);
+                    var temp="proc "+nombre_constructor+" begin\n";
+                    temp+="//AQUI TENGO QUE REVISAR QUE ESTA PASANDO--------------------------\n";
+                    temp+=result.cadena;
+                    temp+="end\n \n";
+                    respuesta+=temp;
+                }else{
+                    nodo.ambitos=this.id;
+                    var result=nodo.execute(entorno);
+                    var temp="";
+                    temp+="\n//INICIA LA CREACION DEL METODO\n";
+                    if(nodo.id=="main"){
+                        temp+="proc " +nodo.id + " begin\n";
+                    }else{
+                        temp+="proc " +this.id+"_"+nodo.id + " begin\n";
+                    }
+                    temp+=result.cadena;
+                    temp+="\nend\n";
+                    respuesta+=temp;
+                }
                 
+            }else{
+                alert("Es un valor cualquiera");
             }
 
         }

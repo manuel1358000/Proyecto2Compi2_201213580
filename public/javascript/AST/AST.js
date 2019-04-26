@@ -34,7 +34,7 @@ function ejecutar(nodoast,entorno){
     }
     for(var i=0;i<nodoast.length;i++){
         if(nodoast[i] instanceof Declaracionclase){
-            respuesta=nodoast[i].execute(entorno);
+            respuesta+=nodoast[i].execute(entorno);
         }else{
             alert("Instancias no validas, posiblemente son instancias de import");
         }
@@ -44,7 +44,7 @@ function ejecutar(nodoast,entorno){
     anidarErrores();
     return respuesta;
 }
-function cargarTablaSimbolos(nodoast,entorno,ambito,posicion){
+function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
     if(nodoast instanceof Declaracionclase){
         var id_instancia=nodoast.id+"_GLOBAL";
         var sim=new Simbolo(nodoast.id,Type.CLASE,"GLOBAL",Type.CLASE,-1,nodoast.gettamClase(),0,nodoast.getVisibilidad(),nodoast.modificadores);
@@ -53,14 +53,14 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion){
         entorno.agregar(id_instancia,sim);
         var posrel=0;
         for(var i=0;i<nodoast.nodos.length;i++){
-            cargarTablaSimbolos(nodoast.nodos[i],entorno,nodoast.id,posrel);
+            cargarTablaSimbolos(nodoast.nodos[i],entorno,nodoast.id,posrel,"VARIABLE_GLOBAL");
             if(nodoast.nodos[i] instanceof Declaracion){
                 posrel++;
             }
         }
     }else if(nodoast instanceof Declaracion){
         var id_instancia=nodoast.id+"_"+ambito;
-        var sim=new Simbolo(nodoast.id,nodoast.tipo,ambito,"VARIABLE",posicion,1,0,nodoast.getVisibilidad(),nodoast.modificadores);
+        var sim=new Simbolo(nodoast.id,nodoast.tipo,ambito,tipo,posicion,1,0,nodoast.getVisibilidad(),nodoast.modificadores);
         sim.inicializado=nodoast.inicializado;
         posicion++;
         entorno.agregar(id_instancia,sim);
@@ -70,8 +70,23 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion){
         var sim=new Simbolo(id_instancia,nodoast.tipo,ambito,"METODO",-1,nodoast.gettamMetodo(),0,nodoast.getVisibilidad(),nodoast.modificadores);
         entorno.agregar(id_instancia,sim);
         var posrel=0;
+        var retu_this=[];
+        retu_this.push(new Declaracion("return",PrimitiveType.VOID,null,[],0,0,0));
+        retu_this.push(new Declaracion("this",PrimitiveType.VOID,null,[],0,0,0));
+        for(var i=0;i<retu_this.length;i++){
+            cargarTablaSimbolos(retu_this[i],entorno,ambito_local,posrel,"VARIABLE");
+            if(retu_this[i] instanceof Declaracion){
+                posrel++;
+            }
+        }
+        for(var i=0;i<nodoast.parametros.length;i++){
+            cargarTablaSimbolos(nodoast.parametros[i],entorno,ambito_local,posrel,"PARAMETRO");
+            if(nodoast.parametros[i] instanceof Declaracion){
+                posrel++;
+            }
+        }
         for(var i=0;i<nodoast.nodos.length;i++){
-            cargarTablaSimbolos(nodoast.nodos[i],entorno,ambito_local,posrel);
+            cargarTablaSimbolos(nodoast.nodos[i],entorno,ambito_local,posrel,"VARIABLE");
             if(nodoast.nodos[i] instanceof Declaracion){
                 posrel++;
             }

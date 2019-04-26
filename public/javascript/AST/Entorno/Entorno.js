@@ -91,7 +91,8 @@ var PrimitiveType={
     STRING:"STRING",
     DOUBLE:"DOUBLE",
     BOOLEAN:"BOOLEAN",
-    CHAR:"CHAR"
+    CHAR:"CHAR",
+    VOID:"VOID"
 }
 
 var Type={

@@ -11,50 +11,79 @@ class Metodo{
         this.ambitos="";
     }
     execute(entorno){
+        //vamos a cargar los parametros a la tabla de simbolos
         //aqui queda pendiente
         var result=new Result();
         //tengo que crear el nuevo nodo
         for(var i=0;i<this.nodos.length;i++){
             if(this.nodos[i] instanceof Declaracion){
-                var ambi=this.ambitos+"/"+this.id;
+                var ambi="";
+                if(this.id=="main"){
+                    var ambi=this.ambitos+"/"+this.id;
+                    this.nodos[i].implicito=this.id;
+                }else{
+                    //ambi=this.ambitos+"/"+this.id;
+                    ambi=this.ambitos;
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[i].tipo;
+                    }
+                    this.nodos[i].implicito=this.ambitos+"_"+this.id+complemento;
+                }
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
-                if(result_temp!=null){
-                    result.cadena+=result_temp.cadena;
-                    var temp="//declaracion variable local\n";
-                    var temph=generarEtiqueta();
-                    temp+=temph+"=h;\n";
-                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                    temp+="h=h+1;\n";
-                    var simulado=generarEtiqueta();
-                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
-                    temp+=simulado+"=p+"+sim.posRel+";\n";
-                    temp+="stack["+simulado+"]="+temph+";\n";
-                    temp+="//fin declaracion variable local\n";
+                var tipo_result=this.nodos[i].getTipe(entorno);
+                var temp="";
+                if(!numerico(tipo_result)){
+                    temp+=result_temp.cadena;
                 }else{
-                    var temp="//declaracion variable local\n";
-                    var temph=generarEtiqueta();
-                    temp+=temph+"=h;\n";
-                    temp+="heap[h]=0;\n";
-                    temp+="h=h+1;\n";
-                    var simulado=generarEtiqueta();
-                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
-                    temp+=simulado+"=p+"+sim.posRel+";\n";
-                    temp+="stack["+simulado+"]="+temph+";\n";
-                    temp+="//fin declaracion variable local\n";
+                    if(result_temp!=null){
+                        temp+=result_temp.cadena;
+                        temp+="//declaracion variable local\n";
+                        var temph=generarEtiqueta();
+                        temp+=temph+"=h;\n";
+                        temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                        temp+="h=h+1;\n";
+                        var simulado=generarEtiqueta();
+                        alert(this.nodos[i].id+"_"+ambi);
+                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                        temp+=simulado+"=p+"+sim.posRel+";\n";
+                        temp+="stack["+simulado+"]="+temph+";\n";
+                        temp+="//fin declaracion variable local\n";
+                    }else{
+                        temp="//declaracion variable local\n";
+                        var temph=generarEtiqueta();
+                        temp+=temph+"=h;\n";
+                        temp+="heap[h]=0;\n";
+                        temp+="h=h+1;\n";
+                        var simulado=generarEtiqueta();
+                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                        temp+=simulado+"=p+"+sim.posRel+";\n";
+                        temp+="stack["+simulado+"]="+temph+";\n";
+                        temp+="//fin declaracion variable local\n";
+                    }
                 }
                 result.cadena+=temp;
             }else if(this.nodos[i] instanceof Imprimir){
-                this.nodos[i].ambitos=this.ambitos+"/"+this.id;
+                var armar_elemento=this.id;
+                for(var f=0;f<this.parametros.length;f++){
+                    var tipo_param=this.parametros[f].tipo;
+                    armar_elemento+="_"+tipo_param;
+                }
+
+                var result_tamanio_salto=entorno.obtener(armar_elemento);
+                this.nodos[i].tam=result_tamanio_salto.tamanio;
+                this.nodos[i].ambitos=this.ambitos;
                 var result_temp=this.nodos[i].execute(entorno);
                 result.cadena+=result_temp.cadena;
             }else if(this.nodos[i] instanceof Asignacion){
-                var ambi=this.ambitos+"/"+this.id;
+                console.log("ESta pasando por aqui");
+                var ambi=this.ambitos;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 if(result_temp!=null){
-                    temp+=result_temp.cadena;
-                    var temp="//empieza la asignacion variable local\n";
+                    temp=result_temp.cadena;
+                    temp+="//empieza la asignacion variable local\n";
                     var temph=generarEtiqueta();
                     temp+=temph+"=h;\n";
                     temp+="heap[h]="+result_temp.u_etiqueta+";\n";
@@ -69,7 +98,7 @@ class Metodo{
                 }
                 result.cadena+=temp;
             }else if(this.nodos[i] instanceof Si){
-                var ambi=this.ambitos+"/"+this.id;
+                var ambi=this.ambitos;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -77,7 +106,7 @@ class Metodo{
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Selecciona){
-                var ambi=this.ambitos+"/"+this.id;
+                var ambi=this.ambitos;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -85,7 +114,7 @@ class Metodo{
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Mientras){
-                var ambi=this.ambitos+"/"+this.id;
+                var ambi=this.ambitos;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 if(result_temp!=null){  
@@ -93,7 +122,7 @@ class Metodo{
                 }
             }else if(this.nodos[i] instanceof Aritmetica){
                 if(this.nodos[i].unario){
-                    var ambi=this.ambitos+"/"+this.id;
+                    var ambi=this.ambitos;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].getValue(entorno);
                     if(result_temp!=null){  
@@ -103,7 +132,7 @@ class Metodo{
                     alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
                 }
             }else if(this.nodos[i] instanceof Para){
-                var ambi=this.ambitos+"/"+this.id;
+                var ambi=this.ambitos;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 if(result_temp!=null){  
@@ -114,6 +143,7 @@ class Metodo{
                 console.log("Es otra instancia");
             }
         }
+        result.cadena+="//AQUI TENEMOS QUE VERIFICAR LA ASIGNACION\n";
         return result;
     }
 
@@ -149,7 +179,7 @@ class Metodo{
         return respuesta;
     }
     gettamMetodo(){
-        var tam=0;
+        var tam=2+this.parametros.length;
         for(var i=0;i<this.nodos.length;i++){
             if(this.nodos[i] instanceof Declaracion){
                 tam++;

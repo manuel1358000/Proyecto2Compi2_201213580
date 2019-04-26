@@ -28,6 +28,8 @@
 "import"            return 'IMPORT'
 "println"           return 'PRINTLN'
 "print"             return 'PRINT'
+"new"               return 'NEW'
+"this"              return 'THIS'
 //sentencias control
 "if"                return 'IF'
 "else"              return 'ELSE'
@@ -39,6 +41,7 @@
 "default"           return 'DEFAULT'
 "break"             return 'BREAK'
 //simbolos del lenguaje
+"."                   return '.'
 "{"                   return '{'
 "}"                   return '}'
 ","                   return ','
@@ -209,15 +212,35 @@ variables: tipo lista_id {
                                     $2[($2.length-1)].iniValue=$4;
                                     $$=$2;
                                     }
-         | ID lista_id '=' exp{ 
-                                    //DECLARACION ASIGNACION DE UN OBJETO
-                                    //aca queda normal, en la parte de expresiones tenemos que agregar las declaracion new objeto();
-                                    for(var i=0;i<$2.length;i++){
-                                        $2[i].tipo=$1;
+         | ID lista_id '=' NEW ID '(' ')'{ 
+                                            for(var i=0;i<$2.length;i++){
+                                                            $2[i].tipo=$1; 
+                                            }
+                                            $2[($2.length-1)].iniValue=$4;
+                                            $2[($2.length-1)].lista_valores=[];
+                                            $2[($2.length-1)].inicializado=true;
+                                            $$=$2;
+                                         }
+         | ID lista_id '=' NEW ID '(' lista_valores ')'{ 
+                                                        for(var i=0;i<$2.length;i++){
+                                                            $2[i].tipo=$1; 
+                                                        }
+                                                        $2[($2.length-1)].iniValue=$4;
+                                                        $2[($2.length-1)].lista_valores=$7;
+                                                        $2[($2.length-1)].inicializado=true;
+                                                        $$=$2;
+                                                    };
+
+
+
+lista_valores: lista_valores ',' exp{
+                                    $$=$1;
+                                    $$.push($3);
                                     }
-                                    $2[($2.length-1)].iniValue=$4;
-                                    $$=$2;
-                                    };
+                | exp{
+                    $$=[];
+                    $$.push($1);
+                };
 
 lista_id: lista_id ',' ID{
                         $$=$1;
@@ -319,7 +342,18 @@ sentencia_incre_decre: ID '--' ';'{
 sentencia_break: BREAK{$$=new Detener($1);};
 sentencia_asignacion: ID '=' exp{
                                 $$=new Asignacion($1,$3,0);
-                                };
+                                }
+                    | THIS '.' elementos_this '=' exp{
+                                                    //id,iniValue,dimensiones
+                                                    var temp_this=new Este($3);
+                                                    $$=new Asignacion(temp_this,$5,0);
+                                                    };
+elementos_this: elementos_this '.'  elemento_this
+               | elemento_this;
+
+elemento_this: ID
+            | ID '(' lista_valores ')'
+            | ID '(' ')'; //se deben de agregar llamadas a metodos;;
 
 //-------------------------------------------SENTENCIA SWITCH
 sentencia_switch: SWITCH '(' exp ')' '{' listas_cases case_default '}'{
@@ -568,7 +602,7 @@ exp: '!' exp
     | ID{
             $$=new Aritmetica(null,null,false,yytext,null,Type.ID,0,0);
         }
-    | sentencia_ternario
-    ;
+    | sentencia_ternario{$$=$1;};
+
 
 sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};

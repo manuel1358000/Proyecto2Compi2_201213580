@@ -106,6 +106,13 @@ class Subsi{
                             console.log("tam pool "+pool_salida.length);
                             alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
                         }
+                    }else if(this.nodos[i] instanceof Mientras){
+                        var ambi=this.ambitos+"/"+this.id;
+                        this.nodos[i].ambitos=ambi;
+                        var result_temp=this.nodos[i].execute(entorno);
+                        if(result_temp!=null){  
+                            temp+=result_temp.cadena;
+                        }
                     }else if(this.nodos[i] instanceof Aritmetica){
                         if(this.nodos[i].unario){
                             var ambi=this.ambitos;
@@ -122,7 +129,7 @@ class Subsi{
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         if(result_temp!=null){  
-                            result.cadena+=result_temp.cadena;
+                            temp+=result_temp.cadena;
                         }
                     }
                 }
@@ -131,7 +138,6 @@ class Subsi{
             }
         }else{
             //esta entrando al ELSE
-            alert("ESTA ENTRANDO AL ELSE");
             //entonces es un else
             //primer pasada para cargar todas las variables
             cargarSimbolosif(this.nodos,local,this.ambitos);    
@@ -220,6 +226,13 @@ class Subsi{
                         alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
                         console.log("tam pool "+pool_salida.length);
                     }
+                }else if(this.nodos[i] instanceof Mientras){
+                    var ambi=this.ambitos+"/"+this.id;
+                    this.nodos[i].ambitos=ambi;
+                    var result_temp=this.nodos[i].execute(entorno);
+                    if(result_temp!=null){  
+                        temp+=result_temp.cadena;
+                    }
                 }else if(this.nodos[i] instanceof Aritmetica){
                     if(this.nodos[i].unario){
                         var ambi=this.ambitos;
@@ -236,7 +249,7 @@ class Subsi{
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){  
-                        result.cadena+=result_temp.cadena;
+                        temp+=result_temp.cadena;
                     }
                 }
             }

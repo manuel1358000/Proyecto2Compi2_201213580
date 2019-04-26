@@ -11,7 +11,7 @@ class Para{
     execute(entorno){
         var local=new Entorno(entorno);
         var result=new Result();
-        var temp="";
+        var temp="//INICIA FOR\n";
         if(this.tipo){
             cargarSimbolosif(this.nodos,local,this.ambitos);
             var result_inicializado=null;
@@ -154,6 +154,13 @@ class Para{
                         alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
                         console.log("tam pool "+pool_salida.length);
                     }
+                }else if(this.nodos[i] instanceof Mientras){
+                    var ambi=this.ambitos+"/"+this.id;
+                    this.nodos[i].ambitos=ambi;
+                    var result_temp=this.nodos[i].execute(entorno);
+                    if(result_temp!=null){  
+                        temp+=result_temp.cadena;
+                    }
                 }else if(this.nodos[i] instanceof Aritmetica){
                     if(this.nodos[i].unario){
                         var ambi=this.ambitos;
@@ -171,6 +178,7 @@ class Para{
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){  
                         result.cadena+=result_temp.cadena;
+                        
                     }
                 }
             }
@@ -181,6 +189,7 @@ class Para{
         }else{
             alert("soy un for each");
         }
+        temp+="//FINALIZA FOR\n\n\n\n\n";
         result.cadena+=temp;
         return result;
     }
