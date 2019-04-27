@@ -340,17 +340,19 @@ class Aritmetica{
                 }else if(this.tipoprimitivo=="ID"){
                     var result=new Result();
                     var temp="";
-                    alert("Aritmetica "+this.valor+"_"+this.ambitos);
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
-                    var temp1=generarEtiqueta();
-                    var simulado=generarEtiqueta();
-                    temp+=simulado+"=p+"+sim.posRel+";\n";
-                    temp+=temp1+"=stack["+simulado+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
-                    var temp2=generarEtiqueta();
-                    temp+=temp2+"=heap["+temp1+"];\n";
-                    result.u_etiqueta=temp2;
-                    result.cadena+=temp;
-                    this.tipoprimitivo=sim.tipo;
+                    if(sim==null){
+                    }else{
+                        var temp1=generarEtiqueta();
+                        var simulado=generarEtiqueta();
+                        temp+=simulado+"=p+"+sim.posRel+";\n";
+                        temp+=temp1+"=stack["+simulado+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
+                        var temp2=generarEtiqueta();
+                        temp+=temp2+"=heap["+temp1+"];\n";
+                        result.u_etiqueta=temp2;
+                        result.cadena+=temp;
+                        this.tipoprimitivo=sim.tipo;
+                    }
                     return result;
                 }else{
                     var result=new Result();

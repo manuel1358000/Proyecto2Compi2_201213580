@@ -61,7 +61,11 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
     }else if(nodoast instanceof Declaracion){
         var id_instancia=nodoast.id+"_"+ambito;
         var sim=new Simbolo(nodoast.id,nodoast.tipo,ambito,tipo,posicion,1,0,nodoast.getVisibilidad(),nodoast.modificadores);
-        sim.inicializado=nodoast.inicializado;
+        if(tipo=="PARAMETRO"){
+            sim.inicializado=true;
+        }else{
+            sim.inicializado=nodoast.inicializado;
+        }
         posicion++;
         entorno.agregar(id_instancia,sim);
     }else if(nodoast instanceof Metodo){

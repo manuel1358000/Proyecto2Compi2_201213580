@@ -13,7 +13,11 @@ class Imprimir{
         result_aux.tipo=this.expresion.getTipe(entorno);
         result.tipo=result_aux.tipo;
         result.cadena+=result_aux.cadena;
-        if(result.tipo.toUpperCase()=="STRING"){
+        if(result.tipo=="ID"){
+            alert(this.expresion.valor+"_"+this.ambitos);
+            var temp_sim=entorno.obtener(this.expresion.valor+"_"+this.ambitos);
+        }
+        if(result.tipo=="STRING"){
             var armar="";
             armar+="//----------------------inicia impresion numero\n";
             armar+="p=p+"+this.tam+";\n";
@@ -30,7 +34,7 @@ class Imprimir{
             armar+="p=p-"+this.tam+";\n"; 
             armar+="//----------------------finaliza impresion numero\n";
             result.cadena+=armar;
-        }else if(result.tipo.toUpperCase()=="INTEGER"){
+        }else if(result.tipo=="INTEGER"){
             var armar="//--------------------inicia casteo entero a cadena\n";
             var puntero_simulado=generarEtiqueta();
             //se le setea el valor en el stack para cuando realize la llamada a la metodo
@@ -65,7 +69,7 @@ class Imprimir{
             armar+="p=p-"+this.tam+";\n";
             armar+="//-------------------------finaliza impresion numero\n";
             result.cadena+=armar;
-        }else if(result.tipo.toUpperCase()=="DOUBLE"){
+        }else if(result.tipo=="DOUBLE"){
             var armar="//inicia el casteo de double a cadena\n";
             var puntero_simulado=generarEtiqueta();
             //se le setea el valor en el stack para cuando realize la llamada a la metodo
@@ -95,7 +99,7 @@ class Imprimir{
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion double\n";
             result.cadena+=armar;
-        }else if(result.tipo.toUpperCase()=="CHAR"){
+        }else if(result.tipo=="CHAR"){
             var armar="";
             var temp_result=generarString(result_aux.u_etiqueta,true,"CHAR");            
             armar+=temp_result.cadena;
@@ -112,7 +116,7 @@ class Imprimir{
             armar+="p=p-2;//se regresa al ambito actual\n";
             armar+="//-------------------------finaliza impresion char\n";
             result.cadena+=armar;
-        }else if(result.tipo.toUpperCase()=="BOOLEAN"){
+        }else if(result.tipo=="BOOLEAN"){
             var armar="";
             var temp_result=generarString(result_aux.u_etiqueta,true,"BOOLEAN");
             armar+=temp_result.cadena;
@@ -130,7 +134,7 @@ class Imprimir{
             armar+="//-------------------------finaliza impresion boolean\n";
             result.cadena+=armar;
         }else{
-            alert(result.tipo+"EL TIPO ES ");
+            alert("Error semantico, no esta inicializada la variable que se debe de imprimir o es un objeto");
         }
         return result;
     }

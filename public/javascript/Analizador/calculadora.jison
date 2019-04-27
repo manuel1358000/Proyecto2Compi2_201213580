@@ -348,12 +348,20 @@ sentencia_asignacion: ID '=' exp{
                                                     var temp_this=new Este($3);
                                                     $$=new Asignacion(temp_this,$5,0);
                                                     };
-elementos_this: elementos_this '.'  elemento_this
-               | elemento_this;
+elementos_this: elementos_this '.'  elemento_this{
+                                                $$=$1;
+                                                $$.push($3);
+                                                }
+               | elemento_this{
+                                $$=[];
+                                $$.push($1);
+                            };
 
-elemento_this: ID
-            | ID '(' lista_valores ')'
-            | ID '(' ')'{$$=new Llamada_Metodo();};
+elemento_this: ID{$$=new Aritmetica(null,null,false,$1,null,Type.ID,0,0);;}
+            | ID '(' lista_valores ')'{
+                                        $$=new Llamada_Metodo($1,$3);
+                                    }
+            | ID '(' ')'{$$=new Llamada_Metodo($1,[]);};
 
 //-------------------------------------------SENTENCIA SWITCH
 sentencia_switch: SWITCH '(' exp ')' '{' listas_cases case_default '}'{
@@ -602,7 +610,11 @@ exp: '!' exp
     | ID{
             $$=new Aritmetica(null,null,false,yytext,null,Type.ID,0,0);
         }
-    | sentencia_ternario{$$=$1;};
+    | sentencia_ternario{$$=$1;}
+    | THIS '.' elementos_this{
+                                        //id,iniValue,dimensiones
+                                        $$=new Este($3);
+                                    };
 
 
 sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};

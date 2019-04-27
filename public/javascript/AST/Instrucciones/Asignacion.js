@@ -10,9 +10,13 @@ class Asignacion{
         if(this.id instanceof Este){
             respuesta=new Result();
             respuesta.tipo="this";
-            var ambito_separado=this.ambitos.split('/');
-            this.id.ambitos=ambito_separado[0];
-            var result_this=this.id.execute(entorno);
+            this.id.ambitos=this.ambitos;
+            this.id.iniValue=this.iniValue;
+            var result_this=this.id.getValue(entorno);
+            if(result_this!=null){
+                respuesta.cadena=result_this.cadena;
+                respuesta.u_etiqueta=result_this.u_etiqueta;
+            }
         }else{
             var tipo=this.getTipe(entorno);
             if(this.iniValue instanceof Aritmetica){

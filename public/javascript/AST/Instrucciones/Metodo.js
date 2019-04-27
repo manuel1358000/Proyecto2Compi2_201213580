@@ -45,11 +45,12 @@ class Metodo{
                         temp+="heap[h]="+result_temp.u_etiqueta+";\n";
                         temp+="h=h+1;\n";
                         var simulado=generarEtiqueta();
-                        alert(this.nodos[i].id+"_"+ambi);
                         var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin declaracion variable local\n";
+                        sim.inicializado=true;
+                        entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
                     }else{
                         temp="//declaracion variable local\n";
                         var temph=generarEtiqueta();
@@ -61,6 +62,8 @@ class Metodo{
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin declaracion variable local\n";
+                        sim.inicializado=true;
+                        entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
                     }
                 }
                 result.cadena+=temp;
@@ -70,24 +73,24 @@ class Metodo{
                     var tipo_param=this.parametros[f].tipo;
                     armar_elemento+="_"+tipo_param;
                 }
-
                 var result_tamanio_salto=entorno.obtener(armar_elemento);
                 this.nodos[i].tam=result_tamanio_salto.tamanio;
-                this.nodos[i].ambitos=this.ambitos;
+                this.nodos[i].ambitos=this.ambitos+"/"+this.id;
                 var result_temp=this.nodos[i].execute(entorno);
                 result.cadena+=result_temp.cadena;
             }else if(this.nodos[i] instanceof Asignacion){
                 var ambi=this.ambitos;
                 var complemento="";
                 for(var f=0;f<this.parametros.length;f++){
-                    complemento+="_"+this.parametros[i].tipo;
+                    complemento+="_"+this.parametros[f].tipo;
                 }
-                this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 var temp="";
                 if(result_temp!=null){
                     if(result_temp.tipo=="this"){
                         temp+="//ACCESO A UN ELEMENTO DEL THIS\n";
+                        temp+=result_temp.cadena;
                         temp+="//FINALIZA ACCESO A UN ELEMENTO DEL THIS\n";
                     }else{
                         temp=result_temp.cadena;

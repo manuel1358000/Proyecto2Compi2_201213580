@@ -70,7 +70,6 @@ class Declaracion{
             temp+="call "+nombre_constructor+";\n";
             temp+="p=p-"+sim_temp1.tamanio+";\n";
             temp+="//FINALIZA LLAMADA AL CONSTRUCTOR DEL OBJETO\n";
-
             respuesta.cadena+=temp;
         }else{
             var tipo=this.getTipe(entorno);

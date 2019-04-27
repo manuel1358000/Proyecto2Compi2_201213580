@@ -31,6 +31,12 @@ class Declaracionclase{
                         temp+="heap["+eti_aux2+"]=0;//asignacion del valor al heap\n";
                     }else{
                         temp+="heap["+eti_aux2+"]="+result.u_etiqueta+";//asignacion del valor al heap\n";
+                        if(nodo.iniValue==null){
+                            sim_aux.inicializado=false;
+                        }else{
+                            sim_aux.inicializado=true;
+                        }
+                        entorno.actualizar(nodo.id+"_"+this.id,sim_aux);
                     }
                     temp+="//Finalizo la signacion \n";
                     //finalizado
@@ -55,6 +61,12 @@ class Declaracionclase{
                     nodo.ambitos=this.id+"/"+this.id+val;
                     var result=nodo.execute(entorno);
                     var temp="proc "+nombre_constructor+" begin\n";
+                    /*var eti1=generarEtiqueta();
+                    temp+=eti1+"=p+1;\n";
+                    var eti2=generarEtiqueta();
+                    temp+=eti2+"=stack["+eti1+"];\n";
+                    var eti3=generarEtiqueta();
+                    temp+=eti3+"=heap["+eti2+"];\n";*/
                     temp+="//AQUI TENGO QUE REVISAR QUE ESTA PASANDO--------------------------\n";
                     temp+=result.cadena;
                     temp+="end\n \n";
