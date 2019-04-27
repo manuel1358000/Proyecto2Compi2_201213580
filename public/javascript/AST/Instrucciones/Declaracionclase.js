@@ -40,6 +40,8 @@ class Declaracionclase{
                     }
                     temp+="//Finalizo la signacion \n";
                     //finalizado
+                    sim_aux.inicializado=true;
+                    entorno.actualizar(nodo.id+"_"+this.id,sim_aux);
                     variables_globales+=temp;
                 }else{
                     var c_error="No se puede generar el codigo 3d de la variable "+nodo.id+" Se le quiere asignar un valor "+result.tipo;
@@ -78,9 +80,24 @@ class Declaracionclase{
                     temp+="\n//INICIA LA CREACION DEL METODO\n";
                     if(nodo.id=="main"){
                         temp+="proc " +nodo.id + " begin\n";
+                        var eti10=generarEtiqueta();
+                        temp+=eti10+"=h;\n";
+                        temp+="h=h+1;\n";
+                        var sim=entorno.obtener(nodo.id);
+                        var eti11=generarEtiqueta();
+                        temp+=eti11+"=p+"+sim.tamanio+";\n";
+                        var eti12=generarEtiqueta();
+                        temp+=eti12+"="+eti11+"+1;\n";
+                        temp+="stack["+eti12+"]="+eti10+";\n";
+                        temp+="p=p+"+sim.tamanio+";\n";
+                        temp+="call globales_"+this.id+";\n";
+                        //temp+="p=p-"+sim.tamanio+";\n";
+                        temp+="//putitos\n";
                     }else{
                         temp+="proc " +this.id+"_"+nodo.id + " begin\n";
                     }
+
+
                     temp+=result.cadena;
                     temp+="\nend\n";
                     respuesta+=temp;

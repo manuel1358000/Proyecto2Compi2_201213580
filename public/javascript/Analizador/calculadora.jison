@@ -322,7 +322,18 @@ sentencias_metodo: variables ';'{$$=$1;}
                  | sentencia_incre_decre{
                                         $$=[];
                                         $$.push($1);
+                                        }
+                 | sentencia_llamada ';'{
+                                        $$=[];
+                                        $$.push($1);
                                         };
+
+sentencia_llamada: ID '(' ')'{
+                            $$=new Llamada_Metodo($1,[]);
+                            }
+                 | ID '(' lista_valores ')'{
+                                            $$=new Llamada_Metodo($1,$3);
+                                            };
 sentencia_incre_decre: ID '--' ';'{
                                 var temp=new Aritmetica(null,null,false,$1,null,Type.ID,0,0);
                                 $$=new Aritmetica(temp,null,true,null,"--",null,0,0);

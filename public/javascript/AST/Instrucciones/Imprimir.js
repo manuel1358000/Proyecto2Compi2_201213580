@@ -14,7 +14,6 @@ class Imprimir{
         result.tipo=result_aux.tipo;
         result.cadena+=result_aux.cadena;
         if(result.tipo=="ID"){
-            alert(this.expresion.valor+"_"+this.ambitos);
             var temp_sim=entorno.obtener(this.expresion.valor+"_"+this.ambitos);
         }
         if(result.tipo=="STRING"){

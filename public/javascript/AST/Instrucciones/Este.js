@@ -30,9 +30,6 @@ class Este{
                                     temp+=eti_temp2+"=stack["+eti_temp1+"];\n";
                                     var eti_temp3=generarEtiqueta();
                                     temp+=eti_temp3+"=heap["+eti_temp2+"];\n";
-
-
-
                                     var eti1=generarEtiqueta();
                                     var temp1=generarEtiqueta();
                                     var simulado=generarEtiqueta();

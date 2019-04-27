@@ -20,7 +20,7 @@ function ejecutar(nodoast,entorno){
         if(clases instanceof Declaracionclase){
             for(var a=0;a<clases.nodos.length;a++){
                 var metodo=clases.nodos[a];
-                if(metodo instanceof Metodo){
+                /*if(metodo instanceof Metodo){
                     if(metodo.id=="main"){
                         clases.nodos.splice(a,1)
                         clases.nodos.unshift(metodo);
@@ -28,7 +28,7 @@ function ejecutar(nodoast,entorno){
                         nodoast.splice(i,1);
                         nodoast.unshift(temp);
                     }
-                }
+                }*/
             }
         }
     }

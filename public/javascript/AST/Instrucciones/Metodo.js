@@ -73,6 +73,7 @@ class Metodo{
                     var tipo_param=this.parametros[f].tipo;
                     armar_elemento+="_"+tipo_param;
                 }
+                alert(armar_elemento);
                 var result_tamanio_salto=entorno.obtener(armar_elemento);
                 this.nodos[i].tam=result_tamanio_salto.tamanio;
                 this.nodos[i].ambitos=this.ambitos+"/"+this.id;
@@ -150,6 +151,8 @@ class Metodo{
                 if(result_temp!=null){  
                     result.cadena+=result_temp.cadena;
                 }
+            }else if(this.nodos[i] instanceof Llamada_Metodo){
+                alert("Es una llamada a metodo");
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");
