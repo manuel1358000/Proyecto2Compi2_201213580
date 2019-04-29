@@ -13,8 +13,10 @@ class Imprimir{
         result_aux.tipo=this.expresion.getTipe(entorno);
         result.tipo=result_aux.tipo;
         result.cadena+=result_aux.cadena;
+
         if(result.tipo=="ID"){
             var temp_sim=entorno.obtener(this.expresion.valor+"_"+this.ambitos);
+        }else{
         }
         if(result.tipo=="STRING"){
             var armar="";
@@ -133,6 +135,7 @@ class Imprimir{
             armar+="//-------------------------finaliza impresion boolean\n";
             result.cadena+=armar;
         }else{
+            console.log(result.tipo);
             alert("Error semantico, no esta inicializada la variable que se debe de imprimir o es un objeto");
         }
         return result;

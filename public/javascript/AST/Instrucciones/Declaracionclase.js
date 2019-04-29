@@ -1,3 +1,5 @@
+
+
 class Declaracionclase{
     constructor(id,modificadores,id_extends,nodos){
         this.id=id;
@@ -60,7 +62,8 @@ class Declaracionclase{
                         nombre_constructor+="_"+tipo_parametro;
                         val+="_"+tipo_parametro;
                     }
-                    nodo.ambitos=this.id+"/"+this.id+val;
+                    
+                    nodo.ambitos=this.id;
                     var result=nodo.execute(entorno);
                     var temp="proc "+nombre_constructor+" begin\n";
                     /*var eti1=generarEtiqueta();
@@ -92,12 +95,13 @@ class Declaracionclase{
                         temp+="p=p+"+sim.tamanio+";\n";
                         temp+="call globales_"+this.id+";\n";
                         //temp+="p=p-"+sim.tamanio+";\n";
-                        temp+="//putitos\n";
                     }else{
-                        temp+="proc " +this.id+"_"+nodo.id + " begin\n";
+                        var nombre_metodo=this.id+"_"+nodo.id;
+                        for(var f=0;f<nodo.parametros.length;f++){ 
+                            nombre_metodo+="_"+nodo.parametros[f].tipo;
+                        }
+                        temp+="proc " +nombre_metodo+ " begin\n";
                     }
-
-
                     temp+=result.cadena;
                     temp+="\nend\n";
                     respuesta+=temp;

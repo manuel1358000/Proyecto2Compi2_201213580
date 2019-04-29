@@ -44,7 +44,6 @@ class Declaracion{
             if(this.lista_valores.length==0){
             }else{
                 temp+="\n\n\n\n//INICIA EL SETEO DE PARAMETROS PARA EL CONSTRUCTOR\n";//aqui se empiezan a pasar los parametros que se tienen
-                    
                 var temp_indice=2;
                 var eti4=generarEtiqueta();  
                 temp+=eti4+"=p+"+sim_temp1.tamanio+";\n";

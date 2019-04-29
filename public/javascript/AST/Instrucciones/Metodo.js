@@ -19,15 +19,16 @@ class Metodo{
             if(this.nodos[i] instanceof Declaracion){
                 var ambi="";
                 if(this.id=="main"){
-                    var ambi=this.ambitos+"/"+this.id;
+                    ambi=this.ambitos+"/"+this.id;
                     this.nodos[i].implicito=this.id;
                 }else{
                     //ambi=this.ambitos+"/"+this.id;
-                    ambi=this.ambitos;
+                    
                     var complemento="";
                     for(var f=0;f<this.parametros.length;f++){
-                        complemento+="_"+this.parametros[i].tipo;
+                        complemento+="_"+this.parametros[f].tipo;
                     }
+                    ambi=this.ambitos+"/"+this.id+complemento;
                     this.nodos[i].implicito=this.ambitos+"_"+this.id+complemento;
                 }
                 this.nodos[i].ambitos=ambi;
@@ -68,23 +69,29 @@ class Metodo{
                 }
                 result.cadena+=temp;
             }else if(this.nodos[i] instanceof Imprimir){
-                var armar_elemento=this.id;
+                var separado=this.ambitos.split("/");
+                var armar_elemento=separado[0]+"_"+this.id;
+                if(this.id=="main"){
+                    armar_elemento=this.id;
+                }
+                var param="";
                 for(var f=0;f<this.parametros.length;f++){
                     var tipo_param=this.parametros[f].tipo;
                     armar_elemento+="_"+tipo_param;
+                    param+="_"+tipo_param;
                 }
-                alert(armar_elemento);
                 var result_tamanio_salto=entorno.obtener(armar_elemento);
                 this.nodos[i].tam=result_tamanio_salto.tamanio;
-                this.nodos[i].ambitos=this.ambitos+"/"+this.id;
+                this.nodos[i].ambitos=this.ambitos+"/"+this.id+param;
                 var result_temp=this.nodos[i].execute(entorno);
                 result.cadena+=result_temp.cadena;
             }else if(this.nodos[i] instanceof Asignacion){
-                var ambi=this.ambitos;
+                
                 var complemento="";
                 for(var f=0;f<this.parametros.length;f++){
                     complemento+="_"+this.parametros[f].tipo;
                 }
+                var ambi=this.ambitos+"/"+this.id+complemento;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 var temp="";
@@ -111,7 +118,12 @@ class Metodo{
                 }
                 result.cadena+=temp;
             }else if(this.nodos[i] instanceof Si){
-                var ambi=this.ambitos;
+                var param="";
+                for(var f=0;f<this.parametros.length;f++){
+                    var tipo_param=this.parametros[f].tipo;
+                    param+="_"+tipo_param;
+                }
+                var ambi=this.ambitos+"/"+this.id+param;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -119,7 +131,12 @@ class Metodo{
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Selecciona){
-                var ambi=this.ambitos;
+                var param="";
+                for(var f=0;f<this.parametros.length;f++){
+                    var tipo_param=this.parametros[f].tipo;
+                    param+="_"+tipo_param;
+                }
+                var ambi=this.ambitos+"/"+this.id+param;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -127,7 +144,12 @@ class Metodo{
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Mientras){
-                var ambi=this.ambitos;
+                var param="";
+                for(var f=0;f<this.parametros.length;f++){
+                    var tipo_param=this.parametros[f].tipo;
+                    param+="_"+tipo_param;
+                }
+                var ambi=this.ambitos+"/"+this.id+param;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 if(result_temp!=null){  
@@ -135,7 +157,12 @@ class Metodo{
                 }
             }else if(this.nodos[i] instanceof Aritmetica){
                 if(this.nodos[i].unario){
-                    var ambi=this.ambitos;
+                    var param="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        var tipo_param=this.parametros[f].tipo;
+                        param+="_"+tipo_param;
+                    }
+                    var ambi=this.ambitos+"/"+this.id+param;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].getValue(entorno);
                     if(result_temp!=null){  
@@ -145,14 +172,41 @@ class Metodo{
                     alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
                 }
             }else if(this.nodos[i] instanceof Para){
-                var ambi=this.ambitos;
+                var param="";
+                for(var f=0;f<this.parametros.length;f++){
+                    var tipo_param=this.parametros[f].tipo;
+                    param+="_"+tipo_param;
+                }
+                var ambi=this.ambitos+"/"+this.id+param;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 if(result_temp!=null){  
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Llamada_Metodo){
-                alert("Es una llamada a metodo");
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                }
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                temp+="//INICIA LLAMADA A METODO\n"
+                if(result_temp!=null){
+                    temp+=result_temp.cadena;
+                }
+                temp+="//FINALIZA LLAMADA A METODO\n";
+                result.cadena+=temp;
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");

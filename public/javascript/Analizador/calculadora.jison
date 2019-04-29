@@ -625,7 +625,8 @@ exp: '!' exp
     | THIS '.' elementos_this{
                                         //id,iniValue,dimensiones
                                         $$=new Este($3);
-                                    };
+                                    }
+    | sentencia_llamada{$$=$1;};
 
 
 sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};

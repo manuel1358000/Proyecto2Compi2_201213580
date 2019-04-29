@@ -11,8 +11,6 @@ class Este{
         var separado=this.ambitos.split("/");
         if(this.nodos.length==1){
             if(this.nodos[0] instanceof Llamada_Metodo){
-                alert("LLamada a un metodo, simple");
-                alert("el ambito para un metodo es "+this.nodos[0].id+"_"+separado[0]);
             }else if(this.nodos[0] instanceof Aritmetica){
                 if(this.iniValue!=null){
                     var sim=entorno.obtener(this.nodos[0].valor+"_"+separado[0]);
@@ -43,10 +41,10 @@ class Este{
                                     sim.inicializado=true;
                                     entorno.actualizar(this.nodos[0].valor+"_"+separado[0],sim);
                                 }else{
-                                    alert("Error Semantico, no son del mismo tipo las variables");
+                                    alert("Este 0 Error Semantico, no son del mismo tipo las variables");
                                 }
                             }else{
-                                alert("Error Semantico, La variable a asignar no existe en el entorno "+this.ambitos);
+                                alert("Este 1Error Semantico, La variable a asignar no existe en el entorno "+this.ambitos);
                             }
                         }else{
                             if(tipo_ini==sim.tipo){
@@ -64,11 +62,11 @@ class Este{
                                 sim.inicializado=true;
                                 entorno.actualizar(this.nodos[0].valor+"_"+separado[0],sim);
                             }else{
-                                alert("Error Semantico, No se puede realizar la asignacion, son de tipos diferentes");
+                                alert("Este 3 Error Semantico, No se puede realizar la asignacion, son de tipos diferentes");
                             }
                         }
                     }else{
-                        alert("Error Semantico, La variable global "+this.nodos[0].valor+" no existe");
+                        alert("Este 4 Error Semantico, La variable global "+this.nodos[0].valor+" no existe");
                     }
                 }else{
                     var sim=entorno.obtener(this.nodos[0].valor+"_"+separado[0]);
@@ -87,15 +85,14 @@ class Este{
                             result.cadena+=temp;
                             this.tipo=sim.tipo;
                         }else{
-                            alert("Error Semantico, La variable global "+this.nodos[0].valor+" no esta inicializada");
+                            alert("Este 5 Error Semantico, La variable global "+this.nodos[0].valor+" no esta inicializada");
                         }
                     }else{  
-                        console.log("No existe el id que se busca en la clase");
+                        console.log("Este 6 No existe el id que se busca en la clase");
                     }
                 }
             }
         }else{
-            alert("Se van a acceder a objetos propios de la clase y se quieren acceder a sus atributos");
             for(var i=0;i<this.nodos.length;i++){
                 if(this.nodos[i] instanceof Llamada_Metodo){    
                     alert("Es una llamada a un metodo, multiple");

@@ -71,6 +71,9 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
     }else if(nodoast instanceof Metodo){
         var id_instancia=nodoast.generarNombre(nodoast.id);
         var ambito_local=ambito+"/"+id_instancia;
+        if(id_instancia!="main"){
+            id_instancia=ambito+"_"+id_instancia;
+        }
         var sim=new Simbolo(id_instancia,nodoast.tipo,ambito,"METODO",-1,nodoast.gettamMetodo(),0,nodoast.getVisibilidad(),nodoast.modificadores);
         entorno.agregar(id_instancia,sim);
         var posrel=0;
