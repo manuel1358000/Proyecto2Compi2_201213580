@@ -12,10 +12,16 @@ class Si{
         var condi=true;
         var temp="";
         var local=new Entorno(entorno);
+        var temp_ambi="";
+        if(this.padre=="main"){
+            temp_ambi=this.ambitos+"/"+this.padre;
+        }else{
+            temp_ambi=this.ambitos;
+        }
         var result=new Result();
         this.u_etiqueta=false;
         //vamos a evaluar la condicion del if principal
-        this.condicion.ambitos=this.ambitos;
+        this.condicion.ambitos=temp_ambi;
         var result_condi=this.condicion.getValue(entorno);
         var tipo_condi=this.condicion.getTipe(entorno);
         var etif=generarSalto();
@@ -24,7 +30,7 @@ class Si{
             if(tipo_condi=="BOOLEAN"){
                 //tenemos que recorrer dentro de cada if y subif para ver si hay declaracion y estas las vamos a guardar en la tabla de simbolos local
                 //PRIMERA PASADA
-                cargarSimbolosif(this.nodos,local,this.ambitos);    
+                cargarSimbolosif(this.nodos,local,temp_ambi);    
                 //SEGUNDA PASADA
                 //aqui tengo que evaluar el camino por el cual se va a tomar la decision
                 temp+="//INICIA VALIDACION DEL IF\n";
@@ -32,7 +38,7 @@ class Si{
                 temp+="if("+result_condi.u_etiqueta+"==0) goto "+etif+";\n";
                 for(var i=0;i<this.nodos.length;i++){
                     if(this.nodos[i] instanceof Declaracion){
-                        var ambi=this.ambitos;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         if(result_temp!=null){
@@ -64,11 +70,11 @@ class Si{
                             temp+="//fin declaracion variable local\n";
                         }
                     }else if(this.nodos[i] instanceof Imprimir){
-                        this.nodos[i].ambitos=this.ambitos;
+                        this.nodos[i].ambitos=temp_ambi;
                         var result_temp=this.nodos[i].execute(local);
                         temp+=result_temp.cadena;
                     }else if(this.nodos[i] instanceof Asignacion){
-                        var ambi=this.ambitos;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         if(result_temp!=null){
@@ -86,7 +92,7 @@ class Si{
                         }else{
                         }
                     }else if(this.nodos[i] instanceof Si){
-                        var ambi=this.ambitos;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -94,7 +100,7 @@ class Si{
                             temp+=result_temp.cadena;
                         }
                     }else if(this.nodos[i] instanceof Selecciona){
-                        var ambi=this.ambitos;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -102,7 +108,7 @@ class Si{
                             temp+=result_temp.cadena;
                         }
                     }else if(this.nodos[i] instanceof Asignacion){
-                        var ambi=this.ambitos;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         if(result_temp!=null){
@@ -133,7 +139,7 @@ class Si{
                             console.log("tam pool "+pool_salida.length);
                         }
                     }else if(this.nodos[i] instanceof Mientras){
-                        var ambi=this.ambitos+"/"+this.id;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(entorno);
                         if(result_temp!=null){  
@@ -141,7 +147,7 @@ class Si{
                         }
                     }else if(this.nodos[i] instanceof Aritmetica){
                         if(this.nodos[i].unario){
-                            var ambi=this.ambitos;
+                            var ambi=temp_ambi;
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].getValue(local);
                             if(result_temp!=null){  
@@ -151,7 +157,7 @@ class Si{
                             alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
                         }
                     }else if(this.nodos[i] instanceof Para){
-                        var ambi=this.ambitos;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
                         if(result_temp!=null){  
@@ -181,6 +187,8 @@ class Si{
             condi=false;
             for(var i=0;i<this.subifs.length;i++){
                 this.subifs[i].ambitos=this.ambitos;
+                this.subifs[i].padre=this.padre;
+                this.subifs[i].normal=this.normal;
                 var result_temp=this.subifs[i].execute(localif);
                 if(result_temp!=null){
                     temp+=result_temp.cadena;
@@ -196,6 +204,8 @@ class Si{
             condi=false;
             var localif=new Entorno(entorno);
             this.defecto.ambitos=this.ambitos;
+            this.defecto.padre=this.padre;
+            this.defecto.normal=this.normal;
             var result_temp=this.defecto.execute(localif);
             if(result_temp!=null){
                 temp+=result_temp.cadena;

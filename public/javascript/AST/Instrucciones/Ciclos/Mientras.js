@@ -183,7 +183,7 @@ class Mientras{
             temp+=etiinicio+":\n";
             for(var i=0;i<this.nodos.length;i++){
                 if(this.nodos[i] instanceof Declaracion){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -215,11 +215,11 @@ class Mientras{
                         temp+="//fin declaracion variable local\n";
                     }
                 }else if(this.nodos[i] instanceof Imprimir){
-                    this.nodos[i].ambitos=this.ambitos;
+                    this.nodos[i].ambitos=temp_ambi;
                     var result_temp=this.nodos[i].execute(local);
                     temp+=result_temp.cadena;
                 }else if(this.nodos[i] instanceof Asignacion){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -239,7 +239,7 @@ class Mientras{
                         alert("es nulo");
                     }
                 }else if(this.nodos[i] instanceof Si){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -247,7 +247,7 @@ class Mientras{
                         temp+=result_temp.cadena;
                     }
                 }else if(this.nodos[i] instanceof Selecciona){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -255,7 +255,7 @@ class Mientras{
                         temp+=result_temp.cadena;
                     }
                 }else if(this.nodos[i] instanceof Asignacion){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -285,7 +285,7 @@ class Mientras{
                     }
                 }else if(this.nodos[i] instanceof Aritmetica){
                     if(this.nodos[i].unario){
-                        var ambi=this.ambitos;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].getValue(local);
                         if(result_temp!=null){  
@@ -295,7 +295,7 @@ class Mientras{
                         alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
                     }
                 }else if(this.nodos[i] instanceof Para){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){  
