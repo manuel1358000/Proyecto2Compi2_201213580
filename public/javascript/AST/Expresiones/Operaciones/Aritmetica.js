@@ -1,3 +1,5 @@
+
+
 class Aritmetica{
     constructor(exp1,exp2,unario,valor,operador,tipoprimitivo,linea,columna){
         this.exp1=exp1;
@@ -9,11 +11,15 @@ class Aritmetica{
         this.linea=linea;
         this.columna=columna;
         this.ambitos="";
+        this.padre;
+        this.normal;
     }
     getValue(entorno){
         if(this.unario){
             var temp="";
             this.exp1.ambitos=this.ambitos;
+            this.exp1.padre=this.padre;
+            this.exp1.normal=this.normal
             var result1=this.exp1.getValue(entorno);
             var tipo1=this.exp1.getTipe(entorno);
             if(this.operador=="-"){
@@ -67,10 +73,20 @@ class Aritmetica{
             }
         }else{
             if(this.exp1!=null&&this.exp2!=null){
+                
+                if(this.exp2 instanceof Llamada_Metodo){
+                    var temp=this.exp1;
+                    this.exp1=this.exp2;
+                    this.exp2=temp;
+                }  
                 this.exp1.ambitos=this.ambitos;
+                this.exp1.padre=this.padre;
+                this.exp1.normal=this.normal;
                 var result1=this.exp1.getValue(entorno);
                 var tipo1=this.exp1.getTipe(entorno);
                 this.exp2.ambitos=this.ambitos;
+                this.exp2.padre=this.padre;
+                this.exp2.normal=this.normal;
                 var result2=this.exp2.getValue(entorno);
                 var tipo2=this.exp2.getTipe(entorno);
                 var tipo=generarTipo(tipo1,tipo2);

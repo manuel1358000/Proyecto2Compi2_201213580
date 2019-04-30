@@ -112,6 +112,7 @@ class Para{
                         var sim_temp=local.obtener(temp_ambi.replace("/","_"));
                         temp_tam=sim_temp.tamanio;
                     }
+                    this.nodos[i].tam=temp_tam;
                     var result_temp=this.nodos[i].execute(local);
                     temp+=result_temp.cadena;
                 }else if(this.nodos[i] instanceof Asignacion){

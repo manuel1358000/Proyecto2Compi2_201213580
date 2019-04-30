@@ -9,11 +9,15 @@ class Logica{
         this.linea=linea;
         this.columna=columna;
         this.ambitos="";
+        this.padre;
+        this.normal;
     }
     getValue(entorno){
         if(this.unario){
             var temp="";
             this.exp1.ambitos=this.ambitos;
+            this.exp1.padre=this.padre;
+            this.exp1.normal=this.normal;
             var result1=this.exp1.getValue(entorno);
             var tipo1=this.exp1.getTipe(entorno);
             var eti1=generarEtiqueta();
@@ -42,9 +46,13 @@ class Logica{
         }else{
             if(this.exp1!=null&&this.exp2!=null){
                 this.exp1.ambitos=this.ambitos;
+                this.exp1.padre=this.padre;
+                this.exp1.normal=this.normal;
                 var result1=this.exp1.getValue(entorno);
                 var tipo1=this.exp1.getTipe(entorno);
                 this.exp2.ambitos=this.ambitos;
+                this.exp2.padre=this.padre;
+                this.exp2.normal=this.normal;
                 var result2=this.exp2.getValue(entorno);
                 var tipo2=this.exp2.getTipe(entorno);
                 var tipo=generarTipoLogica(tipo1,tipo2);

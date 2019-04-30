@@ -22,6 +22,8 @@ class Si{
         this.u_etiqueta=false;
         //vamos a evaluar la condicion del if principal
         this.condicion.ambitos=temp_ambi;
+        this.condicion.padre=this.padre;
+        this.condicion.normal=this.normal;
         var result_condi=this.condicion.getValue(entorno);
         var tipo_condi=this.condicion.getTipe(entorno);
         var etif=generarSalto();
@@ -79,6 +81,7 @@ class Si{
                             var sim_temp=local.obtener(temp_ambi.replace("/","_"));
                             temp_tam=sim_temp.tamanio;
                         }
+                        this.nodos[i].tam=temp_tam;
                         var result_temp=this.nodos[i].execute(local);
                         temp+=result_temp.cadena;
                     }else if(this.nodos[i] instanceof Asignacion){

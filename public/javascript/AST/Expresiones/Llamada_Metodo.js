@@ -10,22 +10,28 @@ class Llamada_Metodo{
     getValue(entorno){
         var result=null;
         var nombre_completo=this.normal+"_"+this.id;
-        var temp="\n\n\n";
+        var temp="\n\n\n//aquiputos\n";
         var param_temp=this.parametros;
         var indices=[];
+        var indice_result=[];
+        var indice_tipo=[];
         for(var i=0;i<param_temp.length;i++){
             if(this.parametros[i].getTipe(entorno)=="ID"){
                 indices.unshift(i);
             }
             if(this.padre=="main"){
-                param_temp[i].ambitos=this.ambitos+"/"+this.padre
+                param_temp[i].ambitos=this.ambitos;
             }else{
                 param_temp[i].ambitos=this.ambitos;
             }
-            param_temp[i].getValue(entorno);
-            nombre_completo+="_"+param_temp[i].getTipe(entorno);
+            param_temp[i].padre=this.padre;
+            param_temp[i].normal=this.normal;
+            var result1=param_temp[i].getValue(entorno);
+            var tipo1=param_temp[i].getTipe(entorno);
+            indice_result.push(result1);
+            indice_tipo.push(tipo1);
+            nombre_completo+="_"+tipo1;
         }
-
         //vamos a verificar si existe el metodo en el entorno
         var sim=entorno.obtener(nombre_completo);   
         if(sim!=null){
@@ -43,13 +49,14 @@ class Llamada_Metodo{
                             }
                         }
                         if(this.padre=="main"){
-                            this.parametros[i].ambitos=this.ambitos+"/"+this.padre
+                            this.parametros[i].ambitos=this.ambitos;
                         }else{
                             this.parametros[i].ambitos=this.ambitos;
                         }
-                        
-                        var result_temp=this.parametros[i].getValue(entorno);
-                        var tipo_parametro=this.parametros[i].getTipe(entorno);
+                        this.parametros[i].padre=this.padre;
+                        this.parametros[i].normal=this.normal;
+                        var result_temp=indice_result[i];
+                        var tipo_parametro=indice_tipo[i];
                         if(tipo_parametro=="INTEGER"||tipo_parametro=="DOUBLE"||tipo_parametro=="BOOLEAN"){
                             temp+="         //INICIO PARAMETRO "+(i+1)+"\n";
                             var temp_h=generarEtiqueta();
@@ -61,6 +68,7 @@ class Llamada_Metodo{
                             temp+="h=h+1;\n";
                             temp+="stack["+eti2+"]="+temp_h+";\n";
                             pos++;
+                            temp+="//ESTO TENDRIA QUE APARECER EN EL FACTORIAL\n";
                             temp+="         //FIN PARAMETRO "+(i+1)+"\n";
                         }else if(tipo_parametro=="STRING"||tipo_parametro=="CHAR"){
                             temp+="         //INICIO PARAMETRO "+(i+1)+"\n";
@@ -76,7 +84,7 @@ class Llamada_Metodo{
                             pos++;
                             temp+="         //FIN PARAMETRO "+(i+1)+"\n";
                         }else{
-                            alert("Es un id el que se esta mandando como parametro");
+                            alert("Es un id el que se esta mandando como parametro "+tipo_parametro);
                         }
                     }
                     temp+="p=p+"+sim_temp.tamanio+";\n";
@@ -89,6 +97,7 @@ class Llamada_Metodo{
                         temp+=eti11+"=stack["+eti10+"];\n";
                         var eti12=generarEtiqueta();
                         temp+=eti12+"=heap["+eti11+"];";
+                        temp+="//PODER PERRUNO\n";
                         result.u_etiqueta=eti12;
                     }else{
                         result.u_etiqueta=null;
@@ -104,6 +113,7 @@ class Llamada_Metodo{
             alert("Error Semantico, No existe el metodo que se esta llamando "+nombre_completo);
         }
         temp+="\n\n\n";
+        temp+="//FINPUTOS\n";
         result.cadena+=temp;
         return result;
     }

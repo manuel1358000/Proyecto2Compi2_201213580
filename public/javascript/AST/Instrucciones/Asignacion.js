@@ -14,6 +14,8 @@ class Asignacion{
             respuesta.tipo="this";
             this.id.ambitos=this.ambitos;
             this.id.iniValue=this.iniValue;
+            this.id.padre=this.padre;
+            this.id.normal=this.normal;
             var result_this=this.id.getValue(entorno);
             if(result_this!=null){
                 respuesta.cadena=result_this.cadena;
@@ -23,19 +25,41 @@ class Asignacion{
             var tipo=this.getTipe(entorno);
             if(this.iniValue instanceof Aritmetica){
                 this.iniValue.ambitos=this.ambitos;
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal;
                 respuesta=this.iniValue.getValue(entorno);
                 respuesta.tipo=this.iniValue.getTipe(entorno);
             }else if(this.iniValue instanceof Relacional){
                 this.iniValue.ambitos=this.ambitos;
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal;
                 respuesta=this.iniValue.getValue(entorno);
                 respuesta.tipo=this.iniValue.getTipe(entorno);
             }else if(this.iniValue instanceof Logica){
                 this.iniValue.ambitos=this.ambitos;
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal;
                 respuesta=this.iniValue.getValue(entorno);
                 respuesta.tipo=this.iniValue.getTipe(entorno);
             }else if(this.iniValue instanceof Ternario) {
-                alert("Asignacion ternaria");
-            }   
+                this.iniValue.ambitos=this.ambitos;
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal;
+                respuesta=this.iniValue.getValue(entorno);
+                respuesta.tipo=this.iniValue.getTipe(entorno);
+            }else if(this.iniValue instanceof Llamada_Metodo){
+                if(this.padre=="main"){
+                    this.iniValue.ambitos="main";
+                }else{
+                    this.iniValue.ambitos=temp_ambi;
+                }
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal;
+                respuesta=this.iniValue.getValue(entorno);
+                respuesta.tipo=this.iniValue.getTipe(entorno);
+            }else{
+                alert(otro);
+            }
             if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
             }else{
                 alert("Error semantico, asignacion erronea por tipos");

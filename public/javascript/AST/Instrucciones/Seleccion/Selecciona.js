@@ -20,6 +20,8 @@ class Selecciona{
         }
         var etisalida=generarSalto();
         this.condicion.ambitos=temp_ambi;
+        this.condicion.padre=this.padre;
+        this.condicion.normal=this.normal;
         var result_condi=this.condicion.getValue(entorno);
         var tipo_condi=this.condicion.getTipe(entorno);
         if(result_condi!=null){

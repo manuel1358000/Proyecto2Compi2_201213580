@@ -17,21 +17,25 @@ class Metodo{
         //tengo que crear el nuevo nodo
         for(var i=0;i<this.nodos.length;i++){
             if(this.nodos[i] instanceof Declaracion){
-                var ambi="";
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                var ambi2;
                 if(this.id=="main"){
-                    ambi=this.ambitos+"/"+this.id;
-                    this.nodos[i].implicito=this.id;
+                    nombre="main";
+                    ambi2=this.ambitos+"/"+this.id;
+                    this.nodos[i].ambitos=ambi;
                 }else{
-                    //ambi=this.ambitos+"/"+this.id;
-                    
                     var complemento="";
                     for(var f=0;f<this.parametros.length;f++){
                         complemento+="_"+this.parametros[f].tipo;
                     }
-                    ambi=this.ambitos+"/"+this.id+complemento;
-                    this.nodos[i].implicito=this.ambitos+"_"+this.id+complemento;
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                    ambi2=this.nodos[i].ambitos;
                 }
-                this.nodos[i].ambitos=ambi;
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 var tipo_result=this.nodos[i].getTipe(entorno);
                 var temp="";
@@ -46,7 +50,7 @@ class Metodo{
                         temp+="heap[h]="+result_temp.u_etiqueta+";\n";
                         temp+="h=h+1;\n";
                         var simulado=generarEtiqueta();
-                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin declaracion variable local\n";

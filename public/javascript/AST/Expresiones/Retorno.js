@@ -16,22 +16,46 @@ class Retorno{
             }else{
                 temp_ambi=this.ambitos;
             }
-
+            var sim;
+            if(this.padre=="main"){
+                sim=entorno.obtener("main");
+            }else{
+                sim=entorno.obtener(temp_ambi.replace("/","_"));
+            }
+            if(sim!=null){
+                if(sim.tipo=="VOID"){
+                    alert("Error Semantico, la sentencia retorno no puede existir en un metodo de tipo VOID");
+                }else{
+                    this.exp1.ambitos=temp_ambi;
+                    this.exp1.padre=this.padre;
+                    this.exp1.normal=this.normal;
+                    var temp_result=this.exp1.getValue(entorno);
+                    var temp_tipo=this.exp1.getTipe(entorno);
+                    if(temp_result!=null){
+                        if(temp_tipo==sim.tipo){
+                            temp+=temp_result.cadena;
+                            var eti1=generarEtiqueta();
+                            temp+=eti1+"=p+0;//posicion del return en el objeto\n";
+                            var eti2=generarEtiqueta();
+                            temp+=eti2+"=h;\n";
+                            temp+="heap[h]="+temp_result.u_etiqueta+";\n";
+                            temp+="h=h+1;\n";
+                            temp+="stack["+eti1+"]="+eti2+";\n";
+                        }else{
+                            alert("Error Semantico, el tipo del retorno y la funcion no son iguales");
+                        }
+                    }else{
+                        alert("Error Semantico, No se pudo realizar la operacion");
+                    }
+                }
+            }else{
+                alert("Error Semantico, no existe el metodo donde esta el return");
+            }
+            
         }else{
             //se tiene que retornar el null
             alert("Tenemos que retornar el null");
         }
-
-
-
-
-        var eti1=generarEtiqueta();
-        temp+=eti1+"=p+0;\n";
-        var eti2=generarEtiqueta();
-        temp+=eti2+"=h;\n";
-        temp+="heap[h]=10;\n";
-        temp+="h=h+1;\n";
-        temp+="stack["+eti1+"]="+eti2+";\n";
         result.cadena+=temp;
         return result;
     }

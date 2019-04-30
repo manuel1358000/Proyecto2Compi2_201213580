@@ -20,6 +20,8 @@ class Mientras{
         var etiinicio=generarSalto();
         var etisalida=generarSalto();
         this.condicion.ambitos=temp_ambi;
+        this.condicion.padre=this.padre;
+        this.condicion.normal=this.normal;
         var result_condi=this.condicion.getValue(entorno);
         var tipo_condi=this.condicion.getTipe(entorno);
         if(this.tipo){
@@ -73,6 +75,7 @@ class Mientras{
                                 var sim_temp=local.obtener(temp_ambi.replace("/","_"));
                                 temp_tam=sim_temp.tamanio;
                             }
+                            this.nodos[i].tam=temp_tam;
                             var result_temp=this.nodos[i].execute(local);
                             temp+=result_temp.cadena;
                         }else if(this.nodos[i] instanceof Asignacion){
@@ -232,6 +235,7 @@ class Mientras{
                         var sim_temp=local.obtener(temp_ambi.replace("/","_"));
                         temp_tam=sim_temp.tamanio;
                     }
+                    this.nodos[i].tam=temp_tam;
                     var result_temp=this.nodos[i].execute(local);
                     temp+=result_temp.cadena;
                 }else if(this.nodos[i] instanceof Asignacion){

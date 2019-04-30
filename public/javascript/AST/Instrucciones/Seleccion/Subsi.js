@@ -19,12 +19,13 @@ class Subsi{
         this.u_etiqueta=false;
         if(this.condicion!=null){
             this.condicion.ambitos=temp_ambi;
+            this.condicion.padre=this.padre;
+            this.condicion.normal=this.normal;
             var result_condicion=this.condicion.getValue(entorno);
             var tipo_condicion=this.condicion.getTipe(entorno);
             if(tipo_condicion=="BOOLEAN"){
                 //primer pasada para cargar todas las variables
                 cargarSimbolosif(this.nodos,local,temp_ambi); 
-                
                 var etif=generarSalto();
                 temp+=result_condicion.cadena;
                 result.u_etiqueta=etif;
@@ -73,6 +74,7 @@ class Subsi{
                             var sim_temp=local.obtener(temp_ambi.replace("/","_"));
                             temp_tam=sim_temp.tamanio;
                         }
+                        this.nodos[i].tam=temp_tam;
                         var result_temp=this.nodos[i].execute(local);
                         temp+=result_temp.cadena;
                     }else if(this.nodos[i] instanceof Si){
@@ -212,6 +214,7 @@ class Subsi{
                         var sim_temp=local.obtener(temp_ambi.replace("/","_"));
                         temp_tam=sim_temp.tamanio;
                     }
+                    this.nodos[i].tam=temp_tam;
                     var result_temp=this.nodos[i].execute(local);
                     temp+=result_temp.cadena;
                 }else if(this.nodos[i] instanceof Si){
