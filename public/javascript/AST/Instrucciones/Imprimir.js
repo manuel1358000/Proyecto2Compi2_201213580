@@ -4,6 +4,8 @@ class Imprimir{
         this.salto=salto;
         this.ambitos="";
         this.tam=0;
+        this.padre="";
+        this.normal="";
     }
 
     execute(entorno){

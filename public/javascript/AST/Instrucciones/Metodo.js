@@ -86,13 +86,22 @@ class Metodo{
                 var result_temp=this.nodos[i].execute(entorno);
                 result.cadena+=result_temp.cadena;
             }else if(this.nodos[i] instanceof Asignacion){
-                
-                var complemento="";
-                for(var f=0;f<this.parametros.length;f++){
-                    complemento+="_"+this.parametros[f].tipo;
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
                 }
-                var ambi=this.ambitos+"/"+this.id+complemento;
-                this.nodos[i].ambitos=ambi;
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 var temp="";
                 if(result_temp!=null){
@@ -117,53 +126,67 @@ class Metodo{
                    
                 }
                 result.cadena+=temp;
-            }else if(this.nodos[i] instanceof Si){
-                var param="";
-                for(var f=0;f<this.parametros.length;f++){
-                    var tipo_param=this.parametros[f].tipo;
-                    param+="_"+tipo_param;
-                }
-                var ambi=this.ambitos+"/"+this.id+param;
-                this.nodos[i].ambitos=ambi;
-                var result_temp=this.nodos[i].execute(entorno);
-                //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
-                if(result_temp!=null){  
-                    result.cadena+=result_temp.cadena;
-                }
             }else if(this.nodos[i] instanceof Selecciona){
-                var param="";
-                for(var f=0;f<this.parametros.length;f++){
-                    var tipo_param=this.parametros[f].tipo;
-                    param+="_"+tipo_param;
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
                 }
-                var ambi=this.ambitos+"/"+this.id+param;
-                this.nodos[i].ambitos=ambi;
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
                 if(result_temp!=null){  
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Mientras){
-                var param="";
-                for(var f=0;f<this.parametros.length;f++){
-                    var tipo_param=this.parametros[f].tipo;
-                    param+="_"+tipo_param;
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
                 }
-                var ambi=this.ambitos+"/"+this.id+param;
-                this.nodos[i].ambitos=ambi;
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
                 if(result_temp!=null){  
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof Aritmetica){
                 if(this.nodos[i].unario){
-                    var param="";
-                    for(var f=0;f<this.parametros.length;f++){
-                        var tipo_param=this.parametros[f].tipo;
-                        param+="_"+tipo_param;
+                    var ambi=this.ambitos;
+                    var temp="";
+                    var nombre="";
+                    if(this.id=="main"){
+                        nombre="main";
+                        this.nodos[i].ambitos=ambi;
+                    }else{
+                        var complemento="";
+                        for(var f=0;f<this.parametros.length;f++){
+                            complemento+="_"+this.parametros[f].tipo;
+                        }
+                        nombre=this.ambitos+"_"+this.id+complemento;
+                        this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
                     }
-                    var ambi=this.ambitos+"/"+this.id+param;
-                    this.nodos[i].ambitos=ambi;
+                    this.nodos[i].padre=nombre;
+                    this.nodos[i].normal=ambi;
                     var result_temp=this.nodos[i].getValue(entorno);
                     if(result_temp!=null){  
                         result.cadena+=result_temp.cadena;
@@ -172,14 +195,45 @@ class Metodo{
                     alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
                 }
             }else if(this.nodos[i] instanceof Para){
-                var param="";
-                for(var f=0;f<this.parametros.length;f++){
-                    var tipo_param=this.parametros[f].tipo;
-                    param+="_"+tipo_param;
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
                 }
-                var ambi=this.ambitos+"/"+this.id+param;
-                this.nodos[i].ambitos=ambi;
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
+                if(result_temp!=null){  
+                    result.cadena+=result_temp.cadena;
+                }
+            }else if(this.nodos[i] instanceof Si){
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                }
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
                 if(result_temp!=null){  
                     result.cadena+=result_temp.cadena;
                 }

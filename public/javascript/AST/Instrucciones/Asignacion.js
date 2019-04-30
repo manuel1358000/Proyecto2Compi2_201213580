@@ -4,6 +4,8 @@ class Asignacion{
         this.iniValue=iniValue;
         this.dimensiones=dimensiones;
         this.ambitos="";
+        this.padre="";
+        this.normal="";
     }
     execute(entorno){
         var respuesta=null;

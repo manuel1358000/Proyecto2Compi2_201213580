@@ -7,24 +7,40 @@ class Para{
         this.nodos=nodos;
         this.ambitos="";
         this.tipo=tipo;//true es para un for normal, false es para un foreach
+        this.padre="";
+        this.normal="";
     }
     execute(entorno){
         var local=new Entorno(entorno);
         var result=new Result();
         var temp="//INICIA FOR\n";
         if(this.tipo){
-            cargarSimbolosif(this.nodos,local,this.ambitos);
+            var temp_ambi="";
+            if(this.padre=="main"){
+                temp_ambi=this.ambitos+"/"+this.padre;
+            }else{
+                temp_ambi=this.ambitos;
+            }
             var result_inicializado=null;
             if(this.inicializado.length>0){
+                //declaracion de la variable int i=0;
                 var ambi=this.ambitos;
-                cargarSimbolosif(this.inicializado,entorno,this.ambitos);
+                this.nodos.unshift(this.inicializado[0]);
+                cargarSimbolosif(this.nodos,local,temp_ambi);
                 this.inicializado=this.inicializado[0];
-                this.inicializado.ambitos=this.ambitos;
+                this.inicializado.ambitos=temp_ambi;
+                this.inicializado.padre=this.padre;
+                this.inicializado.normal=this.normal;
                 result_inicializado=this.inicializado.execute(local);
+                this.nodos.splice(0,1);
             }else{
-                this.inicializado.ambitos=this.ambitos;
+                //asignacion de la variable i=0;
+                this.inicializado.ambitos=temp_ambi;
+                this.inicializado.padre=this.padre;
+                this.inicializado.normal=this.normal;
                 result_inicializado=this.inicializado.execute(local);
             }
+            
             var eti_salida=generarSalto();
             pool_salida.push(eti_salida);
             //ASIGNACION INICIA
@@ -36,25 +52,26 @@ class Para{
                 temp+="heap[h]="+result_inicializado.u_etiqueta+";\n";
                 temp+="h=h+1;\n";
                 var simulado=generarEtiqueta();
-                var sim=local.obtener(this.inicializado.id+"_"+this.ambitos);
+                var sim=local.obtener(this.inicializado.id+"_"+temp_ambi);
                 temp+=simulado+"=p+"+sim.posRel+";\n";
                 temp+="stack["+simulado+"]="+temph+";\n";
                 temp+="//fin asignacion variable local\n";
             }else{               
             }
-            this.condicion.ambitos=this.ambitos;
+            this.condicion.ambitos=temp_ambi;
             var result_condicion=this.condicion.getValue(local);
-            this.aumento.ambitos=this.ambitos;
+            this.aumento.ambitos=temp_ambi;
             var result_aumento=this.aumento.getValue(local);
             var eti_regresa=generarSalto();
             temp+=eti_regresa+":\n";
             if(result_condicion!=null){
                 temp+=result_condicion.cadena;
+                
                 temp+="if("+result_condicion.u_etiqueta+"==0) goto "+eti_salida+";\n";
             }
             for(var i=0;i<this.nodos.length;i++){
                 if(this.nodos[i] instanceof Declaracion){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -86,11 +103,11 @@ class Para{
                         temp+="//fin declaracion variable local\n";
                     }
                 }else if(this.nodos[i] instanceof Imprimir){
-                    this.nodos[i].ambitos=this.ambitos;
+                    this.nodos[i].ambitos=temp_ambi;
                     var result_temp=this.nodos[i].execute(local);
                     temp+=result_temp.cadena;
                 }else if(this.nodos[i] instanceof Asignacion){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -108,7 +125,7 @@ class Para{
                     }else{
                     }
                 }else if(this.nodos[i] instanceof Si){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -116,7 +133,7 @@ class Para{
                         temp+=result_temp.cadena;
                     }
                 }else if(this.nodos[i] instanceof Selecciona){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -124,7 +141,7 @@ class Para{
                         temp+=result_temp.cadena;
                     }
                 }else if(this.nodos[i] instanceof Asignacion){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -155,15 +172,15 @@ class Para{
                         console.log("tam pool "+pool_salida.length);
                     }
                 }else if(this.nodos[i] instanceof Mientras){
-                    var ambi=this.ambitos+"/"+this.id;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
-                    var result_temp=this.nodos[i].execute(entorno);
+                    var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){  
                         temp+=result_temp.cadena;
                     }
                 }else if(this.nodos[i] instanceof Aritmetica){
                     if(this.nodos[i].unario){
-                        var ambi=this.ambitos;
+                        var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].getValue(local);
                         if(result_temp!=null){  
@@ -173,13 +190,24 @@ class Para{
                         alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
                     }
                 }else if(this.nodos[i] instanceof Para){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){  
-                        result.cadena+=result_temp.cadena;
+                        temp+=result_temp.cadena;
                         
                     }
+                }else if(this.nodos[i] instanceof Llamada_Metodo){
+                    alert("El ambito aqui PARA "+this.ambitos);
+                    this.nodos[i].ambitos=this.ambitos;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
+                    var result_temp=this.nodos[i].execute(local);
+                    temp+="//INICIA LLAMADA A METODO\n"
+                    if(result_temp!=null){
+                        temp+=result_temp.cadena;
+                    }
+                    temp+="//FINALIZA LLAMADA A METODO\n";
                 }
             }
             temp+=result_aumento.cadena;

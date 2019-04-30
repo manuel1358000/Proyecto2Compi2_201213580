@@ -35,7 +35,7 @@ class Entorno3D{
         if(com==null){
             this.tabla.put(clave,sim);
         }else{
-            alert("Ya existe una declaracion con esos valores simbolos 3d");
+            alert("Ya existe una declaracion con esos valores simbolos 3d "+clave);
         }
     }
     getTam(){

@@ -14,6 +14,8 @@ class Declaracion{
         this.lista_valores=[];
         this.objeto=false;
         this.implicito="";
+        this.padre="";
+        this.normal="";
     }
     execute(entorno){
         var respuesta=null;

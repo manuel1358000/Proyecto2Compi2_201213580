@@ -3,6 +3,8 @@ class Subsi{
         this.condicion=condicion;
         this.nodos=nodos;
         this.ambitos="";
+        this.padre="";
+        this.normal="";
     }
     execute(entorno){//aqui ya viene el entorno local, no hay que moverle nada
         var result=new Result();
@@ -131,6 +133,16 @@ class Subsi{
                         if(result_temp!=null){  
                             temp+=result_temp.cadena;
                         }
+                    }else if(this.nodos[i] instanceof Llamada_Metodo){
+                        this.nodos[i].ambitos=this.ambitos;
+                        this.nodos[i].padre=this.padre;
+                        this.nodos[i].normal=this.normal;
+                        var result_temp=this.nodos[i].execute(entorno);
+                        temp+="//INICIA LLAMADA A METODO\n"
+                        if(result_temp!=null){
+                            temp+=result_temp.cadena;
+                        }
+                        temp+="//FINALIZA LLAMADA A METODO\n";
                     }
                 }
             }else{
@@ -251,6 +263,16 @@ class Subsi{
                     if(result_temp!=null){  
                         temp+=result_temp.cadena;
                     }
+                }else if(this.nodos[i] instanceof Llamada_Metodo){
+                    this.nodos[i].ambitos=this.ambitos;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
+                    var result_temp=this.nodos[i].execute(entorno);
+                    temp+="//INICIA LLAMADA A METODO\n"
+                    if(result_temp!=null){
+                        temp+=result_temp.cadena;
+                    }
+                    temp+="//FINALIZA LLAMADA A METODO\n";
                 }
             }
         }

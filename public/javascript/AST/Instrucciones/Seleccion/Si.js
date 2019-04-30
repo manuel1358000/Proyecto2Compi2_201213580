@@ -5,6 +5,8 @@ class Si{
         this.subifs=subifs;
         this.defecto=defecto;
         this.ambitos="";
+        this.padre="";
+        this.normal="";
     }
     execute(entorno){
         var condi=true;
@@ -155,6 +157,16 @@ class Si{
                         if(result_temp!=null){  
                             temp+=result_temp.cadena;
                         }
+                    }else if(this.nodos[i] instanceof Llamada_Metodo){
+                        this.nodos[i].ambitos=this.ambitos;
+                        this.nodos[i].padre=this.padre;
+                        this.nodos[i].normal=this.normal;
+                        var result_temp=this.nodos[i].execute(entorno);
+                        temp+="//INICIA LLAMADA A METODO\n"
+                        if(result_temp!=null){
+                            temp+=result_temp.cadena;
+                        }
+                        temp+="//FINALIZA LLAMADA A METODO\n";
                     }
                 }
                 temp+="goto "+etisalida+";\n";
@@ -204,7 +216,7 @@ function cargarSimbolosif(nodo,entorno,ambitos){
     for(var i=0;i<nodo.length;i++){        
         if(nodo[i] instanceof Declaracion){
             var id_instancia=nodo[i].id+"_"+ambitos;
-            var sim=new Simbolo(nodo[i].id,"INTEGER","LOCAL",Type.ID,posrel,1,0,nodo[i].getVisibilidad(),nodo[i].modificadores);
+            var sim=new Simbolo(nodo[i].id,"INTEGER",ambitos,Type.ID,posrel,1,0,nodo[i].getVisibilidad(),nodo[i].modificadores);
             sim.inicializado=false;
             entorno.agregar(id_instancia,sim);
             posrel++;

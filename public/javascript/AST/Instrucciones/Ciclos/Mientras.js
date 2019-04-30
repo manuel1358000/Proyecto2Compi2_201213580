@@ -4,27 +4,35 @@ class Mientras{
         this.nodos=nodos;
         this.tipo=tipo;//true es while,false es dowhile
         this.ambitos="";
+        this.padre="";
+        this.normal="";
     }
     execute(entorno){
         var result=new Result();
         var local=new Entorno(entorno);
         var temp="";
+        var temp_ambi="";
+        if(this.padre=="main"){
+            temp_ambi=this.ambitos+"/"+this.padre;
+        }else{
+            temp_ambi=this.ambitos;
+        }
         var etiinicio=generarSalto();
         var etisalida=generarSalto();
-        this.condicion.ambitos=this.ambitos;
+        this.condicion.ambitos=temp_ambi;
         var result_condi=this.condicion.getValue(entorno);
         var tipo_condi=this.condicion.getTipe(entorno);
         if(this.tipo){
             if(result_condi!=null){
                 if(tipo_condi=="BOOLEAN"){
-                    cargarSimbolosif(this.nodos,local,this.ambitos);
+                    cargarSimbolosif(this.nodos,local,temp_ambi);
                     temp+=etiinicio+":\n";
                     temp+=result_condi.cadena;
                     temp+="if("+result_condi.u_etiqueta+"==0) goto "+etisalida+";\n";
                     pool_salida.push(etisalida);    
                     for(var i=0;i<this.nodos.length;i++){
                         if(this.nodos[i] instanceof Declaracion){
-                            var ambi=this.ambitos;
+                            var ambi=temp_ambi;
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].execute(local);
                             if(result_temp!=null){
@@ -56,11 +64,11 @@ class Mientras{
                                 temp+="//fin declaracion variable local\n";
                             }
                         }else if(this.nodos[i] instanceof Imprimir){
-                            this.nodos[i].ambitos=this.ambitos;
+                            this.nodos[i].ambitos=temp_ambi;
                             var result_temp=this.nodos[i].execute(local);
                             temp+=result_temp.cadena;
                         }else if(this.nodos[i] instanceof Asignacion){
-                            var ambi=this.ambitos;
+                            var ambi=temp_ambi;
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].execute(local);
                             if(result_temp!=null){
@@ -80,7 +88,7 @@ class Mientras{
                                 alert("es nulo");
                             }
                         }else if(this.nodos[i] instanceof Si){
-                            var ambi=this.ambitos;
+                            var ambi=temp_ambi;
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].execute(local);
                             //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -88,7 +96,7 @@ class Mientras{
                                 temp+=result_temp.cadena;
                             }
                         }else if(this.nodos[i] instanceof Selecciona){
-                            var ambi=this.ambitos;
+                            var ambi=temp_ambi;
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].execute(local);
                             //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -96,7 +104,7 @@ class Mientras{
                                 temp+=result_temp.cadena;
                             }
                         }else if(this.nodos[i] instanceof Asignacion){
-                            var ambi=this.ambitos;
+                            var ambi=temp_ambi;
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].execute(local);
                             if(result_temp!=null){
@@ -125,7 +133,7 @@ class Mientras{
                                 alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
                             }
                         }else if(this.nodos[i] instanceof Mientras){
-                            var ambi=this.ambitos+"/"+this.id;
+                            var ambi=temp_ambi;
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].execute(entorno);
                             if(result_temp!=null){  
@@ -133,7 +141,7 @@ class Mientras{
                             }
                         }else if(this.nodos[i] instanceof Aritmetica){
                             if(this.nodos[i].unario){
-                                var ambi=this.ambitos;
+                                var ambi=temp_ambi;
                                 this.nodos[i].ambitos=ambi;
                                 var result_temp=this.nodos[i].getValue(local);
                                 if(result_temp!=null){  
@@ -143,12 +151,23 @@ class Mientras{
                                 alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
                             }
                         }else if(this.nodos[i] instanceof Para){
-                            var ambi=this.ambitos;
+                            var ambi=temp_ambi;
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].execute(local);
                             if(result_temp!=null){  
-                                result.cadena+=result_temp.cadena;
+                                temp+=result_temp.cadena;
                             }
+                        }else if(this.nodos[i] instanceof Llamada_Metodo){
+                            this.nodos[i].ambitos=this.ambitos;
+                            this.nodos[i].padre=this.padre;
+                            this.nodos[i].normal=this.normal;
+                            var result_temp=this.nodos[i].execute(local);
+                            temp+="//INICIA LLAMADA A METODO\n"
+                            if(result_temp!=null){
+                                temp+=result_temp.cadena;
+                            }
+                            temp+="//FINALIZA LLAMADA A METODO\n";
+                            
                         }
                     }
                     temp+="goto "+etiinicio+";\n";

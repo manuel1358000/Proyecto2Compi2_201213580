@@ -16,10 +16,15 @@ class Llamada_Metodo{
             if(this.parametros[i].getTipe(entorno)=="ID"){
                 indices.unshift(i);
             }
-            param_temp[i].ambitos=this.ambitos;
+            if(this.padre=="main"){
+                param_temp[i].ambitos=this.ambitos+"/"+this.padre
+            }else{
+                param_temp[i].ambitos=this.ambitos;
+            }
             param_temp[i].getValue(entorno);
             nombre_completo+="_"+param_temp[i].getTipe(entorno);
         }
+
         //vamos a verificar si existe el metodo en el entorno
         var sim=entorno.obtener(nombre_completo);   
         if(sim!=null){
@@ -36,7 +41,12 @@ class Llamada_Metodo{
                                 this.parametros[i].tipoprimitivo="ID";
                             }
                         }
-                        this.parametros[i].ambitos=this.ambitos;
+                        if(this.padre=="main"){
+                            this.parametros[i].ambitos=this.ambitos+"/"+this.padre
+                        }else{
+                            this.parametros[i].ambitos=this.ambitos;
+                        }
+                        
                         var result_temp=this.parametros[i].getValue(entorno);
                         var tipo_parametro=this.parametros[i].getTipe(entorno);
                         if(tipo_parametro=="INTEGER"||tipo_parametro=="DOUBLE"||tipo_parametro=="BOOLEAN"){

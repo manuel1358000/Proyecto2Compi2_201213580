@@ -30,6 +30,7 @@
 "print"             return 'PRINT'
 "new"               return 'NEW'
 "this"              return 'THIS'
+"return"            return 'RETORNO'
 //sentencias control
 "if"                return 'IF'
 "else"              return 'ELSE'
@@ -326,7 +327,14 @@ sentencias_metodo: variables ';'{$$=$1;}
                  | sentencia_llamada ';'{
                                         $$=[];
                                         $$.push($1);
+                                        }
+                 | sentencia_retorno ';'{
+                                        $$=[];
+                                        $$.push($1);
                                         };
+
+sentencia_retorno: RETORNO exp{$$=new Retorno($2);}
+                | RETORNO{$$=new Retorno(null);};
 
 sentencia_llamada: ID '(' ')'{
                             $$=new Llamada_Metodo($1,[]);
