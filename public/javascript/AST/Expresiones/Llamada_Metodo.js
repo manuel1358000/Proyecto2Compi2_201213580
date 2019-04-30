@@ -5,8 +5,9 @@ class Llamada_Metodo{
         this.ambitos="";
         this.padre="";
         this.normal="";
+        this.primitivetipe;
     }
-    execute(entorno){
+    getValue(entorno){
         var result=null;
         var nombre_completo=this.normal+"_"+this.id;
         var temp="\n\n\n";
@@ -80,6 +81,18 @@ class Llamada_Metodo{
                     }
                     temp+="p=p+"+sim_temp.tamanio+";\n";
                     temp+="call "+nombre_completo+";\n";
+                    this.primitivetipe=sim.tipo;
+                    if(this.primitivetipe!="VOID"){
+                        var eti10=generarEtiqueta();
+                        temp+=eti10+"=p+0;//posicion del valor de retorno\n";
+                        var eti11=generarEtiqueta();
+                        temp+=eti11+"=stack["+eti10+"];\n";
+                        var eti12=generarEtiqueta();
+                        temp+=eti12+"=heap["+eti11+"];";
+                        result.u_etiqueta=eti12;
+                    }else{
+                        result.u_etiqueta=null;
+                    }
                     temp+="p=p-"+sim_temp.tamanio+";\n";
                 }else{
                     alert("Ocurrio un error en el indice padre llamada a metodo");
@@ -93,5 +106,8 @@ class Llamada_Metodo{
         temp+="\n\n\n";
         result.cadena+=temp;
         return result;
+    }
+    getTipe(entorno){
+        return this.primitivetipe;
     }
 }

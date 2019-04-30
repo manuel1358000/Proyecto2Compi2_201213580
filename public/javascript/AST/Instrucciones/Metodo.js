@@ -69,20 +69,26 @@ class Metodo{
                 }
                 result.cadena+=temp;
             }else if(this.nodos[i] instanceof Imprimir){
-                var separado=this.ambitos.split("/");
-                var armar_elemento=separado[0]+"_"+this.id;
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                var result_tamanio_salto;
                 if(this.id=="main"){
-                    armar_elemento=this.id;
+                    nombre="main";
+                    result_tamanio_salto=entorno.obtener(nombre);
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                    result_tamanio_salto=entorno.obtener(ambi+"_"+this.id+complemento);
                 }
-                var param="";
-                for(var f=0;f<this.parametros.length;f++){
-                    var tipo_param=this.parametros[f].tipo;
-                    armar_elemento+="_"+tipo_param;
-                    param+="_"+tipo_param;
-                }
-                var result_tamanio_salto=entorno.obtener(armar_elemento);
-                this.nodos[i].tam=result_tamanio_salto.tamanio;
-                this.nodos[i].ambitos=this.ambitos+"/"+this.id+param;
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
+                this.nodos[i].tam=result_tamanio_salto.tamanio; 
                 var result_temp=this.nodos[i].execute(entorno);
                 result.cadena+=result_temp.cadena;
             }else if(this.nodos[i] instanceof Asignacion){
@@ -254,13 +260,35 @@ class Metodo{
                 }
                 this.nodos[i].padre=nombre;
                 this.nodos[i].normal=ambi;
-                var result_temp=this.nodos[i].execute(entorno);
+                var result_temp=this.nodos[i].getValue(entorno);
                 temp+="//INICIA LLAMADA A METODO\n"
                 if(result_temp!=null){
                     temp+=result_temp.cadena;
                 }
                 temp+="//FINALIZA LLAMADA A METODO\n";
                 result.cadena+=temp;
+            }else if(this.nodos[i] instanceof Retorno){
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                }
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
+                var result_temp=this.nodos[i].getValue(entorno);
+                //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
+                if(result_temp!=null){  
+                    result.cadena+=result_temp.cadena;
+                }
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");

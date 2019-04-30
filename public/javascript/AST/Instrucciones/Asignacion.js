@@ -9,12 +9,6 @@ class Asignacion{
     }
     execute(entorno){
         var respuesta=null;
-        var temp_ambi="";
-            if(this.padre=="main"){
-                temp_ambi=this.ambitos+"/"+this.padre;
-            }else{
-                temp_ambi=this.ambitos;
-            }
         if(this.id instanceof Este){
             respuesta=new Result();
             respuesta.tipo="this";

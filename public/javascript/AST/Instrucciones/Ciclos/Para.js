@@ -104,6 +104,14 @@ class Para{
                     }
                 }else if(this.nodos[i] instanceof Imprimir){
                     this.nodos[i].ambitos=temp_ambi;
+                    var temp_tam=0;
+                    if(this.padre=="main"){
+                        var sim_temp=local.obtener("main");
+                        temp_tam=sim_temp.tamanio;
+                    }else{
+                        var sim_temp=local.obtener(temp_ambi.replace("/","_"));
+                        temp_tam=sim_temp.tamanio;
+                    }
                     var result_temp=this.nodos[i].execute(local);
                     temp+=result_temp.cadena;
                 }else if(this.nodos[i] instanceof Asignacion){
@@ -202,7 +210,7 @@ class Para{
                     this.nodos[i].ambitos=this.ambitos;
                     this.nodos[i].padre=this.padre;
                     this.nodos[i].normal=this.normal;
-                    var result_temp=this.nodos[i].execute(local);
+                    var result_temp=this.nodos[i].getValue(local);
                     temp+="//INICIA LLAMADA A METODO\n"
                     if(result_temp!=null){
                         temp+=result_temp.cadena;

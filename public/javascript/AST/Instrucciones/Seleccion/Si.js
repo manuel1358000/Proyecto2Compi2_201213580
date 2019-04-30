@@ -71,6 +71,14 @@ class Si{
                         }
                     }else if(this.nodos[i] instanceof Imprimir){
                         this.nodos[i].ambitos=temp_ambi;
+                        var temp_tam=0;
+                        if(this.padre=="main"){
+                            var sim_temp=local.obtener("main");
+                            temp_tam=sim_temp.tamanio;
+                        }else{
+                            var sim_temp=local.obtener(temp_ambi.replace("/","_"));
+                            temp_tam=sim_temp.tamanio;
+                        }
                         var result_temp=this.nodos[i].execute(local);
                         temp+=result_temp.cadena;
                     }else if(this.nodos[i] instanceof Asignacion){
@@ -167,7 +175,7 @@ class Si{
                         this.nodos[i].ambitos=this.ambitos;
                         this.nodos[i].padre=this.padre;
                         this.nodos[i].normal=this.normal;
-                        var result_temp=this.nodos[i].execute(entorno);
+                        var result_temp=this.nodos[i].getValue(entorno);
                         temp+="//INICIA LLAMADA A METODO\n"
                         if(result_temp!=null){
                             temp+=result_temp.cadena;
@@ -182,14 +190,13 @@ class Si{
             }
         }
         if(this.subifs.length>0){
-            var localif=new Entorno(entorno);
             temp+=etif+":\n";
             condi=false;
             for(var i=0;i<this.subifs.length;i++){
                 this.subifs[i].ambitos=this.ambitos;
                 this.subifs[i].padre=this.padre;
                 this.subifs[i].normal=this.normal;
-                var result_temp=this.subifs[i].execute(localif);
+                var result_temp=this.subifs[i].execute(entorno);
                 if(result_temp!=null){
                     temp+=result_temp.cadena;
                     temp+="goto "+etisalida+";\n";
@@ -202,11 +209,10 @@ class Si{
                 temp+=etif+":\n";
             }
             condi=false;
-            var localif=new Entorno(entorno);
             this.defecto.ambitos=this.ambitos;
             this.defecto.padre=this.padre;
             this.defecto.normal=this.normal;
-            var result_temp=this.defecto.execute(localif);
+            var result_temp=this.defecto.execute(entorno);
             if(result_temp!=null){
                 temp+=result_temp.cadena;
                 temp+="goto "+etisalida+";\n";
@@ -226,7 +232,7 @@ function cargarSimbolosif(nodo,entorno,ambitos){
     for(var i=0;i<nodo.length;i++){        
         if(nodo[i] instanceof Declaracion){
             var id_instancia=nodo[i].id+"_"+ambitos;
-            var sim=new Simbolo(nodo[i].id,"INTEGER",ambitos,Type.ID,posrel,1,0,nodo[i].getVisibilidad(),nodo[i].modificadores);
+            var sim=new Simbolo(nodo[i].id,nodo[i].tipo,ambitos,Type.ID,posrel,1,0,nodo[i].getVisibilidad(),nodo[i].modificadores);
             sim.inicializado=false;
             entorno.agregar(id_instancia,sim);
             posrel++;

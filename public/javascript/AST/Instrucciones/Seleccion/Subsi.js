@@ -23,7 +23,8 @@ class Subsi{
             var tipo_condicion=this.condicion.getTipe(entorno);
             if(tipo_condicion=="BOOLEAN"){
                 //primer pasada para cargar todas las variables
-                cargarSimbolosif(this.nodos,local,temp_ambi);    
+                cargarSimbolosif(this.nodos,local,temp_ambi); 
+                
                 var etif=generarSalto();
                 temp+=result_condicion.cadena;
                 result.u_etiqueta=etif;
@@ -64,6 +65,14 @@ class Subsi{
                         }
                     }else if(this.nodos[i] instanceof Imprimir){
                         this.nodos[i].ambitos=temp_ambi;
+                        var temp_tam=0;
+                        if(this.padre=="main"){
+                            var sim_temp=local.obtener("main");
+                            temp_tam=sim_temp.tamanio;
+                        }else{
+                            var sim_temp=local.obtener(temp_ambi.replace("/","_"));
+                            temp_tam=sim_temp.tamanio;
+                        }
                         var result_temp=this.nodos[i].execute(local);
                         temp+=result_temp.cadena;
                     }else if(this.nodos[i] instanceof Si){
@@ -111,7 +120,6 @@ class Subsi{
                             temp+="goto "+temp_salida+";\n";
                             temp+="//finaliza detener -----------------------------\n";
                         }else{
-                            console.log("tam pool "+pool_salida.length);
                             alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
                         }
                     }else if(this.nodos[i] instanceof Mientras){
@@ -143,7 +151,7 @@ class Subsi{
                         this.nodos[i].ambitos=this.ambitos;
                         this.nodos[i].padre=this.padre;
                         this.nodos[i].normal=this.normal;
-                        var result_temp=this.nodos[i].execute(entorno);
+                        var result_temp=this.nodos[i].getValue(entorno);
                         temp+="//INICIA LLAMADA A METODO\n"
                         if(result_temp!=null){
                             temp+=result_temp.cadena;
@@ -154,6 +162,7 @@ class Subsi{
             }else{
                 alert("Error Semantico, La condicion de un else if debe de ser boolean");
             }
+            
         }else{
             //esta entrando al ELSE
             //entonces es un else
@@ -162,7 +171,7 @@ class Subsi{
             for(var i=0;i<this.nodos.length;i++){
                 this.nodos[i].ambitos=temp_ambi;
                 if(this.nodos[i] instanceof Declaracion){
-                    var ambi=this.ambitos;
+                    var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -195,6 +204,14 @@ class Subsi{
                     }
                 }else if(this.nodos[i] instanceof Imprimir){
                     this.nodos[i].ambitos=temp_ambi;
+                    var temp_tam=0;
+                    if(this.padre=="main"){
+                        var sim_temp=local.obtener("main");
+                        temp_tam=sim_temp.tamanio;
+                    }else{
+                        var sim_temp=local.obtener(temp_ambi.replace("/","_"));
+                        temp_tam=sim_temp.tamanio;
+                    }
                     var result_temp=this.nodos[i].execute(local);
                     temp+=result_temp.cadena;
                 }else if(this.nodos[i] instanceof Si){
@@ -273,7 +290,7 @@ class Subsi{
                     this.nodos[i].ambitos=this.ambitos;
                     this.nodos[i].padre=this.padre;
                     this.nodos[i].normal=this.normal;
-                    var result_temp=this.nodos[i].execute(entorno);
+                    var result_temp=this.nodos[i].getValue(entorno);
                     temp+="//INICIA LLAMADA A METODO\n"
                     if(result_temp!=null){
                         temp+=result_temp.cadena;

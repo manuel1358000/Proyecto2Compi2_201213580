@@ -10,136 +10,144 @@ class Imprimir{
 
     execute(entorno){
         var result=new Result();
-        this.expresion.ambitos=this.ambitos;
+        var temp_ambi="";
+        if(this.padre=="main"){
+            temp_ambi=this.ambitos+"/"+this.padre;
+        }else{
+            temp_ambi=this.ambitos;
+        }
+        this.expresion.padre=this.padre;
+        this.expresion.normal=this.normal;
+        this.expresion.ambitos=temp_ambi;
         var result_aux=this.expresion.getValue(entorno);
         result_aux.tipo=this.expresion.getTipe(entorno);
         result.tipo=result_aux.tipo;
         result.cadena+=result_aux.cadena;
-
-        if(result.tipo=="ID"){
-            var temp_sim=entorno.obtener(this.expresion.valor+"_"+this.ambitos);
+        if(result_aux.u_etiqueta==null){
+            alert("Error Semantico, La expresion que se quiere imprimir no es valida");
         }else{
+            if(result.tipo=="STRING"){
+                var armar="";
+                armar+="//----------------------inicia impresion numero\n";
+                armar+="p=p+"+this.tam+";\n";
+                armar+="p=p+2;//cambio de ambito real\n";
+                var direc_para1=generarEtiqueta();
+                armar+=direc_para1+"=p+1;//posicion del parametro\n";
+                armar+="stack["+direc_para1+"]="+result_aux.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
+                if(this.salto){
+                    armar+="call impresion_cadenas2;\n";
+                }else{
+                    armar+="call impresion_cadenas;\n";
+                }
+                armar+="p=p-2;//se regresa al ambito actual\n";
+                armar+="p=p-"+this.tam+";\n"; 
+                armar+="//----------------------finaliza impresion numero\n";
+                result.cadena+=armar;
+            }else if(result.tipo=="INTEGER"){
+                var armar="//--------------------inicia casteo entero a cadena\n";
+                var puntero_simulado=generarEtiqueta();
+                //se le setea el valor en el stack para cuando realize la llamada a la metodo
+                armar+=puntero_simulado+"=p+"+this.tam+";\n";
+                armar+=puntero_simulado+"="+puntero_simulado+"+2;//se simula el cambio de ambito para pasar el parametro\n";
+                armar+=puntero_simulado+"="+puntero_simulado+"+1;//tam del parametro\n";
+                armar+="stack["+puntero_simulado+"]="+result_aux.u_etiqueta+";\n";
+                armar+="p=p+"+this.tam+";\n";
+                armar+="p=p+2;//cambio de ambito real\n";
+                //se manda a llamar al metodo que convierte el entero en cadena
+                armar+="call enteroString;\n";
+                //finaliza y se manda a traer el resultado en la posicion 0 del stack
+                var temp=generarEtiqueta();
+                armar+=temp+"=p+0;\n";
+                var temp2=generarEtiqueta();
+                armar+=temp2+"=stack["+temp+"];//en esta posicion se encuentra el puntero h del numero que se convirtio\n";
+                armar+="p=p-2;//se regresa al ambito actual, se mueven dos posiciones por el this y el return\n";
+                armar+="p=p-"+this.tam+";\n";
+                armar+="//-------------------------finaliza casteo entero a cadena\n";
+                armar+="//-------------------------inicia impresion numero\n";
+                armar+="p=p+"+this.tam+";\n";
+                armar+="p=p+2;//cambio de ambito real\n";
+                var direc_para1=generarEtiqueta();
+                armar+=direc_para1+"=p+1;//posicion del parametro\n";
+                armar+="stack["+direc_para1+"]="+temp2+";//se le asigna el puntero h que tiene que imprimir\n";
+                if(this.salto){
+                    armar+="call impresion_cadenas2;\n";
+                }else{
+                    armar+="call impresion_cadenas;\n";
+                }
+                armar+="p=p-2;//se regresa al ambito actual\n";
+                armar+="p=p-"+this.tam+";\n";
+                armar+="//-------------------------finaliza impresion numero\n";
+                result.cadena+=armar;
+            }else if(result.tipo=="DOUBLE"){
+                var armar="//inicia el casteo de double a cadena\n";
+                var puntero_simulado=generarEtiqueta();
+                //se le setea el valor en el stack para cuando realize la llamada a la metodo
+                armar+=puntero_simulado+"=p+2;//se simula el cambio de ambito para pasar el parametro\n";
+                armar+=puntero_simulado+"="+puntero_simulado+"+1;//tam del parametro\n";
+                armar+="stack["+puntero_simulado+"]="+result_aux.u_etiqueta+";\n";
+                armar+="p=p+2;//cambio de ambito real\n";
+                //se manda a llamar al metodo que convierte el entero en cadena
+                armar+="call doubleString;\n";
+                //finaliza y se manda a traer el resultado en la posicion 0 del stack
+                var temp=generarEtiqueta();
+                armar+=temp+"=p+0;\n";
+                var temp2=generarEtiqueta();
+                armar+=temp2+"=stack["+temp+"];//en esta posicion se encuentra el puntero h del numero que se convirtio\n";
+                armar+="p=p-2;//se regresa al ambito actual, se mueven dos posiciones por el this y el return\n";
+                armar+="//-------------------------finaliza casteo double a cadena\n";
+                armar+="//-------------------------inicia impresion double\n";
+                armar+="p=p+2;//cambio de ambito real\n";
+                var direc_para1=generarEtiqueta();
+                armar+=direc_para1+"=p+1;//posicion del parametro\n";
+                armar+="stack["+direc_para1+"]="+temp2+";//se le asigna el puntero h que tiene que imprimir\n";
+                if(this.salto){
+                    armar+="call impresion_cadenas2;\n";
+                }else{
+                    armar+="call impresion_cadenas;\n";
+                }
+                armar+="p=p-2;//se regresa al ambito actual\n";
+                armar+="//-------------------------finaliza impresion double\n";
+                result.cadena+=armar;
+            }else if(result.tipo=="CHAR"){
+                var armar="";
+                var temp_result=generarString(result_aux.u_etiqueta,true,"CHAR");            
+                armar+=temp_result.cadena;
+                armar+="//-------------------------inicia impresion char\n";
+                armar+="p=p+2;//cambio de ambito real\n";
+                var direc_para1=generarEtiqueta();
+                armar+=direc_para1+"=p+1;//posicion del parametro\n";
+                armar+="stack["+direc_para1+"]="+temp_result.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
+                if(this.salto){
+                    armar+="call impresion_cadenas2;\n";
+                }else{
+                    armar+="call impresion_cadenas;\n";
+                }
+                armar+="p=p-2;//se regresa al ambito actual\n";
+                armar+="//-------------------------finaliza impresion char\n";
+                result.cadena+=armar;
+            }else if(result.tipo=="BOOLEAN"){
+                var armar="";
+                var temp_result=generarString(result_aux.u_etiqueta,true,"BOOLEAN");
+                armar+=temp_result.cadena;
+                armar+="//-------------------------inicia impresion boolean\n";
+                armar+="p=p+2;//cambio de ambito real\n";
+                var direc_para1=generarEtiqueta();
+                armar+=direc_para1+"=p+1;//posicion del parametro\n";
+                armar+="stack["+direc_para1+"]="+temp_result.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
+                if(this.salto){
+                    armar+="call impresion_cadenas2;\n";
+                }else{
+                    armar+="call impresion_cadenas;\n";
+                }
+                armar+="p=p-2;//se regresa al ambito actual\n";
+                armar+="//-------------------------finaliza impresion boolean\n";
+                result.cadena+=armar;
+            }else{
+                console.log(result.tipo);
+                alert("Error semantico, no esta inicializada la variable que se debe de imprimir o es un objeto");
+            }
         }
-        if(result.tipo=="STRING"){
-            var armar="";
-            armar+="//----------------------inicia impresion numero\n";
-            armar+="p=p+"+this.tam+";\n";
-            armar+="p=p+2;//cambio de ambito real\n";
-            var direc_para1=generarEtiqueta();
-            armar+=direc_para1+"=p+1;//posicion del parametro\n";
-            armar+="stack["+direc_para1+"]="+result_aux.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            if(this.salto){
-                armar+="call impresion_cadenas2;\n";
-            }else{
-                armar+="call impresion_cadenas;\n";
-            }
-            armar+="p=p-2;//se regresa al ambito actual\n";
-            armar+="p=p-"+this.tam+";\n"; 
-            armar+="//----------------------finaliza impresion numero\n";
-            result.cadena+=armar;
-        }else if(result.tipo=="INTEGER"){
-            var armar="//--------------------inicia casteo entero a cadena\n";
-            var puntero_simulado=generarEtiqueta();
-            //se le setea el valor en el stack para cuando realize la llamada a la metodo
-            armar+=puntero_simulado+"=p+"+this.tam+";\n";
-            armar+=puntero_simulado+"="+puntero_simulado+"+2;//se simula el cambio de ambito para pasar el parametro\n";
-            armar+=puntero_simulado+"="+puntero_simulado+"+1;//tam del parametro\n";
-            armar+="stack["+puntero_simulado+"]="+result_aux.u_etiqueta+";\n";
-            armar+="p=p+"+this.tam+";\n";
-            armar+="p=p+2;//cambio de ambito real\n";
-            //se manda a llamar al metodo que convierte el entero en cadena
-            armar+="call enteroString;\n";
-            //finaliza y se manda a traer el resultado en la posicion 0 del stack
-            var temp=generarEtiqueta();
-            armar+=temp+"=p+0;\n";
-            var temp2=generarEtiqueta();
-            armar+=temp2+"=stack["+temp+"];//en esta posicion se encuentra el puntero h del numero que se convirtio\n";
-            armar+="p=p-2;//se regresa al ambito actual, se mueven dos posiciones por el this y el return\n";
-            armar+="p=p-"+this.tam+";\n";
-            armar+="//-------------------------finaliza casteo entero a cadena\n";
-            armar+="//-------------------------inicia impresion numero\n";
-            armar+="p=p+"+this.tam+";\n";
-            armar+="p=p+2;//cambio de ambito real\n";
-            var direc_para1=generarEtiqueta();
-            armar+=direc_para1+"=p+1;//posicion del parametro\n";
-            armar+="stack["+direc_para1+"]="+temp2+";//se le asigna el puntero h que tiene que imprimir\n";
-            if(this.salto){
-                armar+="call impresion_cadenas2;\n";
-            }else{
-                armar+="call impresion_cadenas;\n";
-            }
-            armar+="p=p-2;//se regresa al ambito actual\n";
-            armar+="p=p-"+this.tam+";\n";
-            armar+="//-------------------------finaliza impresion numero\n";
-            result.cadena+=armar;
-        }else if(result.tipo=="DOUBLE"){
-            var armar="//inicia el casteo de double a cadena\n";
-            var puntero_simulado=generarEtiqueta();
-            //se le setea el valor en el stack para cuando realize la llamada a la metodo
-            armar+=puntero_simulado+"=p+2;//se simula el cambio de ambito para pasar el parametro\n";
-            armar+=puntero_simulado+"="+puntero_simulado+"+1;//tam del parametro\n";
-            armar+="stack["+puntero_simulado+"]="+result_aux.u_etiqueta+";\n";
-            armar+="p=p+2;//cambio de ambito real\n";
-            //se manda a llamar al metodo que convierte el entero en cadena
-            armar+="call doubleString;\n";
-            //finaliza y se manda a traer el resultado en la posicion 0 del stack
-            var temp=generarEtiqueta();
-            armar+=temp+"=p+0;\n";
-            var temp2=generarEtiqueta();
-            armar+=temp2+"=stack["+temp+"];//en esta posicion se encuentra el puntero h del numero que se convirtio\n";
-            armar+="p=p-2;//se regresa al ambito actual, se mueven dos posiciones por el this y el return\n";
-            armar+="//-------------------------finaliza casteo double a cadena\n";
-            armar+="//-------------------------inicia impresion double\n";
-            armar+="p=p+2;//cambio de ambito real\n";
-            var direc_para1=generarEtiqueta();
-            armar+=direc_para1+"=p+1;//posicion del parametro\n";
-            armar+="stack["+direc_para1+"]="+temp2+";//se le asigna el puntero h que tiene que imprimir\n";
-            if(this.salto){
-                armar+="call impresion_cadenas2;\n";
-            }else{
-                armar+="call impresion_cadenas;\n";
-            }
-            armar+="p=p-2;//se regresa al ambito actual\n";
-            armar+="//-------------------------finaliza impresion double\n";
-            result.cadena+=armar;
-        }else if(result.tipo=="CHAR"){
-            var armar="";
-            var temp_result=generarString(result_aux.u_etiqueta,true,"CHAR");            
-            armar+=temp_result.cadena;
-            armar+="//-------------------------inicia impresion char\n";
-            armar+="p=p+2;//cambio de ambito real\n";
-            var direc_para1=generarEtiqueta();
-            armar+=direc_para1+"=p+1;//posicion del parametro\n";
-            armar+="stack["+direc_para1+"]="+temp_result.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            if(this.salto){
-                armar+="call impresion_cadenas2;\n";
-            }else{
-                armar+="call impresion_cadenas;\n";
-            }
-            armar+="p=p-2;//se regresa al ambito actual\n";
-            armar+="//-------------------------finaliza impresion char\n";
-            result.cadena+=armar;
-        }else if(result.tipo=="BOOLEAN"){
-            var armar="";
-            var temp_result=generarString(result_aux.u_etiqueta,true,"BOOLEAN");
-            armar+=temp_result.cadena;
-            armar+="//-------------------------inicia impresion boolean\n";
-            armar+="p=p+2;//cambio de ambito real\n";
-            var direc_para1=generarEtiqueta();
-            armar+=direc_para1+"=p+1;//posicion del parametro\n";
-            armar+="stack["+direc_para1+"]="+temp_result.u_etiqueta+";//se le asigna el puntero h que tiene que imprimir\n";
-            if(this.salto){
-                armar+="call impresion_cadenas2;\n";
-            }else{
-                armar+="call impresion_cadenas;\n";
-            }
-            armar+="p=p-2;//se regresa al ambito actual\n";
-            armar+="//-------------------------finaliza impresion boolean\n";
-            result.cadena+=armar;
-        }else{
-            console.log(result.tipo);
-            alert("Error semantico, no esta inicializada la variable que se debe de imprimir o es un objeto");
-        }
+        
         return result;
     }
 }
