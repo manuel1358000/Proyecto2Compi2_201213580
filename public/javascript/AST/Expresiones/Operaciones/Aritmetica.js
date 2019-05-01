@@ -379,6 +379,9 @@ class Aritmetica{
                             result.valor=0;
                         }
                         result.cadena+=result.u_etiqueta+"="+result.valor+";\n";
+                    }else if(this.tipoprimitivo=="NULO"){
+                        result.valor=-1;
+                        result.cadena+=result.u_etiqueta+"="+result.valor+";\n";
                     }else{
                         result.cadena+=result.u_etiqueta+"="+this.valor+";\n";
                         result.valor=this.valor;

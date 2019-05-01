@@ -29,6 +29,7 @@ class Declaracion{
             respuesta=new Result();
             var eti_h=generarEtiqueta();
             temp+=eti_h+"=h;\n";
+            respuesta.u_etiqueta=eti_h;
             var sim=entorno.obtener(this.tipo+"_GLOBAL");
             temp+="h=h+"+sim.tamanio+";\n";
             var ran;
@@ -83,7 +84,6 @@ class Declaracion{
             temp+="p=p+"+sim_temp1.tamanio+";\n";
             temp+="call "+nombre_constructor+";\n";
             temp+="p=p-"+sim_temp1.tamanio+";\n";
-            temp+="//FINALIZA LLAMADA AL CONSTRUCTOR DEL OBJETO\n";
             respuesta.cadena+=temp;
         }else{
             var tipo=this.getTipe(entorno);
@@ -130,7 +130,7 @@ class Declaracion{
                     respuesta.cadena+=eti1+"=0;\n";
                     respuesta.u_etiqueta=eti1;
                 }else if(this.tipo=="CHAR"){
-                    respuesta.cadena+=eti1+"=0;\n";
+                    respuesta.cadena+=eti1+"=-1;\n";
                     respuesta.u_etiqueta=eti1;
                 }else if(this.tipo=="DOUBLE"){
                     respuesta.cadena+=eti1+"=0.0;\n";
@@ -138,9 +138,12 @@ class Declaracion{
                 }else if(this.tipo=="BOOLEAN"){
                     respuesta.cadena+=eti1+"=0;\n";
                     respuesta.u_etiqueta=eti1;
-                }else{
+                }else if(this.tipo=="STRING"){
                     //se le va a asignar un valor nulo
-                    respuesta.cadena+=eti1+"=0;\n";
+                    respuesta.cadena+=eti1+"=-1;\n";
+                    respuesta.u_etiqueta=eti1;
+                }else{
+                    respuesta.cadena+=eti1+"=-1;\n";
                     respuesta.u_etiqueta=eti1;
                 }
             }else{

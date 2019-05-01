@@ -24,7 +24,12 @@ class Relacional{
             this.exp2.normal=this.normal;
             var result2=this.exp2.getValue(entorno);
             var tipo2=this.exp2.getTipe(entorno);
-            var tipo=generarTipoRelacional(tipo1,tipo2);
+            var tipo;
+            if(tipo1=="NULO"||tipo2=="NULO"){
+                tipo="BOOLEAN";
+            }else{
+                tipo=generarTipoRelacional(tipo1,tipo2);
+            }
             if(tipo!=null){
                 if(this.operador==">"){
                     var salto_v=generarSalto();
@@ -306,7 +311,7 @@ class Relacional{
     }
 }
 function numerico(tipo){
-    if(tipo==PrimitiveType.STRING||tipo==PrimitiveType.INTEGER||tipo==PrimitiveType.DOUBLE||tipo==PrimitiveType.BOOLEAN||tipo==PrimitiveType.CHAR){
+    if(tipo==PrimitiveType.STRING||tipo==PrimitiveType.INTEGER||tipo==PrimitiveType.DOUBLE||tipo==PrimitiveType.BOOLEAN||tipo==PrimitiveType.CHAR||tipo==PrimitiveType.NULO){
         return true;
     }else{
         return false;
@@ -315,6 +320,8 @@ function numerico(tipo){
 function generarTipoRelacional(tipo1,tipo2){
     if(!numerico(tipo1)||!numerico(tipo2)){
         return null;
+    }else if(tipo1==PrimitiveType.NULO||tipo2==PrimitiveType.NULO){
+        return PrimitiveType.BOOLEAN;
     }else if(tipo1==PrimitiveType.STRING||tipo2==PrimitiveType.STRING){
         if(tipo1==PrimitiveType.STRING&&tipo2==PrimitiveType.STRING){
             return PrimitiveType.STRING;

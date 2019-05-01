@@ -41,6 +41,19 @@ class Metodo{
                 var temp="";
                 if(!numerico(tipo_result)){
                     temp+=result_temp.cadena;
+                    temp+=result_temp.cadena;
+                    temp+="//declaracion OBJETO local\n";
+                    var temph=generarEtiqueta();
+                    temp+=temph+"=h;\n";
+                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                    temp+="h=h+1;\n";
+                    var simulado=generarEtiqueta();
+                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
+                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                    temp+="stack["+simulado+"]="+temph+";\n";
+                    temp+="//fin declaracion variable local\n";
+                    sim.inicializado=true; 
+                    entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
                 }else{
                     if(result_temp!=null){
                         temp+=result_temp.cadena;

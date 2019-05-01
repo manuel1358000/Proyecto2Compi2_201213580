@@ -31,6 +31,7 @@
 "new"               return 'NEW'
 "this"              return 'THIS'
 "return"            return 'RETORNO'
+"null"              return 'NULO'
 //sentencias control
 "if"                return 'IF'
 "else"              return 'ELSE'
@@ -634,7 +635,8 @@ exp: '!' exp
                                         //id,iniValue,dimensiones
                                         $$=new Este($3);
                                     }
-    | sentencia_llamada{$$=$1;};
+    | sentencia_llamada{$$=$1;}
+    | NULO{$$=new Aritmetica(null,null,false,"null",null,PrimitiveType.NULO,0,0);};
 
 
 sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};
