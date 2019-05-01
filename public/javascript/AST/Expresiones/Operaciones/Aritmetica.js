@@ -73,12 +73,7 @@ class Aritmetica{
             }
         }else{
             if(this.exp1!=null&&this.exp2!=null){
-                
-                if(this.exp2 instanceof Llamada_Metodo){
-                    var temp=this.exp1;
-                    this.exp1=this.exp2;
-                    this.exp2=temp;
-                }  
+            
                 this.exp1.ambitos=this.ambitos;
                 this.exp1.padre=this.padre;
                 this.exp1.normal=this.normal;

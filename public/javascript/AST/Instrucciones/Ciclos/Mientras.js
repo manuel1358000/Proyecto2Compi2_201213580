@@ -179,6 +179,15 @@ class Mientras{
                             }
                             temp+="//FINALIZA LLAMADA A METODO\n";
                             
+                        }else if(this.nodos[i] instanceof Retorno){
+                            this.nodos[i].ambitos=this.ambitos;
+                            this.nodos[i].padre=this.padre;
+                            this.nodos[i].normal=this.normal;
+                            var result_temp=this.nodos[i].getValue(entorno);
+                            //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
+                            if(result_temp!=null){  
+                                temp+=result_temp.cadena;
+                            }
                         }
                     }
                     temp+="goto "+etiinicio+";\n";
@@ -332,6 +341,15 @@ class Mientras{
                     }
                     temp+="//FINALIZA LLAMADA A METODO\n";
                     
+                }else if(this.nodos[i] instanceof Retorno){
+                    this.nodos[i].ambitos=this.ambitos;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
+                    var result_temp=this.nodos[i].getValue(entorno);
+                    //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
+                    if(result_temp!=null){  
+                        temp+=result_temp.cadena;
+                    }
                 }
             }
             temp+=result_condi.cadena;
