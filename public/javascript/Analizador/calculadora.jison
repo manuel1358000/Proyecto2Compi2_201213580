@@ -180,7 +180,19 @@ cuerpo_clase_sentencias: modificadores declaracion_metodos{
                             $$=[];
                             $$.push($1);
                         }
-                        | declaracion_variables{$$=$1;};
+                        | declaracion_variables{$$=$1;}
+                        | declaracion_arreglos{
+                                                $$=[];
+                                                $$.push($1);
+                                            };
+
+declaracion_arreglos: modificadores sentencia_arreglo ';'{
+                                                            $$=$2;
+                                                            $$.modificadores=$1;
+                                                        }
+                    | sentencia_arreglo ';'{
+                                            $$=$1;
+                                            };
 
 declaracion_variables: modificadores variables ';'{
                                                 for(var i=0;i<$2.length;i++){
@@ -288,7 +300,13 @@ cuerpo_metodo: cuerpo_metodo sentencias_metodo{
 
 //-------------------------sentencias dentro de un metodo
 
+
+
 sentencias_metodo: variables ';'{$$=$1;}
+                 | sentencia_arreglo ';'{
+                                    $$=[];
+                                    $$.push($1);
+                                    }
                  | sentencia_imprimir{
                                     $$=[];
                                     $$.push($1);
@@ -333,6 +351,43 @@ sentencias_metodo: variables ';'{$$=$1;}
                                         $$=[];
                                         $$.push($1);
                                         };
+                                        //id,tipo,iniValue,modificadores,dimensiones,linea,columna
+sentencia_arreglo: tipo ID lista_d{
+                                    $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
+                                }
+                | ID ID lista_d{
+                                $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
+                                }
+                | tipo ID lista_d '=' NEW tipo lista_dd{
+                                                        $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
+                                                        $$.inicializado=true;
+                                                        $$.lista_dimensiones=$7;
+                                                        $$.tipo_asignacion=$6;
+                                                        }
+                | ID ID lista_d '=' NEW ID lista_dd{
+                                                    $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
+                                                    $$.inicializado=true;
+                                                    $$.lista_dimensiones=$7;
+                                                    $$.tipo_asignacion=$6;
+                                                    };
+
+lista_d: lista_d '['']'{
+                        $$=$1;
+                        $$.push(1);
+                        }
+        | '[' ']'{
+                    $$=[];
+                    $$.push(1);
+                };
+lista_dd: lista_dd '[' exp ']'{
+                                $$=$1;
+                                $$.push($3);
+                                }
+        | '[' exp ']'{
+                    $$=[];
+                    $$.push($2);
+                    };
+
 
 sentencia_retorno: RETORNO exp{$$=new Retorno($2);}
                 | RETORNO{$$=new Retorno(null);};

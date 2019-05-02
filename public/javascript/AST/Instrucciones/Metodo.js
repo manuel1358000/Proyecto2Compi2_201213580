@@ -306,6 +306,8 @@ class Metodo{
                 if(result_temp!=null){  
                     result.cadena+=result_temp.cadena;
                 }
+            }else if(this.nodos[i] instanceof DeclaracionArreglos){
+                alert("Declaracion Arreglo");
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");
