@@ -152,7 +152,7 @@ class Si{
                     }else if(this.nodos[i] instanceof Mientras){
                         var ambi=temp_ambi;
                         this.nodos[i].ambitos=ambi;
-                        var result_temp=this.nodos[i].execute(entorno);
+                        var result_temp=this.nodos[i].execute(local);
                         if(result_temp!=null){  
                             temp+=result_temp.cadena;
                         }
@@ -178,7 +178,7 @@ class Si{
                         this.nodos[i].ambitos=this.ambitos;
                         this.nodos[i].padre=this.padre;
                         this.nodos[i].normal=this.normal;
-                        var result_temp=this.nodos[i].getValue(entorno);
+                        var result_temp=this.nodos[i].getValue(local);
                         temp+="//INICIA LLAMADA A METODO\n"
                         if(result_temp!=null){
                             temp+=result_temp.cadena;
@@ -188,13 +188,34 @@ class Si{
                         this.nodos[i].ambitos=this.ambitos;
                         this.nodos[i].padre=this.padre;
                         this.nodos[i].normal=this.normal;
-                        var result_temp=this.nodos[i].getValue(entorno);
+                        var result_temp=this.nodos[i].getValue(local);
                         //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
                         if(result_temp!=null){  
                             temp+=result_temp.cadena;
                         }
                     }else if(this.nodos[i] instanceof DeclaracionArreglos){
-                        alert("Declaracion Arreglo");
+                        var ambi=temp_ambi;
+                        this.nodos[i].ambitos=ambi;
+                        var result_temp=this.nodos[i].execute(local);
+                        var tipo_result=this.nodos[i].getTipe(local);
+                        if(result_temp!=null){
+                            temp+="//declaracion ARRAY local\n";
+                            temp+=result_temp.cadena;
+                            var simulado=generarEtiqueta();
+                            var sim=local.obtener(this.nodos[i].id+"_"+ambi);
+                            temp+=simulado+"=p+"+sim.posRel+";\n";
+                            temp+="stack["+simulado+"]="+result_temp.u_etiqueta+";//asigna el puntero del heap donde inicia el array\n";
+                            temp+="//fin declaracion variable local\n";
+                            if(this.nodos[i].inicializado==true){
+                                sim.inicializado=true;
+                                sim.lista_dimensiones=this.nodos[i].lista_dimensiones;
+                            }else{
+                                sim.inicializado=false;
+                            }
+                            local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                        }else{
+                            alert("Error Semantico, en la operacion declaracion arreglos");
+                        }        
                     }else{
                         console.log("Instancia rara if");
                     }
@@ -249,6 +270,12 @@ function cargarSimbolosif(nodo,entorno,ambitos){
         if(nodo[i] instanceof Declaracion){
             var id_instancia=nodo[i].id+"_"+ambitos;
             var sim=new Simbolo(nodo[i].id,nodo[i].tipo,ambitos,Type.ID,posrel,1,0,nodo[i].getVisibilidad(),nodo[i].modificadores);
+            sim.inicializado=false;
+            entorno.agregar(id_instancia,sim);
+            posrel++;
+        }else if(nodo[i] instanceof DeclaracionArreglos){
+            var id_instancia=nodo[i].id+"_"+ambitos;
+            var sim=new Simbolo(nodo[i].id,nodo[i].tipo,ambitos,Type.ID,posrel,1,nodo[i].dimensiones,nodo[i].getVisibilidad(),nodo[i].modificadores);
             sim.inicializado=false;
             entorno.agregar(id_instancia,sim);
             posrel++;

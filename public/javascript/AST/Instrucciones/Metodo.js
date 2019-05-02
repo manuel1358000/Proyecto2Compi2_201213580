@@ -356,6 +356,8 @@ class Metodo{
                 }else{
                     alert("Error Semantico, en la operacion declaracion arreglos");
                 }        
+            }else if(this.nodos[i] instanceof AsignacionArreglos){
+                    alert("Asignacion Arreglos");
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");

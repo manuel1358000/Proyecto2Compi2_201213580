@@ -30,13 +30,63 @@ class DeclaracionArreglos{
                 //array de objetos
                 if(this.tipo==this.tipo_asignacion){
                     if(this.dimensiones==this.lista_dimensiones.length){
-                        alert("DONE OBJETOS");
+                        var temp="";
+                        var eti2=generarEtiqueta();
+                        temp+="//INICIO DE LAS DIMENSIONES ARREGLO OBJETOS\n";
+                        for(var i=0;i<this.lista_dimensiones.length;i++){
+                            this.lista_dimensiones[i].ambitos=temp_ambi;
+                            this.lista_dimensiones[i].padre=this.padre;
+                            this.lista_dimensiones[i].normal=this.normal;
+                            var result_indice=this.lista_dimensiones[i].getValue(entorno);
+                            var result_tipo=this.lista_dimensiones[i].getTipe(entorno);   
+                            if(result_indice!=null&&result_tipo=="INTEGER"){
+                                temp+=result_indice.cadena;
+                                var eti_salto=generarSalto();
+                                var eti3=generarEtiqueta();
+                                if(i==0){
+                                    temp+="if("+result_indice.u_etiqueta+">=0) goto "+eti_salto+";\n";
+                                    temp+=eti3+"=-1;\n";
+                                    temp+=result_indice.u_etiqueta+"="+result_indice.u_etiqueta+"*"+eti3+";\n";
+                                    temp+=eti_salto+":\n";
+                                    temp+=eti2+"="+result_indice.u_etiqueta+";\n";
+                                }else{
+                                    temp+="if("+result_indice.u_etiqueta+">=0) goto "+eti_salto+";\n";
+                                    temp+=eti3+"=-1;\n";
+                                    temp+=result_indice.u_etiqueta+"="+result_indice.u_etiqueta+"*"+eti3+";\n";
+                                    temp+=eti_salto+":\n";
+                                    temp+=eti2+"="+eti2+"*"+result_indice.u_etiqueta+";\n";
+                                }
+                            }else{
+                                bandera=true;
+                            }
+                        }
+                        if(bandera){
+                            alert("Error Semantico, El tamanio de la dimension no existe o no es de tipo integer, declaracion arreglo sera null");
+                            this.inicializado=false;
+                        }else{
+                            var eti5=generarEtiqueta();
+                            temp+=eti5+"=-1;\n";
+                            var eti4=generarEtiqueta();
+                            var eti_salto2=generarSalto();
+                            var eti_salto3=generarSalto();
+                            temp+=eti4+"=h;\n";
+                            temp+=eti_salto2+":\n";
+                            temp+="if("+eti2+"<1) goto "+eti_salto3+";\n";
+                            temp+="heap[h]="+eti5+";\n";
+                            temp+="h=h+1;\n";
+                            temp+=eti2+"="+eti2+"-1;\n";
+                            temp+="goto "+eti_salto2+";\n";
+                            temp+=eti_salto3+":\n";
+                            temp+="//FIN DE LAS DIMENSIONES ARREGLO OBJETOS\n";
+                            result.cadena+=temp;
+                            result.u_etiqueta=eti4;
+                        }
                     }else{
                         alert("Error Semantico, no coinciden los tama;os de dimensiones en la declaracion de arreglos");
                         bandera=true;
                     }
                 }else{
-                    alert("Error Semantico, La declaracion del array tiene tipos diferentes");
+                    alert("Error Semantico, La declaracion del array de objetos tiene tipos diferentes");
                     bandera=true;
                 }
             }else{
@@ -107,7 +157,6 @@ class DeclaracionArreglos{
                             result.cadena+=temp;
                             result.u_etiqueta=eti4;
                         }
-                        
                     }else{
                         alert("Error Semantico, no coinciden los tama;os de dimensiones en la declaracion de arreglos");
                         bandera=true;

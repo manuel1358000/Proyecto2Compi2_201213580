@@ -308,6 +308,10 @@ sentencias_metodo: variables ';'{$$=$1;}
                                     $$=[];
                                     $$.push($1);
                                     }
+                 | sentencia_asignacion_arreglo';'{
+                                                    $$=[];
+                                                    $$.push($1);
+                                                }
                  | sentencia_imprimir{
                                     $$=[];
                                     $$.push($1);
@@ -352,7 +356,9 @@ sentencias_metodo: variables ';'{$$=$1;}
                                         $$=[];
                                         $$.push($1);
                                         };
-                                        
+
+sentencia_asignacion_arreglo: ID lista_dd '=' exp;
+
 sentencia_arreglo: tipo ID lista_d{
                                     $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
                                 }
