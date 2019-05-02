@@ -56,11 +56,23 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
             cargarTablaSimbolos(nodoast.nodos[i],entorno,nodoast.id,posrel,"VARIABLE_GLOBAL");
             if(nodoast.nodos[i] instanceof Declaracion){
                 posrel++;
+            }else if(nodoast.nodos[i] instanceof DeclaracionArreglos){  
+                posrel++;
             }
         }
     }else if(nodoast instanceof Declaracion){
         var id_instancia=nodoast.id+"_"+ambito;
         var sim=new Simbolo(nodoast.id,nodoast.tipo,ambito,tipo,posicion,1,0,nodoast.getVisibilidad(),nodoast.modificadores);
+        if(tipo=="PARAMETRO"){
+            sim.inicializado=true;
+        }else{
+            sim.inicializado=nodoast.inicializado;
+        }
+        posicion++;
+        entorno.agregar(id_instancia,sim);
+    }else if(nodoast instanceof DeclaracionArreglos){
+        var id_instancia=nodoast.id+"_"+ambito;
+        var sim=new Simbolo(nodoast.id,nodoast.tipo,ambito,tipo,posicion,1,nodoast.dimensiones,nodoast.getVisibilidad(),nodoast.modificadores);
         if(tipo=="PARAMETRO"){
             sim.inicializado=true;
         }else{
@@ -90,15 +102,18 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
             cargarTablaSimbolos(nodoast.parametros[i],entorno,ambito_local,posrel,"PARAMETRO");
             if(nodoast.parametros[i] instanceof Declaracion){
                 posrel++;
+            }else if(nodoast.parametros[i] instanceof DeclaracionArreglos){
+                posrel++;
             }
         }
         for(var i=0;i<nodoast.nodos.length;i++){
             cargarTablaSimbolos(nodoast.nodos[i],entorno,ambito_local,posrel,"VARIABLE");
             if(nodoast.nodos[i] instanceof Declaracion){
                 posrel++;
-            }
+            }else if(nodoast.nodos[i] instanceof DeclaracionArreglos){
+                posrel++;
+            }   
         }
-
     }else{
         //instancias extras
     }

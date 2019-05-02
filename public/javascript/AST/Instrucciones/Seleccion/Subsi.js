@@ -168,6 +168,10 @@ class Subsi{
                         if(result_temp!=null){  
                             temp+=result_temp.cadena;
                         }
+                    }else if(this.nodos[i] instanceof DeclaracionArreglos){
+                        alert("Declaracion Arreglo");
+                    }else{
+                        console.log("Instancia rara else if");
                     }
                 }
             }else{
@@ -317,6 +321,10 @@ class Subsi{
                     if(result_temp!=null){  
                         temp+=result_temp.cadena;
                     }
+                }else if(this.nodos[i] instanceof DeclaracionArreglos){
+                    alert("Declaracion Arreglo");
+                }else{
+                    console.log("Instancia rara else");
                 }
             }
         }

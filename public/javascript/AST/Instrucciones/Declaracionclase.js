@@ -107,6 +107,10 @@ class Declaracionclase{
                     respuesta+=temp;
                 }
                 
+            }else if(nodo instanceof DeclaracionArreglos){
+                var temp="";
+                temp+="//ESTA PARTE ESTA PENDIENTE\n";
+                variables_globales+=temp;
             }else{
                 alert("Es un valor cualquiera");
             }

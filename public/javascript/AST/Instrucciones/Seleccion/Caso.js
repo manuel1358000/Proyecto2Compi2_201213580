@@ -162,6 +162,10 @@ class Caso{
                 if(result_temp!=null){  
                     temp+=result_temp.cadena;
                 }
+            }else if(this.nodos[i] instanceof DeclaracionArreglos){
+                alert("Declaracion Arreglo");
+            }else{
+                console.log("Instancia rara case");
             }
         }
         result.cadena+=temp;

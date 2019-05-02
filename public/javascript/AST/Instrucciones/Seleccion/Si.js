@@ -193,6 +193,10 @@ class Si{
                         if(result_temp!=null){  
                             temp+=result_temp.cadena;
                         }
+                    }else if(this.nodos[i] instanceof DeclaracionArreglos){
+                        alert("Declaracion Arreglo");
+                    }else{
+                        console.log("Instancia rara if");
                     }
                 }
                 temp+="goto "+etisalida+";\n";

@@ -40,20 +40,28 @@ class Metodo{
                 var tipo_result=this.nodos[i].getTipe(entorno);
                 var temp="";
                 if(!numerico(tipo_result)){
-                    temp+=result_temp.cadena;
-                    temp+=result_temp.cadena;
-                    temp+="//declaracion OBJETO local\n";
-                    var temph=generarEtiqueta();
-                    temp+=temph+"=h;\n";
-                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                    temp+="h=h+1;\n";
-                    var simulado=generarEtiqueta();
-                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
-                    temp+=simulado+"=p+"+sim.posRel+";\n";
-                    temp+="stack["+simulado+"]="+temph+";\n";
-                    temp+="//fin declaracion variable local\n";
-                    sim.inicializado=true; 
-                    entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                    if(result_temp!=null){
+                        temp+=result_temp.cadena;
+                        temp+=result_temp.cadena;
+                        temp+="//declaracion OBJETO local\n";
+                        var temph=generarEtiqueta();
+                        temp+=temph+"=h;\n";
+                        temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                        temp+="h=h+1;\n";
+                        var simulado=generarEtiqueta();
+                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
+                        if(sim!=null){
+                            temp+=simulado+"=p+"+sim.posRel+";\n";
+                            temp+="stack["+simulado+"]="+temph+";\n";
+                            temp+="//fin declaracion variable local\n";
+                            sim.inicializado=true; 
+                            entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                        }else{
+                            alert("Error Semantico, En la declaracion");
+                        }
+                    }else{
+                        alert("Error Semantico, OBJETO");
+                    }
                 }else{
                     if(result_temp!=null){
                         temp+=result_temp.cadena;
@@ -307,13 +315,52 @@ class Metodo{
                     result.cadena+=result_temp.cadena;
                 }
             }else if(this.nodos[i] instanceof DeclaracionArreglos){
-                alert("Declaracion Arreglo");
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                var ambi2;
+                if(this.id=="main"){
+                    nombre="main";
+                    ambi2=this.ambitos+"/"+this.id;
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                    ambi2=this.nodos[i].ambitos;
+                }
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                var tipo_result=this.nodos[i].getTipe(entorno);
+                var temp="";
+                if(result_temp!=null){
+                    temp+="//declaracion ARRAY local\n";
+                    temp+=result_temp.cadena;
+                    var simulado=generarEtiqueta();
+                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
+                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                    temp+="stack["+simulado+"]="+result_temp.u_etiqueta+";//asigna el puntero del heap donde inicia el array\n";
+                    temp+="//fin declaracion variable local\n";
+                    if(this.nodos[i].inicializado==true){
+                        sim.inicializado=true;
+                        sim.lista_dimensiones=this.nodos[i].lista_dimensiones;
+                    }else{
+                        sim.inicializado=false;
+                    }
+                    entorno.actualizar(this.nodos[i].id+"_"+ambi2,sim);
+                    result.cadena+=temp;
+                }else{
+                    alert("Error Semantico, en la operacion declaracion arreglos");
+                }        
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");
             }
         }
-        result.cadena+="//AQUI TENEMOS QUE VERIFICAR LA ASIGNACION\n";
         return result;
     }
 

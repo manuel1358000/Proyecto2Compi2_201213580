@@ -36,7 +36,7 @@ class Aritmetica{
                 }
             }else if(this.operador=="++"){
                 var result=new Result();
-                if(tipo1.toUpperCase()=="INTEGER"||tipo1.toUpperCase()=="DOUBLE"){
+                if(tipo1.toUpperCase()=="INTEGER"||tipo1.toUpperCase()=="DOUBLE"||tipo1.toUpperCase()=="CHAR"){
                     temp+=result1.cadena;
                     temp+=result1.u_etiqueta+"="+result1.u_etiqueta+"+1;\n";
                     var sim=entorno.obtener(this.exp1.valor+"_"+this.ambitos);
@@ -49,12 +49,12 @@ class Aritmetica{
                     result.cadena+=temp;
                     this.tipoprimitivo=tipo1.toUpperCase();
                 }else{
-                    alert("Error Semantico, la operacion incrementar solo se puede realizar a integer y double");
+                    alert("Error Semantico, la operacion incrementar solo se puede realizar a integer, double y char");
                 }
                 return result;
             }else if(this.operador=="--"){
                 var result=new Result();
-                if(tipo1.toUpperCase()=="INTEGER"||tipo1.toUpperCase()=="DOUBLE"){
+                if(tipo1.toUpperCase()=="INTEGER"||tipo1.toUpperCase()=="DOUBLE"||tipo1.toUpperCase()=="CHAR"){
                     temp+=result1.cadena;
                     temp+=result1.u_etiqueta+"="+result1.u_etiqueta+"-1;\n";
                     var sim=entorno.obtener(this.exp1.valor+"_"+this.ambitos);
@@ -67,7 +67,7 @@ class Aritmetica{
                     result.cadena+=temp;
                     this.tipoprimitivo=tipo1.toUpperCase();
                 }else{
-                    alert("Error Semantico, la operacion decrementar solo se puede realizar a integer y double");
+                    alert("Error Semantico, la operacion decrementar solo se puede realizar a integer, double y char");
                 }
                 return result;
             }

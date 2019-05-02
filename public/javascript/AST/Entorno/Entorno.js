@@ -16,6 +16,7 @@ class Simbolo{
         //los modificadores son una lista de valores separadas por _
         this.modificadores=modificadores;
         this.inicializado=false;
+        this.lista_dimensiones=null;
     }
 }
 

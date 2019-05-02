@@ -207,7 +207,6 @@ class Para{
                         
                     }
                 }else if(this.nodos[i] instanceof Llamada_Metodo){
-                    alert("El ambito aqui PARA "+this.ambitos);
                     this.nodos[i].ambitos=this.ambitos;
                     this.nodos[i].padre=this.padre;
                     this.nodos[i].normal=this.normal;
@@ -226,6 +225,10 @@ class Para{
                     if(result_temp!=null){  
                         temp+=result_temp.cadena;
                     }
+                }else if(this.nodos[i] instanceof DeclaracionArreglos){
+                    alert("Declaracion Arreglo");
+                }else{
+                    console.log("Instancia Rara for");
                 }
             }
             temp+=result_aumento.cadena;

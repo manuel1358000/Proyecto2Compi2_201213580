@@ -57,7 +57,35 @@ class Logica{
                 var tipo2=this.exp2.getTipe(entorno);
                 var tipo=generarTipoLogica(tipo1,tipo2);
                 if(tipo!=null){
-                    if(this.operador=="||"){
+                    if(this.operador=="^"){
+                        
+                        var salto_1=generarSalto();
+                        var salto_f=generarSalto();
+                        var salto_v=generarSalto();
+                        var salto_s=generarSalto();
+                        var eti_aux=generarEtiqueta();
+                        var result=new Result();
+                        var temp="";
+                        result.cadena+=result1.cadena+result2.cadena;
+                        temp+="if("+result1.u_etiqueta+"==1) goto "+salto_1+";\n";
+                        //si el primero es falso
+                        temp+="if("+result2.u_etiqueta+"==1) goto "+salto_v+";\n";
+                        temp+=eti_aux+"=0;\n";
+                        temp+="goto "+salto_s+";\n";
+                        temp+=salto_1+":\n";
+                        temp+="if("+result2.u_etiqueta+"==1) goto "+salto_f+";\n";
+                        temp+=salto_v+":\n";
+                        temp+=eti_aux+"=1;\n";
+                        temp+="goto "+salto_s+";\n";
+                        temp+=salto_f+":\n";
+                        temp+=eti_aux+"=0;\n";
+                        temp+="goto "+salto_s+";\n";
+                        temp+=salto_s+":\n";
+                        this.tipoprimitivo=PrimitiveType.BOOLEAN;
+                        result.u_etiqueta=eti_aux;
+                        result.cadena+=temp;
+                        return result;
+                    }else if(this.operador=="||"){
                         var salto_v=generarSalto();
                         var salto_f=generarSalto();
                         var salto_f2=generarSalto();

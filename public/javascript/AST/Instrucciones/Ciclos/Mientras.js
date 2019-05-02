@@ -188,6 +188,10 @@ class Mientras{
                             if(result_temp!=null){  
                                 temp+=result_temp.cadena;
                             }
+                        }else if(this.nodos[i] instanceof DeclaracionArreglos){
+                            alert("Declaracion Arreglo");
+                        }else{
+                            console.log("Instancia rara while");
                         }
                     }
                     temp+="goto "+etiinicio+";\n";
@@ -350,6 +354,10 @@ class Mientras{
                     if(result_temp!=null){  
                         temp+=result_temp.cadena;
                     }
+                }else if(this.nodos[i] instanceof DeclaracionArreglos){
+                    alert("Declaracion Arreglo");
+                }else{
+                    console.log("instancia rara do while");
                 }
             }
             temp+=result_condi.cadena;

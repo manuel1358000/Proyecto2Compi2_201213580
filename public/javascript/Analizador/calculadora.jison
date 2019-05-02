@@ -61,6 +61,7 @@
 "-"                   return '-'
 "+"                   return '+'
 "pow"                 return 'POW'
+"^"                   return '^'
 "!="                  return '!='
 "%"                   return '%'
 "?"                   return '?'
@@ -96,7 +97,7 @@
 %left '*' '/' '%'
 %left 'pow'
 %right '!'
-%left '&&' '||'
+%left '&&' '||' '^'
 %left '==' '!=' '>' '>=' '<' '<='
 %left '(' ')'
 
@@ -351,7 +352,7 @@ sentencias_metodo: variables ';'{$$=$1;}
                                         $$=[];
                                         $$.push($1);
                                         };
-                                        //id,tipo,iniValue,modificadores,dimensiones,linea,columna
+                                        
 sentencia_arreglo: tipo ID lista_d{
                                     $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
                                 }
@@ -547,7 +548,9 @@ parametros: parametros ',' parametro{
                        };
 
 parametro: tipo ID{$$=new Declaracion($2,$1,null,[],0,0,0);}
-         | ID ID{$$=new Declaracion($2,$1,null,[],0,0,0);};
+         | ID ID{$$=new Declaracion($2,$1,null,[],0,0,0);}
+         | tipo ID lista_d{$$=new DeclaracionArreglos($2,$1,null,[],$3.length,0,0);}
+         | ID ID lista_d{$$=new DeclaracionArreglos($2,$1,null,[],$3.length,0,0);};
 
 
 modificadores: modificadores modificador{
@@ -587,6 +590,10 @@ exp: '!' exp
     | exp '||' exp
         {
             $$=new Logica($1,$3,false,null,"||",0,0);
+        }
+    | exp '^' exp
+        {
+            $$=new Logica($1,$3,false,null,"^",0,0);
         }  
     | exp '>' exp
         {
