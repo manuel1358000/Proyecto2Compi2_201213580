@@ -76,7 +76,7 @@ class Metodo{
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin declaracion variable local\n";
                         sim.inicializado=true;
-                        entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                        entorno.actualizar(this.nodos[i].id+"_"+ambi2,sim);
                     }else{
                         temp="//declaracion variable local\n";
                         var temph=generarEtiqueta();
@@ -84,12 +84,12 @@ class Metodo{
                         temp+="heap[h]=0;\n";
                         temp+="h=h+1;\n";
                         var simulado=generarEtiqueta();
-                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin declaracion variable local\n";
                         sim.inicializado=true;
-                        entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                        entorno.actualizar(this.nodos[i].id+"_"+ambi2,sim);
                     }
                 }
                 result.cadena+=temp;
@@ -119,9 +119,11 @@ class Metodo{
             }else if(this.nodos[i] instanceof Asignacion){
                 var ambi=this.ambitos;
                 var temp="";
+                var ambi2;
                 var nombre="";
                 if(this.id=="main"){
                     nombre="main";
+                    ambi2=this.ambitos+"/"+this.id;
                     this.nodos[i].ambitos=ambi;
                 }else{
                     var complemento="";
@@ -130,6 +132,7 @@ class Metodo{
                     }
                     nombre=this.ambitos+"_"+this.id+complemento;
                     this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                    ambi2=this.nodos[i].ambitos;
                 }
                 this.nodos[i].padre=nombre;
                 this.nodos[i].normal=ambi;
@@ -148,7 +151,7 @@ class Metodo{
                         temp+="heap[h]="+result_temp.u_etiqueta+";\n";
                         temp+="h=h+1;\n";
                         var simulado=generarEtiqueta();
-                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                        var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin asignacion variable local\n";
@@ -357,7 +360,115 @@ class Metodo{
                     alert("Error Semantico, en la operacion declaracion arreglos");
                 }        
             }else if(this.nodos[i] instanceof AsignacionArreglos){
-                    alert("Asignacion Arreglos");
+                var ambi=this.ambitos;
+                var temp="";
+                var ambi2;
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    ambi2=this.ambitos+"/"+this.id;
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                    ambi2=this.nodos[i].ambitos;
+                }
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
+                var result_temp=this.nodos[i].execute(entorno);
+                var temp="";
+                var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
+                if(sim!=null){
+                    if(numerico(sim.tipo)){
+                        if(result_temp!=null){
+                            temp=result_temp.cadena;
+                            temp+="//empieza la asignacion ARREGLO PRIMITIVO\n";
+                            //se tiene el valor puntual a asignar result_temp.u_etiqueta
+                            var eti_principio=generarEtiqueta();
+                            var simulado=generarEtiqueta();
+                            temp+=simulado+"=p+"+sim.posRel+";\n";
+                            temp+=eti_principio+"=stack["+simulado+"];\n";
+                            //posicion del heap donde inicia el arreglo eti_principio
+                            if(sim.lista_dimensiones.length==this.nodos[i].dimensiones.length){
+                                if(sim.lista_dimensiones.length==1){
+                                    //cuando es de una sola dimension
+                                    //sim es el tamanio total
+                                    this.nodos[i].dimensiones[0].ambitos=sim.entorno;
+                                    var posx=this.nodos[i].dimensiones[0].getValue(entorno);
+                                    var postemp=generarEtiqueta();
+                                    temp+=posx.cadena;
+                                    temp+=postemp+"="+eti_principio+"+"+posx.u_etiqueta+";\n";
+                                    temp+="heap["+postemp+"]="+result_temp.u_etiqueta+";\n";
+                                }else if(sim.lista_dimensiones.length==2){
+                                    var tempx;
+                                    var posfinal=generarEtiqueta();
+                                    for(var y=0;y<this.nodos[i].dimensiones.length;y++){
+                                        this.nodos[i].dimensiones[y].ambitos=sim.entorno;
+                                        if(y==0){
+                                            tempx=this.nodos[i].dimensiones[y].getValue(entorno);
+                                            temp+=tempx.cadena;
+                                        }else{
+                                            var tempy=this.nodos[i].dimensiones[y].getValue(entorno);
+                                            temp+=tempy.cadena;
+                                            sim.lista_dimensiones[y].ambitos=sim.ambitos;
+                                            var tamy=sim.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tamy.cadena;
+                                            temp+=posfinal+"="+tempx.u_etiqueta+"*"+tamy.u_etiqueta+";\n";
+                                            temp+=posfinal+"="+posfinal+"+"+tempy.u_etiqueta+";\n";
+                                        }
+                                    }
+                                    var postemp=generarEtiqueta();
+                                    temp+=postemp+"="+eti_principio+"+"+posfinal+";\n";
+                                    temp+="heap["+postemp+"]="+result_temp.u_etiqueta+";\n";
+                                    
+                                }else{
+                                    var tempx;
+                                    var posfinal=generarEtiqueta();
+                                    for(var y=0;y<this.nodos[i].dimensiones.length;y++){
+                                        this.nodos[i].dimensiones[y].ambitos=sim.entorno;
+                                        if(y==0){
+                                            tempx=this.nodos[i].dimensiones[y].getValue(entorno);
+                                            temp+=tempx.cadena;
+                                            var tamx=sim.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tamx.cadena;
+                                            temp+=posfinal+"="+tempx.u_etiqueta+"*"+tamx.u_etiqueta+";\n";
+                                        }else{
+                                            var tempy=this.nodos[i].dimensiones[y].getValue(entorno);
+                                            temp+=tempy.cadena;
+                                            sim.lista_dimensiones[y].ambitos=sim.ambitos;
+                                            var tamy=sim.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tamy.cadena;
+                                            temp+=posfinal+"="+posfinal+"+"+tempy.u_etiqueta+";\n";
+                                            if(y<this.nodos[i].dimensiones.length-1){
+                                                temp+=posfinal+"="+posfinal+"*"+tamy.u_etiqueta+";\n";
+                                            }
+                                            
+                                        }
+                                    }
+                                    var postemp=generarEtiqueta();
+                                    temp+=postemp+"="+eti_principio+"+"+posfinal+";\n";
+                                    temp+="heap["+postemp+"]="+result_temp.u_etiqueta+";\n";
+                                    
+                                }
+                            }else{
+                                alert("Error Semantico, Numero de dimensiones incorrectas para la asignacion del valor al arreglo primitivo");
+                                temp="//empieza la asignacion ARREGLO PRIMITIVO\n";
+                            }
+                            temp+="//fin asignacion ARREGLO PRIMITIVO\n";
+                        }else{
+                            alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
+                        }
+                    }else{
+                        alert("Es una asignacion a un arreglo de objetos");
+                    }
+                }else{
+                    alert("Error Semantico, Arreglo no existe en el entorno");
+                }
+                result.cadena+=temp;
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");
