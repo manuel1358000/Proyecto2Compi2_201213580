@@ -704,7 +704,11 @@ exp: '!' exp
                                         $$=new Este($3);
                                     }
     | sentencia_llamada{$$=$1;}
-    | NULO{$$=new Aritmetica(null,null,false,"null",null,PrimitiveType.NULO,0,0);};
+    | NULO{$$=new Aritmetica(null,null,false,"null",null,PrimitiveType.NULO,0,0);}
+    | ID lista_dd{
+                $$=new Aritmetica(null,null,false,yytext,null,"ARRAY",0,0);
+                $$.lista_dimensiones=$2;
+            };
 
 
 sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};

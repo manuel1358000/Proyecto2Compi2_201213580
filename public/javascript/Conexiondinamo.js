@@ -53,7 +53,7 @@ function createElemento() {
     var params = {
         TableName :"Reportes",
         Item:{
-            "ID": "0",
+            "ID": "1",
             "TIPO": "Error Semantico",
             "DESCRIPCION": "Tipo de Dato invalido",
             "LINEA": "0",

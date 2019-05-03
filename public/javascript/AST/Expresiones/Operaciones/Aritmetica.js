@@ -13,13 +13,21 @@ class Aritmetica{
         this.ambitos="";
         this.padre;
         this.normal;
+        this.lista_dimensiones;
     }
     getValue(entorno){
         if(this.unario){
             var temp="";
             this.exp1.ambitos=this.ambitos;
             this.exp1.padre=this.padre;
-            this.exp1.normal=this.normal
+            this.exp1.normal=this.normal;
+            var temp_ambi="";
+            if(this.padre=="main"){
+                temp_ambi=this.ambitos+"/"+this.padre;
+            }else{
+                temp_ambi=this.ambitos;
+            }
+            this.exp1.ambitos=temp_ambi;
             var result1=this.exp1.getValue(entorno);
             var tipo1=this.exp1.getTipe(entorno);
             if(this.operador=="-"){
@@ -39,7 +47,7 @@ class Aritmetica{
                 if(tipo1.toUpperCase()=="INTEGER"||tipo1.toUpperCase()=="DOUBLE"||tipo1.toUpperCase()=="CHAR"){
                     temp+=result1.cadena;
                     temp+=result1.u_etiqueta+"="+result1.u_etiqueta+"+1;\n";
-                    var sim=entorno.obtener(this.exp1.valor+"_"+this.ambitos);
+                    var sim=entorno.obtener(this.exp1.valor+"_"+temp_ambi);
                     var temp1=generarEtiqueta();
                     var simulado=generarEtiqueta();
                     temp+=simulado+"=p+"+sim.posRel+";\n";
@@ -57,7 +65,7 @@ class Aritmetica{
                 if(tipo1.toUpperCase()=="INTEGER"||tipo1.toUpperCase()=="DOUBLE"||tipo1.toUpperCase()=="CHAR"){
                     temp+=result1.cadena;
                     temp+=result1.u_etiqueta+"="+result1.u_etiqueta+"-1;\n";
-                    var sim=entorno.obtener(this.exp1.valor+"_"+this.ambitos);
+                    var sim=entorno.obtener(this.exp1.valor+"_"+temp_ambi);
                     var temp1=generarEtiqueta();
                     var simulado=generarEtiqueta();
                     temp+=simulado+"=p+"+sim.posRel+";\n";
@@ -365,6 +373,15 @@ class Aritmetica{
                         this.tipoprimitivo=sim.tipo;
                     }
                     return result;
+                }else if(this.tipoprimitivo=="ARRAY"){
+                    alert("Es un acceso a un arreglo");
+                    //aqui tomo el valor originar que quiero copiar y lo tengo que almacenar en otra ubicacion, y devuelvo el valor del h para poder asignarlo
+
+
+
+
+
+
                 }else{
                     var result=new Result();
                     result.u_etiqueta=generarEtiqueta();
@@ -387,8 +404,7 @@ class Aritmetica{
                         result.valor=this.valor;
                     }
                     return result;
-                }
-                
+                }   
             }
         }   
     }

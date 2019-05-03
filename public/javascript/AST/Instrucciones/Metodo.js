@@ -446,7 +446,6 @@ class Metodo{
                                             if(y<this.nodos[i].dimensiones.length-1){
                                                 temp+=posfinal+"="+posfinal+"*"+tamy.u_etiqueta+";\n";
                                             }
-                                            
                                         }
                                     }
                                     var postemp=generarEtiqueta();
@@ -463,7 +462,7 @@ class Metodo{
                             alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
                         }
                     }else{
-                        alert("Es una asignacion a un arreglo de objetos");
+                        alert("Es una asignacion a un arreglo de objetos FALTA TERMINAR");
                     }
                 }else{
                     alert("Error Semantico, Arreglo no existe en el entorno");
