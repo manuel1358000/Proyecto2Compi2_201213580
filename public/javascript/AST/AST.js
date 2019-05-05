@@ -1,3 +1,4 @@
+
 function ejecutar(nodoast,entorno){
     var respuesta="";
     var entorno=new Entorno(null);
@@ -87,7 +88,7 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
             id_instancia=ambito+"_"+id_instancia;
         }
         var sim=new Simbolo(id_instancia,nodoast.tipo,ambito,"METODO",-1,nodoast.gettamMetodo(),0,nodoast.getVisibilidad(),nodoast.modificadores);
-        entorno.agregar(id_instancia,sim);
+        
         var posrel=0;
         var retu_this=[];
         retu_this.push(new Declaracion("return",PrimitiveType.VOID,null,[],0,0,0));
@@ -101,11 +102,14 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
         for(var i=0;i<nodoast.parametros.length;i++){
             cargarTablaSimbolos(nodoast.parametros[i],entorno,ambito_local,posrel,"PARAMETRO");
             if(nodoast.parametros[i] instanceof Declaracion){
+                sim.referencia.push(nodoast.parametros[i].id);
                 posrel++;
             }else if(nodoast.parametros[i] instanceof DeclaracionArreglos){
+                sim.referencia.push(nodoast.parametros[i].id);
                 posrel++;
             }
         }
+        sim.ambitos_parametros=ambito_local;
         for(var i=0;i<nodoast.nodos.length;i++){
             cargarTablaSimbolos(nodoast.nodos[i],entorno,ambito_local,posrel,"VARIABLE");
             if(nodoast.nodos[i] instanceof Declaracion){
@@ -114,6 +118,7 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
                 posrel++;
             }   
         }
+        entorno.agregar(id_instancia,sim);
     }else{
         //instancias extras
     }

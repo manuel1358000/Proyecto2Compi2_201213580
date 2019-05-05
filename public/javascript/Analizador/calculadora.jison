@@ -371,12 +371,22 @@ sentencia_arreglo: tipo ID lista_d{
                                                         $$.lista_dimensiones=$7;
                                                         $$.tipo_asignacion=$6;
                                                         }
+                | tipo ID lista_d '=' ID{
+                                            $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
+                                            $$.inicializado=true;
+                                            $$.iniValue=new Aritmetica(null,null,false,$5,null,"ID",0,0);
+                                        }
                 | ID ID lista_d '=' NEW ID lista_dd{
                                                     $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
                                                     $$.inicializado=true;
                                                     $$.lista_dimensiones=$7;
                                                     $$.tipo_asignacion=$6;
-                                                    };
+                                                    }
+                | ID ID lista_d '=' ID{
+                                        $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
+                                        $$.inicializado=true;
+                                        $$.iniValue=new Aritmetica(null,null,false,$5,null,"ID",0,0);
+                                    };
 
 lista_d: lista_d '['']'{
                         $$=$1;
@@ -555,8 +565,8 @@ parametros: parametros ',' parametro{
 
 parametro: tipo ID{$$=new Declaracion($2,$1,null,[],0,0,0);}
          | ID ID{$$=new Declaracion($2,$1,null,[],0,0,0);}
-         | tipo ID lista_d{$$=new DeclaracionArreglos($2,$1,null,[],$3.length,0,0);}
-         | ID ID lista_d{$$=new DeclaracionArreglos($2,$1,null,[],$3.length,0,0);};
+         | tipo ID lista_d{$$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);}
+         | ID ID lista_d{$$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);};
 
 
 modificadores: modificadores modificador{

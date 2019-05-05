@@ -451,7 +451,6 @@ class Metodo{
                                     var postemp=generarEtiqueta();
                                     temp+=postemp+"="+eti_principio+"+"+posfinal+";\n";
                                     temp+="heap["+postemp+"]="+result_temp.u_etiqueta+";\n";
-                                    
                                 }
                             }else{
                                 alert("Error Semantico, Numero de dimensiones incorrectas para la asignacion del valor al arreglo primitivo");
@@ -509,6 +508,8 @@ class Metodo{
         for(var i=0;i<this.parametros.length;i++){
             if(this.parametros[i] instanceof Declaracion){
                 indices+="_"+this.parametros[i].tipo;
+            }else if(this.parametros[i] instanceof DeclaracionArreglos){
+                indices+="_"+this.parametros[i].tipo;
             }
         }
 
@@ -519,6 +520,8 @@ class Metodo{
         var tam=2+this.parametros.length;
         for(var i=0;i<this.nodos.length;i++){
             if(this.nodos[i] instanceof Declaracion){
+                tam++;
+            }else if(this.nodos[i] instanceof DeclaracionArreglos){
                 tam++;
             }
         }

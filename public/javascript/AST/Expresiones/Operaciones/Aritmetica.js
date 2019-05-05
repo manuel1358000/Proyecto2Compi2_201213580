@@ -369,15 +369,21 @@ class Aritmetica{
                         temp+=temp1+"=stack["+simulado+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
                         var temp2=generarEtiqueta();
                         temp+=temp2+"=heap["+temp1+"];\n";
-                        result.u_etiqueta=temp2;
+                        if(sim.lista_dimensiones.length>0){
+                            result.u_etiqueta=temp1;
+                        }else{
+                            result.u_etiqueta=temp2;
+                        }
                         result.cadena+=temp;
                         this.tipoprimitivo=sim.tipo;
                     }
                     return result;
                 }else if(this.tipoprimitivo=="ARRAY"){
+                    alert("aqui");
                     //aqui tomo el valor originar que quiero copiar y lo tengo que almacenar en otra ubicacion, y devuelvo el valor del h para poder asignarlo
                     var result=new Result();
                     var temp="";
+                    alert(this.valor+"_"+this.ambitos);
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     if(sim!=null){
                         if(numerico(sim.tipo)){
@@ -454,7 +460,10 @@ class Aritmetica{
                                     result.u_etiqueta=val;
                                     result.cadena+=temp;
                                     this.tipoprimitivo=sim.tipo;
+                                   
                                 }
+                            }else{
+                                alert("Error Semantico, las dimensiones no coindicen");
                             }
                         }else{
                             alert("Error Semantico, El elemento que quiere acceder es un arreglo de objetos");

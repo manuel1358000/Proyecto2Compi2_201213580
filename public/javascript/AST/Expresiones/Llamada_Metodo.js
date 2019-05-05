@@ -10,7 +10,7 @@ class Llamada_Metodo{
     getValue(entorno){
         var result=null;
         var nombre_completo=this.normal+"_"+this.id;
-        var temp="\n\n\n//aquiputos\n";
+        var temp="\n\n\n\n";
         var param_temp=this.parametros;
         var indices=[];
         var indice_result=[];
@@ -39,7 +39,7 @@ class Llamada_Metodo{
             nombre_completo+="_"+tipo1;
         }
         //vamos a verificar si existe el metodo en el entorno
-        var sim=entorno.obtener(nombre_completo);   
+        var sim=entorno.obtener(nombre_completo);
         if(sim!=null){
             //if(sim.ambito==this.ambitos){
                 result=new Result();
@@ -54,45 +54,57 @@ class Llamada_Metodo{
                                 this.parametros[i].tipoprimitivo="ID";
                             }
                         }
-                        if(this.padre=="main"){
-                            this.parametros[i].ambitos=temp_ambi;
-                        }else{
-                            this.parametros[i].ambitos=temp_ambi;
-                        }
-                        this.parametros[i].padre=this.padre;
-                        this.parametros[i].normal=this.normal;
-                        var result_temp=indice_result[i];
-                        var tipo_parametro=indice_tipo[i];
-                        if(tipo_parametro=="INTEGER"||tipo_parametro=="DOUBLE"||tipo_parametro=="BOOLEAN"){
+                        var sim_actual=entorno.obtener(this.parametros[i].valor+"_"+temp_ambi);
+                        var sim_actual2=entorno.obtener(sim.referencia[i]+"_"+sim.ambitos_parametros);
+                        if(sim_actual!=null&&sim_actual2!=null){
+                            sim_actual2.lista_dimensiones=sim_actual.lista_dimensiones;
+                            entorno.actualizar(sim.referencia[i]+"_"+sim.ambitos_parametros,sim_actual2);
+                            var result_temp=indice_result[i];
+                            var tipo_parametro=indice_tipo[i];
                             temp+="         //INICIO PARAMETRO "+(i+1)+"\n";
                             var temp_h=generarEtiqueta();
                             temp+=temp_h+"=h;\n";
                             var eti2=generarEtiqueta();
                             temp+=result_temp.cadena;
                             temp+=eti2+"="+eti1+"+"+pos+";//posicion del parametro\n";
-                            temp+="heap["+temp_h+"]="+result_temp.u_etiqueta+";\n";
-                            temp+="h=h+1;\n";
-                            temp+="stack["+eti2+"]="+temp_h+";\n";
+                            temp+="stack["+eti2+"]="+result_temp.u_etiqueta+";\n";
                             pos++;
                             temp+="//ESTO TENDRIA QUE APARECER EN EL FACTORIAL\n";
                             temp+="         //FIN PARAMETRO "+(i+1)+"\n";
-                        }else if(tipo_parametro=="STRING"||tipo_parametro=="CHAR"){
-                            temp+="         //INICIO PARAMETRO "+(i+1)+"\n";
-                            var temp_h=generarEtiqueta();
-                            temp+=temp_h+"=h;\n";
-                            temp+="h=h+1;\n";
-                            var eti2=generarEtiqueta();
-                            temp+=result_temp.cadena;
-                            temp+=eti2+"="+eti1+"+"+pos+";//posicion del parametro\n";
-                            temp+="heap["+temp_h+"]="+result_temp.u_etiqueta+";\n";
-                            temp+="h=h+1;\n";
-                            temp+="stack["+eti2+"]="+temp_h+";\n";
-                            pos++;
-                            temp+="         //FIN PARAMETRO "+(i+1)+"\n";
-                            alert(temp);
                         }else{
-                            alert("Es un id el que se esta mandando como parametro "+tipo_parametro);
+                            var result_temp=indice_result[i];
+                            var tipo_parametro=indice_tipo[i];
+                            if(tipo_parametro=="INTEGER"||tipo_parametro=="DOUBLE"||tipo_parametro=="BOOLEAN"){
+                                temp+="         //INICIO PARAMETRO "+(i+1)+"\n";
+                                var temp_h=generarEtiqueta();
+                                temp+=temp_h+"=h;\n";
+                                var eti2=generarEtiqueta();
+                                temp+=result_temp.cadena;
+                                temp+=eti2+"="+eti1+"+"+pos+";//posicion del parametro\n";
+                                temp+="heap["+temp_h+"]="+result_temp.u_etiqueta+";\n";
+                                temp+="h=h+1;\n";
+                                temp+="stack["+eti2+"]="+temp_h+";\n";
+                                pos++;
+                                temp+="//ESTO TENDRIA QUE APARECER EN EL FACTORIAL\n";
+                                temp+="         //FIN PARAMETRO "+(i+1)+"\n";
+                            }else if(tipo_parametro=="STRING"||tipo_parametro=="CHAR"){
+                                temp+="         //INICIO PARAMETRO "+(i+1)+"\n";
+                                var temp_h=generarEtiqueta();
+                                temp+=temp_h+"=h;\n";
+                                temp+="h=h+1;\n";
+                                var eti2=generarEtiqueta();
+                                temp+=result_temp.cadena;
+                                temp+=eti2+"="+eti1+"+"+pos+";//posicion del parametro\n";
+                                temp+="heap["+temp_h+"]="+result_temp.u_etiqueta+";\n";
+                                temp+="h=h+1;\n";
+                                temp+="stack["+eti2+"]="+temp_h+";\n";
+                                pos++;
+                                temp+="         //FIN PARAMETRO "+(i+1)+"\n";
+                            }else{
+                                alert("Es un id el que se esta mandando como parametro "+tipo_parametro);
+                            }
                         }
+                        
                     }
                     temp+="p=p+"+sim_temp.tamanio+";\n";
                     temp+="call "+nombre_completo+";\n";
@@ -120,7 +132,7 @@ class Llamada_Metodo{
             alert("Error Semantico, No existe el metodo que se esta llamando "+nombre_completo);
         }
         temp+="\n\n\n";
-        temp+="//FINPUTOS\n";
+        temp+="\n";
         result.cadena+=temp;
         return result;
     }

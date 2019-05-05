@@ -28,7 +28,6 @@ class Asignacion{
                 respuesta.u_etiqueta=result_this.u_etiqueta;
             }
         }else{
-            alert("aqui");
             var tipo=this.getTipe(entorno);
             if(this.iniValue instanceof Aritmetica){
                 this.iniValue.ambitos=temp_ambi;
