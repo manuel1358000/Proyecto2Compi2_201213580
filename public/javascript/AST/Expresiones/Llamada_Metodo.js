@@ -15,14 +15,20 @@ class Llamada_Metodo{
         var indices=[];
         var indice_result=[];
         var indice_tipo=[];
+        var temp_ambi="";
+        if(this.padre=="main"){
+            temp_ambi=this.ambitos+"/"+this.padre;
+        }else{
+            temp_ambi=this.ambitos;
+        }
         for(var i=0;i<param_temp.length;i++){
             if(this.parametros[i].getTipe(entorno)=="ID"){
                 indices.unshift(i);
             }
             if(this.padre=="main"){
-                param_temp[i].ambitos=this.ambitos;
+                param_temp[i].ambitos=temp_ambi;
             }else{
-                param_temp[i].ambitos=this.ambitos;
+                param_temp[i].ambitos=temp_ambi;
             }
             param_temp[i].padre=this.padre;
             param_temp[i].normal=this.normal;
@@ -49,9 +55,9 @@ class Llamada_Metodo{
                             }
                         }
                         if(this.padre=="main"){
-                            this.parametros[i].ambitos=this.ambitos;
+                            this.parametros[i].ambitos=temp_ambi;
                         }else{
-                            this.parametros[i].ambitos=this.ambitos;
+                            this.parametros[i].ambitos=temp_ambi;
                         }
                         this.parametros[i].padre=this.padre;
                         this.parametros[i].normal=this.normal;
@@ -83,6 +89,7 @@ class Llamada_Metodo{
                             temp+="stack["+eti2+"]="+temp_h+";\n";
                             pos++;
                             temp+="         //FIN PARAMETRO "+(i+1)+"\n";
+                            alert(temp);
                         }else{
                             alert("Es un id el que se esta mandando como parametro "+tipo_parametro);
                         }

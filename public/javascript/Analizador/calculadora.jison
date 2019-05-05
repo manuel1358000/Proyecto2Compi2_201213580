@@ -706,7 +706,7 @@ exp: '!' exp
     | sentencia_llamada{$$=$1;}
     | NULO{$$=new Aritmetica(null,null,false,"null",null,PrimitiveType.NULO,0,0);}
     | ID lista_dd{
-                $$=new Aritmetica(null,null,false,yytext,null,"ARRAY",0,0);
+                $$=new Aritmetica(null,null,false,$1,null,"ARRAY",0,0);
                 $$.lista_dimensiones=$2;
             };
 

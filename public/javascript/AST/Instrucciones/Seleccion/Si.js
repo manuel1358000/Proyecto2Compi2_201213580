@@ -216,6 +216,104 @@ class Si{
                         }else{
                             alert("Error Semantico, en la operacion declaracion arreglos");
                         }        
+                    }else if(this.nodos[i] instanceof AsignacionArreglos){
+                        var ambi=temp_ambi;
+                        this.nodos[i].ambitos=ambi;
+                        var result_temp=this.nodos[i].execute(local);
+                        var sim=local.obtener(this.nodos[i].id+"_"+ambi);
+                        if(sim!=null){
+                            if(numerico(sim.tipo)){
+                                if(result_temp!=null){
+                                    temp+=result_temp.cadena;
+                                    temp+="//empieza la asignacion ARREGLO PRIMITIVO\n";
+                                    //se tiene el valor puntual a asignar result_temp.u_etiqueta
+                                    var eti_principio=generarEtiqueta();
+                                    var simulado=generarEtiqueta();
+                                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                                    temp+=eti_principio+"=stack["+simulado+"];\n";
+                                    //posicion del heap donde inicia el arreglo eti_principio
+                                    if(sim.lista_dimensiones.length==this.nodos[i].dimensiones.length){
+                                        if(sim.lista_dimensiones.length==1){
+                                            //cuando es de una sola dimension
+                                            //sim es el tamanio total
+                                            this.nodos[i].dimensiones[0].ambitos=sim.entorno;
+                                            var posx=this.nodos[i].dimensiones[0].getValue(local);
+                                            var postemp=generarEtiqueta();
+                                            temp+=posx.cadena;
+                                            temp+=postemp+"="+eti_principio+"+"+posx.u_etiqueta+";\n";
+                                            temp+="heap["+postemp+"]="+result_temp.u_etiqueta+";\n";
+                                        }else if(sim.lista_dimensiones.length==2){
+                                            var tempx;
+                                            var posfinal=generarEtiqueta();
+                                            for(var y=0;y<this.nodos[i].dimensiones.length;y++){
+                                                this.nodos[i].dimensiones[y].ambitos=sim.entorno;
+                                                if(y==0){
+                                                    tempx=this.nodos[i].dimensiones[y].getValue(local);
+                                                    temp+=tempx.cadena;
+                                                }else{
+                                                    var tempy=this.nodos[i].dimensiones[y].getValue(local);
+                                                    temp+=tempy.cadena;
+                                                    sim.lista_dimensiones[y].ambitos=sim.ambitos;
+                                                    var tamy=sim.lista_dimensiones[y].getValue(local);
+                                                    temp+=tamy.cadena;
+                                                    temp+=posfinal+"="+tempx.u_etiqueta+"*"+tamy.u_etiqueta+";\n";
+                                                    temp+=posfinal+"="+posfinal+"+"+tempy.u_etiqueta+";\n";
+                                                }
+                                            }
+                                            var postemp=generarEtiqueta();
+                                            temp+=postemp+"="+eti_principio+"+"+posfinal+";\n";
+                                            temp+="heap["+postemp+"]="+result_temp.u_etiqueta+";\n";
+                                            
+                                        }else{
+                                            var tempx;
+                                            var posfinal=generarEtiqueta();
+                                            for(var y=0;y<this.nodos[i].dimensiones.length;y++){
+                                                this.nodos[i].dimensiones[y].ambitos=sim.entorno;
+                                                if(y==0){
+                                                    tempx=this.nodos[i].dimensiones[y].getValue(local);
+                                                    temp+=tempx.cadena;
+                                                    var tamx=sim.lista_dimensiones[y].getValue(local);
+                                                    temp+=tamx.cadena;
+                                                    temp+=posfinal+"="+tempx.u_etiqueta+"*"+tamx.u_etiqueta+";\n";
+                                                }else{
+                                                    var tempy=this.nodos[i].dimensiones[y].getValue(local);
+                                                    temp+=tempy.cadena;
+                                                    sim.lista_dimensiones[y].ambitos=sim.ambitos;
+                                                    var tamy=sim.lista_dimensiones[y].getValue(local);
+                                                    temp+=tamy.cadena;
+                                                    temp+=posfinal+"="+posfinal+"+"+tempy.u_etiqueta+";\n";
+                                                    if(y<this.nodos[i].dimensiones.length-1){
+                                                        temp+=posfinal+"="+posfinal+"*"+tamy.u_etiqueta+";\n";
+                                                    }
+                                                }
+                                            }
+                                            var postemp=generarEtiqueta();
+                                            temp+=postemp+"="+eti_principio+"+"+posfinal+";\n";
+                                            temp+="heap["+postemp+"]="+result_temp.u_etiqueta+";\n";
+                                            
+                                        }
+                                    }else{
+                                        alert("Error Semantico, Numero de dimensiones incorrectas para la asignacion del valor al arreglo primitivo");
+                                        temp="//empieza la asignacion ARREGLO PRIMITIVO\n";
+                                    }
+                                    temp+="//fin asignacion ARREGLO PRIMITIVO\n";
+                                }else{
+                                    alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
+                                }
+                            }else{
+        
+                                //terminar esta parte
+                                /******* 
+                                 * 
+                                 * 
+                                 * 
+                                 * 
+                                */
+                                alert("Es una asignacion a un arreglo de objetos FALTA TERMINAR");
+                            }
+                        }else{
+                            alert("Error Semantico, Arreglo no existe en el entorno");
+                        }
                     }else{
                         console.log("Instancia rara if");
                     }

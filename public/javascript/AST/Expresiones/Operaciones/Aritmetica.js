@@ -361,6 +361,7 @@ class Aritmetica{
                     var temp="";
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     if(sim==null){
+                        alert("Error Semantico, No existe el id que se busca");
                     }else{
                         var temp1=generarEtiqueta();
                         var simulado=generarEtiqueta();
@@ -374,14 +375,94 @@ class Aritmetica{
                     }
                     return result;
                 }else if(this.tipoprimitivo=="ARRAY"){
-                    alert("Es un acceso a un arreglo");
                     //aqui tomo el valor originar que quiero copiar y lo tengo que almacenar en otra ubicacion, y devuelvo el valor del h para poder asignarlo
-
-
-
-
-
-
+                    var result=new Result();
+                    var temp="";
+                    var sim=entorno.obtener(this.valor+"_"+this.ambitos);
+                    if(sim!=null){
+                        if(numerico(sim.tipo)){
+                            var eti_principio=generarEtiqueta();
+                            var simulado=generarEtiqueta();
+                            temp+=simulado+"=p+"+sim.posRel+";\n";
+                            temp+=eti_principio+"=stack["+simulado+"];\n";
+                            if(sim.lista_dimensiones.length==this.lista_dimensiones.length){
+                                if(sim.lista_dimensiones.length==1){
+                                    //cuando es de una sola dimension
+                                    //sim es el tamanio total
+                                    this.lista_dimensiones[0].ambitos=sim.entorno;
+                                    var posx=this.lista_dimensiones[0].getValue(entorno);
+                                    var postemp=generarEtiqueta();
+                                    temp+=posx.cadena;
+                                    temp+=postemp+"="+eti_principio+"+"+posx.u_etiqueta+";\n";
+                                    var val=generarEtiqueta();
+                                    temp+=val+"=heap["+postemp+"];\n";
+                                    this.tipoprimitivo=sim.tipo;
+                                    result.u_etiqueta=val;
+                                    result.cadena+=temp;
+                                }else if(sim.lista_dimensiones.length==2){
+                                    var tempx;
+                                    var posfinal=generarEtiqueta();
+                                    for(var y=0;y<this.lista_dimensiones.length;y++){
+                                        this.lista_dimensiones[y].ambitos=sim.entorno;
+                                        if(y==0){
+                                            tempx=this.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tempx.cadena;
+                                        }else{
+                                            var tempy=this.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tempy.cadena;
+                                            sim.lista_dimensiones[y].ambitos=sim.ambitos;
+                                            var tamy=sim.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tamy.cadena;
+                                            temp+=posfinal+"="+tempx.u_etiqueta+"*"+tamy.u_etiqueta+";\n";
+                                            temp+=posfinal+"="+posfinal+"+"+tempy.u_etiqueta+";\n";
+                                        }
+                                    }
+                                    var postemp=generarEtiqueta();
+                                    temp+=postemp+"="+eti_principio+"+"+posfinal+";\n";
+                                    var val=generarEtiqueta();
+                                    temp+=val+"=heap["+postemp+"];\n";
+                                    result.u_etiqueta=val;
+                                    result.cadena+=temp;
+                                    this.tipoprimitivo=sim.tipo;
+                                }else{
+                                    var tempx;
+                                    var posfinal=generarEtiqueta();
+                                    for(var y=0;y<this.lista_dimensiones.length;y++){
+                                        this.lista_dimensiones[y].ambitos=sim.entorno;
+                                        if(y==0){
+                                            tempx=this.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tempx.cadena;
+                                            var tamx=sim.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tamx.cadena;
+                                            temp+=posfinal+"="+tempx.u_etiqueta+"*"+tamx.u_etiqueta+";\n";
+                                        }else{
+                                            var tempy=this.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tempy.cadena;
+                                            sim.lista_dimensiones[y].ambitos=sim.ambitos;
+                                            var tamy=sim.lista_dimensiones[y].getValue(entorno);
+                                            temp+=tamy.cadena;
+                                            temp+=posfinal+"="+posfinal+"+"+tempy.u_etiqueta+";\n";
+                                            if(y<this.lista_dimensiones.length-1){
+                                                temp+=posfinal+"="+posfinal+"*"+tamy.u_etiqueta+";\n";
+                                            }
+                                        }
+                                    }
+                                    var postemp=generarEtiqueta();
+                                    temp+=postemp+"="+eti_principio+"+"+posfinal+";\n";
+                                    var val=generarEtiqueta();
+                                    temp+=val+"=heap["+postemp+"];\n";
+                                    result.u_etiqueta=val;
+                                    result.cadena+=temp;
+                                    this.tipoprimitivo=sim.tipo;
+                                }
+                            }
+                        }else{
+                            alert("Error Semantico, El elemento que quiere acceder es un arreglo de objetos");
+                        }
+                    }else{
+                        alert("Error Semantico, No existe el arreglo que se busca");
+                    }
+                    return result;
                 }else{
                     var result=new Result();
                     result.u_etiqueta=generarEtiqueta();
@@ -389,7 +470,6 @@ class Aritmetica{
                         result.cadena+=result.u_etiqueta+"="+this.valor.charCodeAt(1)+";\n";
                         result.valor=this.valor.charCodeAt(1);
                     }else if(this.tipoprimitivo==PrimitiveType.BOOLEAN){
-                        
                         if(this.valor=='true'){
                             result.valor=1;
                         }else{

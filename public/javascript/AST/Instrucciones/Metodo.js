@@ -462,6 +462,14 @@ class Metodo{
                             alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
                         }
                     }else{
+
+                        //terminar esta parte
+                        /******* 
+                         * 
+                         * 
+                         * 
+                         * 
+                        */
                         alert("Es una asignacion a un arreglo de objetos FALTA TERMINAR");
                     }
                 }else{

@@ -794,7 +794,7 @@ this.$=new Aritmetica(null,null,false,"null",null,PrimitiveType.NULO,0,0);
 break;
 case 165:
 
-                this.$=new Aritmetica(null,null,false,yytext,null,"ARRAY",0,0);
+                this.$=new Aritmetica(null,null,false,$$[$0-1],null,"ARRAY",0,0);
                 this.$.lista_dimensiones=$$[$0];
             
 break;
