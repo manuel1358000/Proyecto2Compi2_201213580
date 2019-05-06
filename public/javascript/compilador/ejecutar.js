@@ -1,5 +1,4 @@
 
-
 var cont_e=-1;
 var cont_s=-1;
 /** FUNCION QUE SE MANDA A LLAMAR PARA COMPILAR EL AREA ACTUAL*/
@@ -82,6 +81,7 @@ function btn_3dcompilar(){
     alert("Finalizo el analisis");
 }
 function btn_compilar(){
+    codigo=0;
     //SECCION DONDE SE INICIALIZAN LOS VALORES DE DYNAMO
     scanData2();
     indice_errores=0;
@@ -132,6 +132,7 @@ function btn_compilar(){
         indice2=indice2-3;
     }
     agregar_contenido(codigo3d,indice2);
+    graficarArbol(ast);
 }
 
 
@@ -218,4 +219,153 @@ function limpiarConsola(){
 function escribirConsola(contenido){
     var consola=document.getElementById("consola");
     consola.value+=contenido;
+}
+
+var temp_grafica="";
+
+function graficarArbol(lista_clases){
+    temp_grafica="";
+    temp_grafica +="digraph lista{\n rankdir=TB; \nnode [shape = box,color=red]; \n";
+    for(var i=0;i<lista_clases.length;i++){
+        crearAST(lista_clases[i]);
+    }
+    temp_grafica+="\n}";
+    console.log(temp_grafica);    
+}
+
+function crearAST(nodoraiz){
+    if(nodoraiz instanceof Declaracionclase){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\" CLASE "+nodoraiz.id+"\"];\n";
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.nodos[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            var hijo=nodoraiz.nodos[i];
+            crearAST(hijo);
+        }
+    }else if(nodoraiz instanceof Aritmetica){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"ARITMETICA\"];\n";
+    }else if(nodoraiz instanceof Logica){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"LOGICA\"];\n";
+    }else if(nodoraiz instanceof Relacional){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"RELACIONAL\"];\n";
+    }else if(nodoraiz instanceof Ternario){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"TERNARIO\"];\n";
+    }else if(nodoraiz instanceof Llamada_Metodo){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"LLAMADA METODO\"];\n";
+    }else if(nodoraiz instanceof Retorno){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"RETORNO\"];\n";
+    }else if(nodoraiz instanceof Mientras){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"MIENTRAS\"];\n";
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.condicion.codigo+";\n";
+        crearAST(nodoraiz.condicion);
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.nodos[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            var hijo=nodoraiz.nodos[i];
+            crearAST(hijo);
+        }
+    }else if(nodoraiz instanceof Para){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"PARA\"];\n";
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.inicializado.codigo+";\n";
+        crearAST(nodoraiz.inicializado);
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.condicion.codigo+";\n";
+        crearAST(nodoraiz.condicion);
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.aumento.codigo+";\n";
+        crearAST(nodoraiz.aumento);
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.nodos[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            var hijo=nodoraiz.nodos[i];
+            crearAST(hijo);
+        }
+    }else if(nodoraiz instanceof Caso){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"CASE\"];\n";
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.condicion.codigo+";\n";
+        crearAST(nodoraiz.condicion);
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.nodos[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            var hijo=nodoraiz.nodos[i];
+            crearAST(hijo);
+        }
+    }else if(nodoraiz instanceof Selecciona){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"SELECCIONA\"];\n";
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.condicion.codigo+";\n";
+        crearAST(nodoraiz.condicion);
+        for(var i=0;i<nodoraiz.lista_cases.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.lista_cases[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.lista_cases.length;i++){
+            var hijo=nodoraiz.lista_cases[i];
+            crearAST(hijo);
+        }
+        if(nodoraiz.defecto!=null){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.defecto.codigo+";\n";
+            temp_grafica+="struct"+nodoraiz.defecto.codigo+"[label=\"DEFECTO\"];\n";
+        }
+        
+    }else if(nodoraiz instanceof Si){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"SI\"];\n";
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.condicion.codigo+";\n";
+        crearAST(nodoraiz.condicion);
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.nodos[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            var hijo=nodoraiz.nodos[i];
+            crearAST(hijo);
+        }
+        for(var i=0;i<nodoraiz.subifs.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.subifs[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.subifs.length;i++){
+            var hijo=nodoraiz.subifs[i];
+            crearAST(hijo);
+        }
+        if(nodoraiz.defecto!=null){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.defecto.codigo+";\n";
+            temp_grafica+="struct"+nodoraiz.defecto.codigo+"[label=\"DEFECTO\"];\n";
+        }
+    }else if(nodoraiz instanceof Subsi){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"SI\"];\n";
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.condicion.codigo+";\n";
+        crearAST(nodoraiz.condicion);
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.nodos[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            var hijo=nodoraiz.nodos[i];
+            crearAST(hijo);
+        }
+    }else if(nodoraiz instanceof Asignacion){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\" ASIGNACION\"];\n";
+    }else if(nodoraiz instanceof AsignacionArreglos){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\" ASIGNACION ARREGLO\"];\n";
+    }else if(nodoraiz instanceof Declaracion){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\" DECLARACION\"];\n";
+    }else if(nodoraiz instanceof DeclaracionArreglos){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\" DECLARACION ARREGLO\"];\n";
+    }else if(nodoraiz instanceof Detener){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\" DETENER\"];\n";
+    }else if(nodoraiz instanceof Este){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"THIS\"];\n";
+    }else if(nodoraiz instanceof Imprimir){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"IMPRIMIR\"];\n";
+        temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.expresion.codigo+";\n";
+        var hijo=nodoraiz.expresion;
+        crearAST(hijo);
+    }else if(nodoraiz instanceof Metodo){
+        temp_grafica+="struct"+nodoraiz.codigo+"[label=\"METODO "+nodoraiz.id+"\"];\n";
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            temp_grafica+="struct"+nodoraiz.codigo+"->"+"struct"+nodoraiz.nodos[i].codigo+";\n";
+        }
+        for(var i=0;i<nodoraiz.nodos.length;i++){
+            var hijo=nodoraiz.nodos[i];
+            crearAST(hijo);
+        }
+    }
 }

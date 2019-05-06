@@ -11,6 +11,8 @@ class Relacional{
         this.ambitos="";
         this.padre;
         this.normal;
+        this.codigo=codigo;
+        codigo++;
     }
     getValue(entorno){
         if(this.exp1!=null&&this.exp2!=null){

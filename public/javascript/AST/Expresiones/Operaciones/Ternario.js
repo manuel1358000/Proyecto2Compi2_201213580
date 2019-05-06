@@ -7,6 +7,8 @@ class Ternario{
         this.tipoprimitivo=null;
         this.padre;
         this.normal;
+        this.codigo=codigo;
+        codigo++;
     }
     getValue(entorno){
         var result=new Result();

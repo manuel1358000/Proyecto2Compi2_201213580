@@ -15,6 +15,8 @@ class DeclaracionArreglos{
         this.padre="";
         this.normal="";
         this.iniValue;
+        this.codigo=codigo;
+        codigo++;
     }
     execute(entorno){
         var bandera=false;

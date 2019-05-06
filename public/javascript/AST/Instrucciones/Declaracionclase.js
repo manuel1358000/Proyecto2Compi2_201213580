@@ -6,6 +6,8 @@ class Declaracionclase{
         this.modificadores=modificadores;
         this.id_extends=id_extends;
         this.nodos=nodos;
+        this.codigo=codigo;
+        codigo++;
     }
     execute(entorno){
         var respuesta="";

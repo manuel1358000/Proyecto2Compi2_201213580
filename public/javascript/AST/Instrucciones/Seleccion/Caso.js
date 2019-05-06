@@ -6,6 +6,8 @@ class Caso{
         this.salida="";
         this.padre="";
         this.normal="";
+        this.codigo=codigo;
+        codigo++;
     }
     execute(entorno){
         var temp="";
@@ -26,6 +28,8 @@ class Caso{
             this.nodos[i].ambitos=temp_ambi;
             if(this.nodos[i] instanceof Declaracion){
                 var ambi=temp_ambi;
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 if(result_temp!=null){
@@ -57,6 +61,8 @@ class Caso{
                     temp+="//fin declaracion variable local\n";
                 }
             }else if(this.nodos[i] instanceof Imprimir){
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=temp_ambi;
                 var temp_tam=0;
                 if(this.padre=="main"){
@@ -83,6 +89,8 @@ class Caso{
                 }
             }else if(this.nodos[i] instanceof Mientras){
                 var ambi=temp_ambi;
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 if(result_temp!=null){  
@@ -90,6 +98,8 @@ class Caso{
                 }
             }else if(this.nodos[i] instanceof Si){
                 var ambi=temp_ambi;
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -99,6 +109,8 @@ class Caso{
                 }
             }else if(this.nodos[i] instanceof Asignacion){
                 var ambi=temp_ambi;
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 if(result_temp!=null){
@@ -118,6 +130,8 @@ class Caso{
                 }
             }else if(this.nodos[i] instanceof Selecciona){
                 var ambi=temp_ambi;
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -127,6 +141,8 @@ class Caso{
             }else if(this.nodos[i] instanceof Aritmetica){
                 if(this.nodos[i].unario){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].getValue(local);
                     if(result_temp!=null){  
@@ -147,6 +163,8 @@ class Caso{
                 temp+="//FINALIZA LLAMADA A METODO\n";
             }else if(this.nodos[i] instanceof Para){
                 var ambi=temp_ambi;
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 if(result_temp!=null){  
@@ -164,6 +182,8 @@ class Caso{
                 }
             }else if(this.nodos[i] instanceof DeclaracionArreglos){
                 var ambi=temp_ambi;
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 var tipo_result=this.nodos[i].getTipe(local);
@@ -187,6 +207,8 @@ class Caso{
                 }        
             }else if(this.nodos[i] instanceof AsignacionArreglos){
                 var ambi=temp_ambi;
+                this.nodos[i].padre=this.padre;
+                this.nodos[i].normal=this.normal;
                 this.nodos[i].ambitos=ambi;
                 var result_temp=this.nodos[i].execute(local);
                 var sim=local.obtener(this.nodos[i].id+"_"+ambi);

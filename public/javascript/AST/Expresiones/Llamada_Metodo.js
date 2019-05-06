@@ -6,6 +6,8 @@ class Llamada_Metodo{
         this.padre="";
         this.normal="";
         this.primitivetipe;
+        this.codigo=codigo;
+        codigo++;
     }
     getValue(entorno){
         var result=null;

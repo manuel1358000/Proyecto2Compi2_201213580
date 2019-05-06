@@ -5,6 +5,8 @@ class Retorno{
         this.ambitos="";
         this.padre="";
         this.normal="";
+        this.codigo=codigo;
+        codigo++;
     }
     getValue(entorno){
         var result=new Result();

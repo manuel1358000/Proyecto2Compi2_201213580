@@ -14,6 +14,8 @@ class Aritmetica{
         this.padre;
         this.normal;
         this.lista_dimensiones;
+        this.codigo=codigo;
+        codigo++;
     }
     getValue(entorno){
         if(this.unario){

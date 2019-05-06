@@ -5,6 +5,8 @@ class Este{
         this.ambitos="";
         this.tipo=null;
         this.iniValue=null;
+        this.codigo=codigo;
+        codigo++;
     }
     getValue(entorno){
         var result=new Result();

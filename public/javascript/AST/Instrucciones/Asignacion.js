@@ -6,6 +6,8 @@ class Asignacion{
         this.ambitos="";
         this.padre="";
         this.normal="";
+        this.codigo=codigo;
+        codigo++;
     }
     execute(entorno){
         var respuesta=null;

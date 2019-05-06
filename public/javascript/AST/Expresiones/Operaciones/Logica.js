@@ -11,6 +11,8 @@ class Logica{
         this.ambitos="";
         this.padre;
         this.normal;
+        this.codigo=codigo;
+        codigo++;
     }
     getValue(entorno){
         if(this.unario){

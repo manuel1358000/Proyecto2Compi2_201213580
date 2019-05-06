@@ -15,6 +15,8 @@ class Declaracion{
         this.objeto=false;
         this.padre="";
         this.normal="";
+        this.codigo=codigo;
+        codigo++;
     }
     execute(entorno){
         var temp_ambi="";

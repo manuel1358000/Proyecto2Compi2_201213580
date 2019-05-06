@@ -9,6 +9,8 @@ class Metodo{
         this.modificadores=[];
         this.constructor=false;
         this.ambitos="";
+        this.codigo=codigo;
+        codigo++;
     }
     execute(entorno){
         //vamos a cargar los parametros a la tabla de simbolos

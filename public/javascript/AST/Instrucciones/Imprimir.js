@@ -6,6 +6,8 @@ class Imprimir{
         this.tam=0;
         this.padre="";
         this.normal="";
+        this.codigo=codigo;
+        codigo++;
     }
 
     execute(entorno){

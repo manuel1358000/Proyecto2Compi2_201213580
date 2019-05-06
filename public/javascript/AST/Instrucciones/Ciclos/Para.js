@@ -9,6 +9,8 @@ class Para{
         this.tipo=tipo;//true es para un for normal, false es para un foreach
         this.padre="";
         this.normal="";
+        this.codigo=codigo;
+        codigo++;
     }
     execute(entorno){
         var local=new Entorno(entorno);
@@ -72,6 +74,8 @@ class Para{
             for(var i=0;i<this.nodos.length;i++){
                 if(this.nodos[i] instanceof Declaracion){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -103,6 +107,8 @@ class Para{
                         temp+="//fin declaracion variable local\n";
                     }
                 }else if(this.nodos[i] instanceof Imprimir){
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=temp_ambi;
                     var temp_tam=0;
                     if(this.padre=="main"){
@@ -113,11 +119,15 @@ class Para{
                         temp_tam=sim_temp.tamanio;
                     }
                     this.nodos[i].tam=temp_tam;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     var result_temp=this.nodos[i].execute(local);
                     temp+=result_temp.cadena;
                 }else if(this.nodos[i] instanceof Asignacion){
                     var ambi=temp_ambi;
                     this.nodos[i].ambitos=ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
                         result.cadena+=result_temp.cadena;
@@ -135,6 +145,8 @@ class Para{
                     }
                 }else if(this.nodos[i] instanceof Si){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -143,6 +155,8 @@ class Para{
                     }
                 }else if(this.nodos[i] instanceof Selecciona){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
@@ -151,6 +165,8 @@ class Para{
                     }
                 }else if(this.nodos[i] instanceof Asignacion){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){
@@ -182,6 +198,8 @@ class Para{
                     }
                 }else if(this.nodos[i] instanceof Mientras){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){  
@@ -190,6 +208,8 @@ class Para{
                 }else if(this.nodos[i] instanceof Aritmetica){
                     if(this.nodos[i].unario){
                         var ambi=temp_ambi;
+                        this.nodos[i].padre=this.padre;
+                        this.nodos[i].normal=this.normal;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].getValue(local);
                         if(result_temp!=null){  
@@ -200,6 +220,8 @@ class Para{
                     }
                 }else if(this.nodos[i] instanceof Para){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     if(result_temp!=null){  
@@ -227,6 +249,8 @@ class Para{
                     }
                 }else if(this.nodos[i] instanceof DeclaracionArreglos){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     var tipo_result=this.nodos[i].getTipe(local);
@@ -250,6 +274,8 @@ class Para{
                     }        
                 }else if(this.nodos[i] instanceof AsignacionArreglos){
                     var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
                     var sim=local.obtener(this.nodos[i].id+"_"+ambi);
