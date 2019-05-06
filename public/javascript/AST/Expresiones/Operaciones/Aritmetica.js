@@ -40,7 +40,9 @@ class Aritmetica{
                     this.tipoprimitivo=tipo1;
                     return result1;
                 }else{
-                    console.log("Error semantico, en el tipo unario -");
+                    alert("Error semantico, en el tipo unario -");
+                    var errores_1=new Errores("Semantico","Error en el operador unario",0,0);
+                    lista_errores.push(errores_1);
                 }
             }else if(this.operador=="++"){
                 var result=new Result();
@@ -58,6 +60,8 @@ class Aritmetica{
                     this.tipoprimitivo=tipo1.toUpperCase();
                 }else{
                     alert("Error Semantico, la operacion incrementar solo se puede realizar a integer, double y char");
+                    var errores_1=new Errores("Semantico","La operacion incrementar solo se puede realizar a integer, double y char",0,0);
+                    lista_errores.push(errores_1);
                 }
                 return result;
             }else if(this.operador=="--"){
@@ -76,6 +80,8 @@ class Aritmetica{
                     this.tipoprimitivo=tipo1.toUpperCase();
                 }else{
                     alert("Error Semantico, la operacion decrementar solo se puede realizar a integer, double y char");
+                    var errores_1=new Errores("Semantico","La operacion decrementar solo se puede realizar a integer, double y char",0,0);
+                    lista_errores.push(errores_1);
                 }
                 return result;
             }
@@ -164,7 +170,9 @@ class Aritmetica{
                             result.valor=result.u_etiqueta;
                             return result;
                         }else{
-                            console.log("Error semantico: Operacion no soportada");
+                            alert("Error semantico: Tipo no soportado para suma");
+                            var errores_1=new Errores("Semantico","Tipo no soportado para suma",0,0);
+                            lista_errores.push(errores_1);
                             return null;
                         }
                     }else if(this.operador=="-"){
@@ -193,7 +201,9 @@ class Aritmetica{
                             result.valor=result.u_etiqueta;
                             return result;
                         }else{
-                            console.log("Error semantico: Operacion no soportada");
+                            alert("Error semantico: Tipo no soportado para resta");
+                            var errores_1=new Errores("Semantico","Tipo no soportado para resta",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else if(this.operador=="*"){
                         if(tipo=="INTEGER"){
@@ -221,7 +231,9 @@ class Aritmetica{
                             result.valor=result.u_etiqueta;
                             return result;
                         }else{
-                            console.log("Error semantico: Operacion no soportada");
+                            alert("Error semantico: Tipo no soportado para multiplicacion");
+                            var errores_1=new Errores("Semantico","Error en el operador unario",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else if(this.operador=="/"){
                         if(tipo=="INTEGER"){
@@ -460,7 +472,6 @@ class Aritmetica{
                                     result.u_etiqueta=val;
                                     result.cadena+=temp;
                                     this.tipoprimitivo=sim.tipo;
-                                   
                                 }
                             }else{
                                 alert("Error Semantico, las dimensiones no coindicen");
