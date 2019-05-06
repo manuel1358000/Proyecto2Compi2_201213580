@@ -82,6 +82,9 @@ function btn_3dcompilar(){
     alert("Finalizo el analisis");
 }
 function btn_compilar(){
+    //SECCION DONDE SE INICIALIZAN LOS VALORES DE DYNAMO
+    scanData2();
+    indice_errores=0;
     cont_e=-1;
     pool_salida=[];
     lista_temporales="var heap[];\nvar stack[];\nvar h=0;\nvar p=0;\n";
@@ -95,6 +98,12 @@ function btn_compilar(){
     }else if(indice>1){
         indice=indice-3;
     }
+    var errores_1=new Errores("Semantico","Prueba de errores 1",0,0);
+    lista_errores.push(errores_1);
+    errores_1=new Errores("Semantico","Prueba de errores 2",0,0);
+    lista_errores.push(errores_1);
+    errores_1=new Errores("Semantico","Prueba de errores 3",0,0);
+    lista_errores.push(errores_1);
     var cm = $('.CodeMirror')[indice].CodeMirror;
     var ast=calculadora.parse(cm.getValue());
     cont_e=-1;
@@ -123,6 +132,18 @@ function btn_compilar(){
         indice2=indice2-3;
     }
     agregar_contenido(codigo3d,indice2);
+}
+
+
+function agregarElementosErrores(){
+    for(var i=0;i<lista_errores.length;i++){
+        createElementoErrores(lista_errores[i].indice_errores,lista_errores[i].tipo,lista_errores[i].descripcion,lista_errores[i].linea,lista_errores[i].columna);
+    }
+    if(lista_errores.length==0){
+        scanData();
+    }
+    alert("Cargando Reporte");
+    anidarErrores();
 }
 
 function processFiles(files) {

@@ -42,7 +42,7 @@ function ejecutar(nodoast,entorno){
     }
     //------------------------
     agregarTablaSimbolos(entorno);
-    anidarErrores();
+    //anidarErrores();
     return respuesta;
 }
 function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
