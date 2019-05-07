@@ -15,7 +15,7 @@ class AccesoObjetos{
         var temp="";
         var temp_ambi="";
         if(this.padre=="main"){
-            temp_ambi=this.ambitos+"/"+this.padre;
+            temp_ambi=this.ambitos;
         }else{
             temp_ambi=this.ambitos;
         }
@@ -26,8 +26,11 @@ class AccesoObjetos{
                 this.iniValue.ambitos=this.ambitos;
                 this.iniValue.padre=this.padre;
                 var result_temp=this.iniValue.getValue(entorno);
+                var result_tipo=this.iniValue.getTipe(entorno);
                 if(result_temp!=null){
                     temp+=result_temp.cadena;
+                    result.u_etiqueta=result_temp.u_etiqueta;
+                    this.primitivetipe=result_tipo;
                 }else{
                     alert("Error Semantico, No se pudo realizar la llamada al metodo del objeto");
                 }

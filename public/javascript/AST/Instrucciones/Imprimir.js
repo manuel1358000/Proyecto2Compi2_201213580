@@ -145,7 +145,7 @@ class Imprimir{
                 armar+="//-------------------------finaliza impresion boolean\n";
                 result.cadena+=armar;
             }else{
-                console.log(result.tipo);
+                alert("VERIFICAR ESTO "+result.tipo);
                 alert("Error semantico, no esta inicializada la variable que se debe de imprimir o es un objeto");
             }
         }

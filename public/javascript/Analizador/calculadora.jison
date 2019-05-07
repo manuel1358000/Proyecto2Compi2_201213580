@@ -724,7 +724,8 @@ exp: '!' exp
     | ID lista_dd{
                 $$=new Aritmetica(null,null,false,$1,null,"ARRAY",0,0);
                 $$.lista_dimensiones=$2;
-            };
+            }
+    | sentencia_objetos{$$=$1;};
 
 
 sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};

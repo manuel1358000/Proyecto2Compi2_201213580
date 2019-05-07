@@ -493,13 +493,13 @@ class Metodo{
                 }
                 this.nodos[i].padre=nombre;
                 this.nodos[i].normal=ambi;
+                
                 var result_temp=this.nodos[i].getValue(entorno);
                 temp+="//INICIA LLAMADA A METODO OBJETO\n"
                 if(result_temp!=null){
                     temp+=result_temp.cadena;
                 }
                 temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
-                //alert(temp);
                 result.cadena+=temp;
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
