@@ -476,6 +476,31 @@ class Metodo{
                     alert("Error Semantico, Arreglo no existe en el entorno");
                 }
                 result.cadena+=temp;
+            }else if(this.nodos[i] instanceof AccesoObjetos){
+                var ambi=this.ambitos;
+                var temp="";
+                var nombre="";
+                if(this.id=="main"){
+                    nombre="main";
+                    this.nodos[i].ambitos=ambi;
+                }else{
+                    var complemento="";
+                    for(var f=0;f<this.parametros.length;f++){
+                        complemento+="_"+this.parametros[f].tipo;
+                    }
+                    nombre=this.ambitos+"_"+this.id+complemento;
+                    this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
+                }
+                this.nodos[i].padre=nombre;
+                this.nodos[i].normal=ambi;
+                var result_temp=this.nodos[i].getValue(entorno);
+                temp+="//INICIA LLAMADA A METODO OBJETO\n"
+                if(result_temp!=null){
+                    temp+=result_temp.cadena;
+                }
+                temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
+                //alert(temp);
+                result.cadena+=temp;
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");

@@ -393,11 +393,9 @@ class Aritmetica{
                     }
                     return result;
                 }else if(this.tipoprimitivo=="ARRAY"){
-                    alert("aqui");
                     //aqui tomo el valor originar que quiero copiar y lo tengo que almacenar en otra ubicacion, y devuelvo el valor del h para poder asignarlo
                     var result=new Result();
                     var temp="";
-                    alert(this.valor+"_"+this.ambitos);
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     if(sim!=null){
                         if(numerico(sim.tipo)){

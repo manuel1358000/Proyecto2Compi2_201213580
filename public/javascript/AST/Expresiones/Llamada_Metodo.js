@@ -27,19 +27,19 @@ class Llamada_Metodo{
             if(this.parametros[i].getTipe(entorno)=="ID"){
                 indices.unshift(i);
             }
-            if(this.padre=="main"){
-                param_temp[i].ambitos=temp_ambi;
-            }else{
-                param_temp[i].ambitos=temp_ambi;
-            }
+            param_temp[i].ambitos=temp_ambi;
             param_temp[i].padre=this.padre;
             param_temp[i].normal=this.normal;
+            alert("temp_ambi "+temp_ambi);
+            alert("padre "+this.padre);
+            alert("normal "+this.normal);
             var result1=param_temp[i].getValue(entorno);
             var tipo1=param_temp[i].getTipe(entorno);
             indice_result.push(result1);
             indice_tipo.push(tipo1);
             nombre_completo+="_"+tipo1;
         }
+        alert("El nombre completo es "+nombre_completo);
         //vamos a verificar si existe el metodo en el entorno
         var sim=entorno.obtener(nombre_completo);
         if(sim!=null){
@@ -69,7 +69,9 @@ class Llamada_Metodo{
                             var eti2=generarEtiqueta();
                             temp+=result_temp.cadena;
                             temp+=eti2+"="+eti1+"+"+pos+";//posicion del parametro\n";
-                            temp+="stack["+eti2+"]="+result_temp.u_etiqueta+";\n";
+                            temp+="heap["+temp_h+"]="+result_temp.u_etiqueta+";\n";
+                            temp+="h=h+1;\n";
+                            temp+="stack["+eti2+"]="+temp_h+";\n";
                             pos++;
                             temp+="//ESTO TENDRIA QUE APARECER EN EL FACTORIAL\n";
                             temp+="         //FIN PARAMETRO "+(i+1)+"\n";
@@ -118,7 +120,6 @@ class Llamada_Metodo{
                         temp+=eti11+"=stack["+eti10+"];\n";
                         var eti12=generarEtiqueta();
                         temp+=eti12+"=heap["+eti11+"];";
-                        temp+="//PODER PERRUNO\n";
                         result.u_etiqueta=eti12;
                     }else{
                         result.u_etiqueta=null;
