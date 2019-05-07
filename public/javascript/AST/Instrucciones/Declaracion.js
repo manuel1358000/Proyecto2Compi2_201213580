@@ -86,6 +86,7 @@ class Declaracion{
             temp+="p=p+"+sim_temp1.tamanio+";\n";
             temp+="call "+nombre_constructor+";\n";
             temp+="p=p-"+sim_temp1.tamanio+";\n";
+            alert("Revisar esto "+temp);
             respuesta.cadena+=temp;
         }else{
             var tipo=this.getTipe(entorno);

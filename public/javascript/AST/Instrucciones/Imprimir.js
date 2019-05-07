@@ -21,7 +21,9 @@ class Imprimir{
         this.expresion.padre=this.padre;
         this.expresion.normal=this.normal;
         this.expresion.ambitos=temp_ambi;
+        alert("here");
         var result_aux=this.expresion.getValue(entorno);
+        alert("here 2");
         result_aux.tipo=this.expresion.getTipe(entorno);
         result.tipo=result_aux.tipo;
         result.cadena+=result_aux.cadena;

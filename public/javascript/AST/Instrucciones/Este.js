@@ -1,4 +1,5 @@
 
+
 class Este{
     constructor(nodos){
         this.nodos=nodos;
@@ -7,17 +8,21 @@ class Este{
         this.iniValue=null;
         this.codigo=codigo;
         codigo++;
+        this.padre="";
+        this.normal="";
     }
     getValue(entorno){
         var result=new Result();
-        var separado=this.ambitos.split("/");
         if(this.nodos.length==1){
             if(this.nodos[0] instanceof Llamada_Metodo){
             }else if(this.nodos[0] instanceof Aritmetica){
                 if(this.iniValue!=null){
-                    var sim=entorno.obtener(this.nodos[0].valor+"_"+separado[0]);
+                    var sim=entorno.obtener(this.nodos[0].valor+"_"+this.normal);
                     var temp="";
                     if(sim!=null){
+                        this.iniValue.ambitos=this.ambitos;
+                        this.iniValue.padre=this.padre;
+                        this.iniValue.normal=this.normal;
                         var result_ini=this.iniValue.getValue(entorno);
                         var tipo_ini=this.iniValue.getTipe(entorno);
                         if(tipo_ini=="ID"){
@@ -62,7 +67,7 @@ class Este{
                                 result.u_etiqueta=temp1;
                                 result.cadena+=temp;
                                 sim.inicializado=true;
-                                entorno.actualizar(this.nodos[0].valor+"_"+separado[0],sim);
+                                entorno.actualizar(this.nodos[0].valor+"_"+this.normal,sim);
                             }else{
                                 alert("Este 3 Error Semantico, No se puede realizar la asignacion, son de tipos diferentes");
                             }
@@ -71,7 +76,7 @@ class Este{
                         alert("Este 4 Error Semantico, La variable global "+this.nodos[0].valor+" no existe");
                     }
                 }else{
-                    var sim=entorno.obtener(this.nodos[0].valor+"_"+separado[0]);
+                    var sim=entorno.obtener(this.nodos[0].valor+"_"+this.normal);
                     var temp="";
                     if(sim!=null){
                         if(sim.inicializado==true){

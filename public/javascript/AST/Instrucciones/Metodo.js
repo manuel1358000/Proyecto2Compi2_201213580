@@ -44,7 +44,6 @@ class Metodo{
                 if(!numerico(tipo_result)){
                     if(result_temp!=null){
                         temp+=result_temp.cadena;
-                        temp+=result_temp.cadena;
                         temp+="//declaracion OBJETO local\n";
                         var temph=generarEtiqueta();
                         temp+=temph+"=h;\n";

@@ -355,7 +355,13 @@ sentencias_metodo: variables ';'{$$=$1;}
                  | sentencia_retorno ';'{
                                         $$=[];
                                         $$.push($1);
+                                        }
+                 | sentencia_objetos ';'{
+                                        $$=[];
+                                        $$.push($1);
                                         };
+
+sentencia_objetos: ID '.' sentencia_llamada{$$=new AccesoObjetos($1,$3)};
 
 sentencia_asignacion_arreglo: ID lista_dd '=' exp{$$=new AsignacionArreglos($1,$4,$2);};
 
