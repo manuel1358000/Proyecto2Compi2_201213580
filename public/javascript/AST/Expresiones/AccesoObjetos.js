@@ -1,7 +1,7 @@
 class AccesoObjetos{
     constructor(id,iniValue){
         this.id=id;
-        this.iniValue=iniValue;
+        this.iniValue=iniValue;//es el metodo y la expresion
         this.ambitos="";
         this.padre="";
         this.normal="";
@@ -19,6 +19,7 @@ class AccesoObjetos{
         }else{
             temp_ambi=this.ambitos;
         }
+        alert(this.id+"_"+temp_ambi+" COMPROBAR ESTO");
         var sim=entorno.obtener(this.id+"_"+temp_ambi);
         if(sim!=null&&this.iniValue!=null){  
             if(sim.inicializado){

@@ -28,6 +28,7 @@
         <script src="/javascript/AST/Expresiones/Llamada_Metodo.js"></script>
         <script src="/javascript/AST/Expresiones/Retorno.js"></script>
         <script src="/javascript/AST/Expresiones/AccesoObjetos.js"></script>
+        <script src="/javascript/AST/Expresiones/AsignacionObjetos.js"></script>
         <script src="/javascript/AST/Instrucciones/Seleccion/Selecciona.js"></script>
         <script src="/javascript/AST/Instrucciones/Seleccion/Caso.js"></script>
         <script src="/javascript/AST/Instrucciones/Seleccion/Si.js"></script>
@@ -214,6 +215,8 @@
                                         <li class="active"><a data-toggle="pill" href="#id_errores">ERRORES</a></li>
                                         <li><a data-toggle="pill" href="#id_consola">CONSOLA</a></li>
                                         <li><a data-toggle="pill" href="#id_tabla" id="tabla_simbolos">TABLA SIMBOLOS</a></li>
+                                        <li><a data-toggle="pill" href="#id_heap" id="heap">HEAP</a></li>
+                                        <li><a data-toggle="pill" href="#id_stack" id="stack">STACK</a></li>
                                     </ul>          
                                     <div class="tab-content">
                                         <div id="id_errores" class="tab-pane fade in active">
@@ -258,8 +261,34 @@
                                                 
                                             </tbody>
                                           </table>
+                                        </div>
+                                        <div id="id_heap" class="tab-pane fade">
+                                          <table class="table">
+                                              <thead>
+                                                <tr>
+                                                  <th scope="col">POSICION</th>
+                                                  <th scope="col">VALOR</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody id="cuerpo_heap">
+                                              
+                                              </tbody>
+                                        </table>
                                       </div>
+                                      <div id="id_stack" class="tab-pane fade">
+                                        <table class="table">
+                                            <thead>
+                                              <tr>
+                                                <th scope="col">POSICION</th>
+                                                <th scope="col">VALOR</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody id="cuerpo_stack">
+                                            
+                                            </tbody>
+                                      </table>
                                     </div>
+                                  </div>
                                 </div>
                             </div>
                         </div>

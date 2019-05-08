@@ -56,7 +56,7 @@ class Metodo{
                             temp+="stack["+simulado+"]="+temph+";\n";
                             temp+="//fin declaracion variable local\n";
                             sim.inicializado=true; 
-                            entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                            entorno.actualizar(this.nodos[i].id+"_"+ambi2,sim);
                         }else{
                             alert("Error Semantico, En la declaracion");
                         }
@@ -493,7 +493,6 @@ class Metodo{
                 }
                 this.nodos[i].padre=nombre;
                 this.nodos[i].normal=ambi;
-                
                 var result_temp=this.nodos[i].getValue(entorno);
                 temp+="//INICIA LLAMADA A METODO OBJETO\n"
                 if(result_temp!=null){
@@ -501,6 +500,9 @@ class Metodo{
                 }
                 temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
                 result.cadena+=temp;
+            }else if(this.nodos[i] instanceof AsignacionObjetos){
+                    
+
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo
                 console.log("Es otra instancia");

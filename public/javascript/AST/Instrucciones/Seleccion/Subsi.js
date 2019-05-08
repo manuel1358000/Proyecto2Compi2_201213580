@@ -40,33 +40,58 @@ class Subsi{
                         this.nodos[i].normal=this.normal;
                         this.nodos[i].ambitos=ambi;
                         var result_temp=this.nodos[i].execute(local);
-                        if(result_temp!=null){
-                            temp+=result_temp.cadena;
-                            temp+="//declaracion variable local\n";
-                            var temph=generarEtiqueta();
-                            temp+=temph+"=h;\n";
-                            temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                            temp+="h=h+1;\n";
-                            var simulado=generarEtiqueta();
-                            var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                            if(sim!=null){
+                        var tipo_result=this.nodos[i].getTipe(local);
+                        if(!numerico(tipo_result)){
+                            if(result_temp!=null){
+                                temp+=result_temp.cadena;
+                                temp+="//declaracion OBJETO local\n";
+                                var temph=generarEtiqueta();
+                                temp+=temph+"=h;\n";
+                                temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                                temp+="h=h+1;\n";
+                                var simulado=generarEtiqueta();
+                                var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
+                                if(sim!=null){
+                                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                                    temp+="stack["+simulado+"]="+temph+";\n";
+                                    temp+="//fin declaracion variable local\n";
+                                    sim.inicializado=true; 
+                                    local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
+                                }else{
+                                    alert("Error Semantico, En la declaracion");
+                                }
+                            }else{
+                                alert("Error Semantico, OBJETO");
+                            }
+                        }else{
+                            if(result_temp!=null){
+                                temp+=result_temp.cadena;
+                                temp+="//declaracion variable local\n";
+                                var temph=generarEtiqueta();
+                                temp+=temph+"=h;\n";
+                                temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                                temp+="h=h+1;\n";
+                                var simulado=generarEtiqueta();
+                                var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
                                 temp+=simulado+"=p+"+sim.posRel+";\n";
                                 temp+="stack["+simulado+"]="+temph+";\n";
+                                temp+="//fin declaracion variable local\n";
+                                sim.inicializado=true;
+                                local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                             }else{
-                                alert("Error semantico, no se cuentra el simbolo en la tabla de simbolos");
+                                temp="//declaracion variable local\n";
+                                var temph=generarEtiqueta();
+                                temp+=temph+"=h;\n";
+                                temp+="heap[h]=0;\n";
+                                temp+="h=h+1;\n";
+                                var simulado=generarEtiqueta();
+                                var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
+                                temp+=simulado+"=p+"+sim.posRel+";\n";
+                                temp+="stack["+simulado+"]="+temph+";\n";
+                                temp+="//fin declaracion variable local\n";
+                                sim.inicializado=true;
+                                local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                             }
-                            temp+="//fin declaracion variable local\n";
-                        }else{
-                            temp+="//declaracion variable local\n";
-                            var temph=generarEtiqueta();
-                            temp+=temph+"=h;\n";
-                            temp+="heap[h]=0;\n";
-                            temp+="h=h+1;\n";
-                            var simulado=generarEtiqueta();
-                            var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                            temp+=simulado+"=p+"+sim.posRel+";\n";
-                            temp+="stack["+simulado+"]="+temph+";\n";
-                            temp+="//fin declaracion variable local\n";
                         }
                     }else if(this.nodos[i] instanceof Imprimir){
                         this.nodos[i].padre=this.padre;
@@ -311,6 +336,17 @@ class Subsi{
                         }else{
                             alert("Error Semantico, Arreglo no existe en el entorno");
                         }
+                    }else if(this.nodos[i] instanceof AccesoObjetos){
+                        var ambi=temp_ambi;
+                        this.nodos[i].padre=this.padre;
+                        this.nodos[i].normal=this.normal;
+                        this.nodos[i].ambitos=ambi;
+                        var result_temp=this.nodos[i].getValue(local);
+                        temp+="//INICIA LLAMADA A METODO OBJETO\n"
+                        if(result_temp!=null){
+                            temp+=result_temp.cadena;
+                        }
+                        temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
                     }else{
                         console.log("Instancia rara else if");
                     }
@@ -332,33 +368,58 @@ class Subsi{
                     this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=ambi;
                     var result_temp=this.nodos[i].execute(local);
-                    if(result_temp!=null){
-                        temp+=result_temp.cadena;
-                        temp+="//declaracion variable local\n";
-                        var temph=generarEtiqueta();
-                        temp+=temph+"=h;\n";
-                        temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                        temp+="h=h+1;\n";
-                        var simulado=generarEtiqueta();
-                        var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                        if(sim!=null){
+                    var tipo_result=this.nodos[i].getTipe(local);
+                    if(!numerico(tipo_result)){
+                        if(result_temp!=null){
+                            temp+=result_temp.cadena;
+                            temp+="//declaracion OBJETO local\n";
+                            var temph=generarEtiqueta();
+                            temp+=temph+"=h;\n";
+                            temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                            temp+="h=h+1;\n";
+                            var simulado=generarEtiqueta();
+                            var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
+                            if(sim!=null){
+                                temp+=simulado+"=p+"+sim.posRel+";\n";
+                                temp+="stack["+simulado+"]="+temph+";\n";
+                                temp+="//fin declaracion variable local\n";
+                                sim.inicializado=true; 
+                                local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
+                            }else{
+                                alert("Error Semantico, En la declaracion");
+                            }
+                        }else{
+                            alert("Error Semantico, OBJETO");
+                        }
+                    }else{
+                        if(result_temp!=null){
+                            temp+=result_temp.cadena;
+                            temp+="//declaracion variable local\n";
+                            var temph=generarEtiqueta();
+                            temp+=temph+"=h;\n";
+                            temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                            temp+="h=h+1;\n";
+                            var simulado=generarEtiqueta();
+                            var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
                             temp+=simulado+"=p+"+sim.posRel+";\n";
                             temp+="stack["+simulado+"]="+temph+";\n";
+                            temp+="//fin declaracion variable local\n";
+                            sim.inicializado=true;
+                            local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                         }else{
-                            alert("Error semantico, no se cuentra el simbolo en la tabla de simbolos");
+                            temp="//declaracion variable local\n";
+                            var temph=generarEtiqueta();
+                            temp+=temph+"=h;\n";
+                            temp+="heap[h]=0;\n";
+                            temp+="h=h+1;\n";
+                            var simulado=generarEtiqueta();
+                            var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
+                            temp+=simulado+"=p+"+sim.posRel+";\n";
+                            temp+="stack["+simulado+"]="+temph+";\n";
+                            temp+="//fin declaracion variable local\n";
+                            sim.inicializado=true;
+                            local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                         }
-                        temp+="//fin declaracion variable local\n";
-                    }else{
-                        temp+="//declaracion variable local\n";
-                        var temph=generarEtiqueta();
-                        temp+=temph+"=h;\n";
-                        temp+="heap[h]=0;\n";
-                        temp+="h=h+1;\n";
-                        var simulado=generarEtiqueta();
-                        var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                        temp+=simulado+"=p+"+sim.posRel+";\n";
-                        temp+="stack["+simulado+"]="+temph+";\n";
-                        temp+="//fin declaracion variable local\n";
                     }
                 }else if(this.nodos[i] instanceof Imprimir){
                     this.nodos[i].padre=this.padre;
@@ -603,6 +664,17 @@ class Subsi{
                     }else{
                         alert("Error Semantico, Arreglo no existe en el entorno");
                     }
+                }else if(this.nodos[i] instanceof AccesoObjetos){
+                    var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
+                    this.nodos[i].ambitos=ambi;
+                    var result_temp=this.nodos[i].getValue(local);
+                    temp+="//INICIA LLAMADA A METODO OBJETO\n"
+                    if(result_temp!=null){
+                        temp+=result_temp.cadena;
+                    }
+                    temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
                 }else{
                     console.log("Instancia rara else");
                 }

@@ -79,6 +79,8 @@ function btn_3dcompilar(){
     var ast3d=parser3d.parse(cm.getValue());
     ejecutar3D(ast3d);
     alert("Finalizo el analisis");
+    agregarHeap();
+    agregarStack();
 }
 function btn_compilar(){
     codigo=0;
@@ -179,6 +181,45 @@ function anidarErrores(){
         fila+="</tr>";      
     }
     tabla.insertAdjacentHTML('beforeend',fila);
+}
+
+function agregarHeap(){
+    var tabla_heap=document.getElementById("cuerpo_heap");
+    tabla_heap.innerHTML="";
+    var fila="";
+    for(var i=0;i<heap.length;i++){
+        if(heap[i]==null){
+            fila+="<tr>";
+            fila+="<td>"+i+"</td>";
+            fila+="<td></td>";
+            fila+="</tr>";
+        }else{
+            fila+="<tr>";
+            fila+="<td>"+i+"</td>";
+            fila+="<td>"+heap[i]+"</td>";
+            fila+="</tr>";
+        }
+    }
+    tabla_heap.insertAdjacentHTML('beforeend',fila);
+}
+function agregarStack(){
+    var tabla_stack=document.getElementById("cuerpo_stack");
+    tabla_stack.innerHTML="";
+    var fila="";
+    for(var i=0;i<stack.length;i++){
+        if(stack[i]==null){
+            fila+="<tr>";
+            fila+="<td>"+i+"</td>";
+            fila+="<td></td>";
+            fila+="</tr>";
+        }else{
+            fila+="<tr>";
+            fila+="<td>"+i+"</td>";
+            fila+="<td>"+stack[i]+"</td>";
+            fila+="</tr>";
+        }
+    }
+    tabla_stack.insertAdjacentHTML('beforeend',fila);
 }
 
 function agregarTablaSimbolos(entorno){
