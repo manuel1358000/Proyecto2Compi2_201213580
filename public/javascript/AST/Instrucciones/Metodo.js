@@ -501,7 +501,7 @@ class Metodo{
                 temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
                 result.cadena+=temp;
             }else if(this.nodos[i] instanceof AsignacionObjetos){
-                    
+                //vamos a dejar esto pendiente                    
 
             }else{
                 //es cualquier otra instancia como una asignacion,llamada a metodo

@@ -85,7 +85,7 @@
 "'"[a-zA-Z][^''\n]*"'" return 'CHAR'
 ([a-zA-Z]|["_"])([a-zA-Z]|[0-9]|["_"])* return 'ID'
 <<EOF>>               return 'EOF'
-.                     return 'INVALID'
+.                     {lista_errores.push(new Errores("LEXICO","TOKEN NO RECONOCIDO "+yytext,(yylineno+1),yyleng));}
 
 /lex
 
@@ -119,10 +119,16 @@ sentencias_globales: declaraciones_import sentencias_generales{
                                                             }
                     | sentencias_generales{$$=$1;};
 
-declaraciones_import: declaraciones_import declaracion_import 
-                    | declaracion_impor;
+declaraciones_import: declaraciones_import declaracion_import{
+                                                                $$=$1;
+                                                                $$.push($2);
+                                                                } 
+                    | declaracion_impor{
+                                        $$=[];
+                                        $$.push($1);
+                                        };
 
-declaracion_import: IMPORT STRING ';';
+declaracion_import: IMPORT STRING ';'{$$=new Importacion($2);}  ;
 
 sentencias_generales: declaraciones_clase{$$=$1;};
 
@@ -728,7 +734,14 @@ exp: '!' exp
                 $$=new Aritmetica(null,null,false,$1,null,"ARRAY",0,0);
                 $$.lista_dimensiones=$2;
             }
-    | sentencia_objetos{$$=$1;};
+    | ID '.' sentencia_llamada{$$=new AccesoObjetos($1,$3);}
+    | ID '.' ID{$$=new AccesoObjetos($1,$3);};
 
 
 sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};
+%%
+function yyerror(s,linea,columna){
+    var error_1=new Errores("Sintactico",s,linea,columna);
+    lista_errores.push(error_1);
+}
+//yyerror(hash.token,hash.line,hash.loc.first_column);
