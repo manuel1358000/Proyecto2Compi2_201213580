@@ -1,5 +1,5 @@
 class Importacion{
     constructor(id){
-        this.id=id;
+        this.id=id.replace("\"","");
     }
 }

@@ -7,3 +7,4 @@ var lista_temporales="var heap[];\nvar stack[];\nvar h=0;\nvar p=0;\n";
 var pool_salida=[];
 var pool_retorno=[];
 var codigo=0;
+var lista_pesta={};

@@ -1,10 +1,70 @@
+function importar(nodoast){
+    for(var i=0;i<nodoast.length;i++){
+       if(nodoast[i] instanceof Importacion){
+            alert("La importacion es "+nodoast[i].id);
+            var indice=lista_pesta[nodoast[i].id];
+            if(indice!=null){
+                if(indice==1){
+                    indice=indice-1;
+                }else if(indice>1){
+                    indice=indice-3;
+                }
+                var cm = $('.CodeMirror')[indice].CodeMirror;
+                var ast=calculadora.parse(cm.getValue());
+                importar(ast);
+                for(var t=0;t<ast.length;t++){
+                    if(ast[t] instanceof Declaracionclase){
+                        if(verificarClase(nodoast,ast[t].id)){
+                            //si se agrega la clase
+                            nodoast.push(ast[t]);
+                        }else{
+                            //la clase ya se encuentra definida
+                            alert("Error, la clase "+ast[t].id +" ya esta definida, no se puede importar");
+                        }
+                    }
+                }   
+                
+            }else{
+                alert("Error, No existe el archivo que se quiere importar con el nombre "+nodoast[i].id);
+            }   
+        }
+    }
+    return nodoast;
+}
+
+function verificarClase(nodoast,nombre){
+    var bandera=true;
+    for(var k=0;k<nodoast.length;k++){
+        if(nodoast[k] instanceof Declaracionclase){
+            if(nodoast[k].id==nombre){
+                bandera=false;
+                break;
+            }
+        }
+        
+    }
+    return bandera;
+}
+
 
 function ejecutar(nodoast,entorno){
     var respuesta="";
     var entorno=new Entorno(null);
+    lista_pesta={};
+    var elementoNav=document.querySelector("#nav_pesta");
+    var elementoLi=elementoNav.children;
+    for(var i=0;i<elementoLi.length;i++){
+        var elementoA=elementoLi[i].children;
+        var nombre_pesta=elementoLi[i].textContent;
+        var indice_temp=$(elementoA).attr('href');
+        var indice_temp=indice_temp.split("_");
+        indice_temp=indice_temp[1];
+        lista_pesta[nombre_pesta]=indice_temp;
+    }
 
+    importar(nodoast);
     //--------------------------EMPIEZA PRIMERA PASADA, VAMOS A REALIZAR LAS IMPORTACIONES 
-        
+            
 
 
 
@@ -36,8 +96,6 @@ function ejecutar(nodoast,entorno){
     for(var i=0;i<nodoast.length;i++){
         if(nodoast[i] instanceof Declaracionclase){
             respuesta+=nodoast[i].execute(entorno);
-        }else{
-            alert("Instancias no validas, posiblemente son instancias de import");
         }
     }
     //------------------------

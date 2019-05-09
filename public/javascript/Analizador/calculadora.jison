@@ -114,7 +114,7 @@ e: sentencias_globales{$$=$1;};
 sentencias_globales: declaraciones_import sentencias_generales{
                                                             $$=$1;
                                                             for(var i=0;i<$2.length;i++){
-                                                                $$.push($2);
+                                                                $$.push($2[i]);
                                                             }
                                                             }
                     | sentencias_generales{$$=$1;};
@@ -123,12 +123,12 @@ declaraciones_import: declaraciones_import declaracion_import{
                                                                 $$=$1;
                                                                 $$.push($2);
                                                                 } 
-                    | declaracion_impor{
+                    | declaracion_import{
                                         $$=[];
                                         $$.push($1);
                                         };
 
-declaracion_import: IMPORT STRING ';'{$$=new Importacion($2);}  ;
+declaracion_import: IMPORT STRING ';'{$$=new Importacion($2.replace("\"",""));}  ;
 
 sentencias_generales: declaraciones_clase{$$=$1;};
 
