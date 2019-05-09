@@ -40,7 +40,7 @@ class Declaracion{
             }else{
                 ran=temp_ambi;    
             }
-            var sim_temp1=entorno.obtener(ran);
+            var sim_temp1=entorno.obtener(ran.replace("/","_"));
             var eti2=generarEtiqueta();
             temp+=eti2+"=p+"+sim_temp1.tamanio+";//simulacion de ambito para poder pasarle los valores del this al objeto\n";
             var eti3=generarEtiqueta();
@@ -119,6 +119,12 @@ class Declaracion{
                 }else{
                     this.iniValue.ambitos=temp_ambi;
                 }
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal;
+                respuesta=this.iniValue.getValue(entorno);
+                respuesta.tipo=this.iniValue.getTipe(entorno);
+            }else if(this.iniValue instanceof AsignacionObjetos){
+                this.iniValue.ambitos=temp_ambi;
                 this.iniValue.padre=this.padre;
                 this.iniValue.normal=this.normal;
                 respuesta=this.iniValue.getValue(entorno);

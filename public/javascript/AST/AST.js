@@ -1,7 +1,6 @@
 function importar(nodoast){
     for(var i=0;i<nodoast.length;i++){
        if(nodoast[i] instanceof Importacion){
-            alert("La importacion es "+nodoast[i].id);
             var indice=lista_pesta[nodoast[i].id];
             if(indice!=null){
                 if(indice==1){

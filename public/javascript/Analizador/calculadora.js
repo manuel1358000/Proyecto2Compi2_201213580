@@ -375,7 +375,7 @@ case 61: case 62: case 63:
                                         this.$.push($$[$0-1]);
                                         
 break;
-case 64: case 171: case 172:
+case 64: case 171:
 this.$=new AccesoObjetos($$[$0-2],$$[$0]);
 break;
 case 65:
@@ -828,6 +828,9 @@ case 170:
                 this.$=new Aritmetica(null,null,false,$$[$0-1],null,"ARRAY",0,0);
                 this.$.lista_dimensiones=$$[$0];
             
+break;
+case 172:
+this.$=new AsignacionObjetos($$[$0-2],$$[$0],null);
 break;
 case 173:
 this.$=new Ternario($$[$0-4],$$[$0-2],$$[$0]);

@@ -19,7 +19,6 @@ class AccesoObjetos{
         }else{
             temp_ambi=this.ambitos;
         }
-        alert(this.id+"_"+temp_ambi+" COMPROBAR ESTO");
         var sim=entorno.obtener(this.id+"_"+temp_ambi);
         if(sim!=null&&this.iniValue!=null){  
             if(sim.inicializado){

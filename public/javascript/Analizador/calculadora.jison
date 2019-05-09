@@ -735,7 +735,7 @@ exp: '!' exp
                 $$.lista_dimensiones=$2;
             }
     | ID '.' sentencia_llamada{$$=new AccesoObjetos($1,$3);}
-    | ID '.' ID{$$=new AccesoObjetos($1,$3);};
+    | ID '.' ID{$$=new AsignacionObjetos($1,$3,null);};
 
 
 sentencia_ternario: exp '?' exp ':' exp{$$=new Ternario($1,$3,$5);};
