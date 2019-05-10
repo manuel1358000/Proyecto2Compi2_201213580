@@ -132,7 +132,41 @@ class AccesoObjetos{
                     break;
                 }
                 case "toLowerCase":{
-                    alert("toLowerCase");
+                    var sim=entorno.obtener(this.id+"_"+temp_ambi);
+                    if(sim.tipo=="STRING"){
+                        var eti_salida=generarSalto();
+                        var eti_salida2=generarSalto();
+                        var eti1=generarEtiqueta();
+                        temp+=eti1+"=p+"+sim.posRel+";\n";
+                        var eti2=generarEtiqueta();
+                        temp+=eti2+"=stack["+eti1+"];\n";
+                        var eti3=generarEtiqueta();
+                        var eti_s=generarSalto();
+                        temp+=eti3+"=heap["+eti2+"];\n";
+                        var eti_h=generarEtiqueta();
+                        temp+=eti_h+"=h;\n";
+                        temp+=eti_s+":\n";
+                        var eti6=generarEtiqueta();
+                        temp+=eti6+"=heap["+eti3+"];\n";
+                        temp+="if("+eti6+"==0) goto "+eti_salida+";\n";
+                        temp+="if("+eti6+"<65) goto "+eti_salida2+";\n";
+                        temp+="if("+eti6+">90) goto "+eti_salida2+";\n";
+                        temp+=eti6+"="+eti6+"+32;\n";
+                        temp+=eti_salida2+":\n";
+                        temp+="heap[h]="+eti6+";\n";
+                        temp+="h=h+1;\n";
+                        temp+=eti3+"="+eti3+"+1;\n";
+                        temp+="goto "+eti_s+";\n";
+                        temp+=eti_salida+":\n";
+                        temp+="heap[h]=0;\n";
+                        temp+="h=h+1;\n";
+                        //en eti3 empiezan los valores del string
+                        result.cadena+=temp;
+                        result.u_etiqueta=eti_h;
+                        this.primitivetipe="STRING";
+                    }else{
+                        alert("Error Semantico, el metodo touppercase solo se puede aplicar a valores de tipo STRING");
+                    }
                     break;   
                 }
                 case "length":{
