@@ -62,6 +62,7 @@
         <script src="/javascript/AST3D/Asignacion3D.js"></script>
         <script src="/javascript/AST3D/Entorno3d/Entorno3D.js"></script>
         <script src="/javascript/AST3D/AST3D.js"></script>
+        <script src="/javascript/Escribir.js"></script>
         <!--Modulo de llamada al compilador-->
         <script src="/javascript/compilador/script.js"></script>
         <!--Modulo que controla la interfaz-->
@@ -77,14 +78,14 @@
     <body>
         <!--MODAL!-->
        <div class="modal fade" tabindex="-1" role="dialog" id="UI_Modal_IMG">
-          <div class="modal-dialog modal-lg" role="document" style="height:650px;">
+          <div class="modal-dialog modal-lg" role="document" style="width:1000px;">
               <div class="modal-content" style="height:inherit;">
               <div class="modal-header">
                   <strong class="modal-title" >AST GENERADO</strong>
               </div>
               <div class="modal-body"  style="height:inherit;">
                  
-                  <img src="" alt="Smiley face" height="400" width="400" id="UI_Modal_IMG_TAG">
+                  <img src="" alt="Smiley face" height="400" width="750" id="UI_Modal_IMG_TAG">
                   </img>
               </div>
               <div class="modal-footer">
@@ -185,7 +186,7 @@
                            </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                               <a class="dropdown-item" href="#" id="id_reporteerrores" onclick="agregarElementosErrores();">REPORTE ERRORES</a>
-                              <a class="dropdown-item" href="#" id="id_reportets" onclick="">REPORTE TABLA DE SIMBOLOS</a>
+                              <a class="dropdown-item" href="#" id="id_reportets" onclick="graficar();">REPORTE TABLA DE SIMBOLOS</a>
                               <a class="dropdown-item" href="#" id="id_generarast2" onclick="UI_GenerarAST();">GENERAR AST</a>
                               <a class="dropdown-item" href="https://drive.google.com/drive/folders/1zVaOLjs2_Ffqo00BwGmCfJJvyRvSnMDy" target="_blank" id="idejemplos">ARCHIVOS EJEMPLO</a>
                             </div>

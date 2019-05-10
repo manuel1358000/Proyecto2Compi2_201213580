@@ -1,6 +1,6 @@
-function UI_GenerarAST(){
+function UI_GenerarAST(url){
     var tagIMG  = document.getElementById("UI_Modal_IMG_TAG");
-    tagIMG.src = "/static/sonic.jpg";
+    tagIMG.src = url;
     $("#UI_Modal_IMG").modal();  
  }
  

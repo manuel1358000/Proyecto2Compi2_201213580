@@ -271,7 +271,7 @@ function graficarArbol(lista_clases){
         crearAST(lista_clases[i]);
     }
     temp_grafica+="\n}";
-    console.log(temp_grafica);    
+    graficaast=temp_grafica;    
 }
 
 function crearAST(nodoraiz){

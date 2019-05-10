@@ -1,0 +1,1 @@
+digraph lista{ rankdir=TB; node [shape = box,color=red]; struct3[label=" CLASE nuevo"];struct3->struct2;struct2[label="METODO main"];struct2->struct1;struct1[label="IMPRIMIR"];struct1->struct0;struct0[label="ARITMETICA"];}

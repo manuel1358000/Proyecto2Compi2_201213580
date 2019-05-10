@@ -8,3 +8,4 @@ var pool_salida=[];
 var pool_retorno=[];
 var codigo=0;
 var lista_pesta={};
+var graficaast="";
