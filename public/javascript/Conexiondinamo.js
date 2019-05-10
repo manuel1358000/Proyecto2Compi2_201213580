@@ -142,8 +142,90 @@ function scanData2() {
         } else {
             // Print all the movies
             alert("Reinicio Reportes Exitoso");
+            
             data.Items.forEach(function(tabla) {
                 conditionalDelete(tabla.ID);
+            });         
+        }
+    }
+}
+function createReporteAST() {
+    var params = {
+        TableName : "Reporte_AST_201213580",
+        KeySchema: [
+            {
+                AttributeName: "ID",
+                KeyType: "HASH"
+            }
+          ],
+        AttributeDefinitions: [
+            {
+                AttributeName: "ID",
+                AttributeType: "N"
+            }
+          ],
+        ProvisionedThroughput: {       
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1
+        }
+    };
+
+    dynamodb.createTable(params, function(err, data) {
+        if (err) {
+            alert("Unable to create table: " + "\n" + JSON.stringify(err, undefined, 5));
+        } else {
+            alert("Created table: " + "\n" + JSON.stringify(data, undefined, 5));
+        }
+    });
+}
+function conditionalDeleteAST() {
+    var table = "Reporte_AST_201213580";
+    var params = {
+        TableName:table,
+        Key:{
+            "ID":0
+        },
+    };
+
+    docClient.delete(params, function(err, data) {
+        if (err) {
+            alert("Reinicio Falido: " + "\n" + JSON.stringify(err, undefined, 2));
+        } else {
+            console.log("Reinicio exitoso");
+        }
+    });
+}
+function createElementoAST(codigo) {
+    var params = {
+        TableName :"Reporte_AST_201213580",
+        Item:{
+            "ID":0,
+            "CODIGO": codigo
+        }
+    };
+    docClient.put(params, function(err, data) {
+        if (err) {
+            alert("el elemento no se pudo enviar a dynamo" + "\n" + JSON.stringify(err, undefined, 2));
+        } else {
+            console.log("Elemento AST Enviado a Dynamo" + "\n" + JSON.stringify(data, undefined, 2));
+        }
+    });
+}
+function scanDataAST() {
+    var params = {
+        TableName: "Reporte_AST_201213580",
+        ProjectionExpression: "#id,CODIGO",
+        ExpressionAttributeNames: {
+            "#id": "ID",
+        },
+    };
+    docClient.scan(params, onScan);
+    function onScan(err, data) {
+        if (err) {
+            alert("No se pueden leer los elementos de la tabla: " + "\n" + JSON.stringify(err, undefined, 2));
+        } else {
+            data.Items.forEach(function(tabla) {
+                graficar(tabla.CODIGO);
             });           
         }
     }

@@ -85,6 +85,7 @@ function btn_3dcompilar(){
 function btn_compilar(){
     codigo=0;
     //SECCION DONDE SE INICIALIZAN LOS VALORES DE DYNAMO
+    conditionalDeleteAST();  
     scanData2();
     indice_errores=0;
     cont_e=-1;
@@ -271,7 +272,9 @@ function graficarArbol(lista_clases){
         crearAST(lista_clases[i]);
     }
     temp_grafica+="\n}";
-    graficaast=temp_grafica;    
+    graficaast=temp_grafica;
+    console.log(temp_grafica);
+    createElementoAST(temp_grafica);  
 }
 
 function crearAST(nodoraiz){
