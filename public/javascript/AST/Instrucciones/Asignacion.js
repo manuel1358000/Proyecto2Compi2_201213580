@@ -75,6 +75,12 @@ class Asignacion{
                 this.iniValue.normal=this.normal;
                 respuesta=this.iniValue.getValue(entorno);
                 respuesta.tipo=this.iniValue.getTipe(entorno);
+            }else if(this.iniValue instanceof AccesoObjetos){
+                this.iniValue.ambitos=temp_ambi;
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal
+                respuesta=this.iniValue.getValue(entorno);
+                respuesta.tipo=this.iniValue.getTipe(entorno);
             }else{
                 alert("Instancia Rara Asignacion");
             }

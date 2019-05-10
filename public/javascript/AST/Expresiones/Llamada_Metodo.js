@@ -30,16 +30,12 @@ class Llamada_Metodo{
             param_temp[i].ambitos=temp_ambi;
             param_temp[i].padre=this.padre;
             param_temp[i].normal=this.normal;
-            alert("temp_ambi "+temp_ambi);
-            alert("padre "+this.padre);
-            alert("normal "+this.normal);
             var result1=param_temp[i].getValue(entorno);
             var tipo1=param_temp[i].getTipe(entorno);
             indice_result.push(result1);
             indice_tipo.push(tipo1);
             nombre_completo+="_"+tipo1;
         }
-        alert("El nombre completo es "+nombre_completo);
         //vamos a verificar si existe el metodo en el entorno
         var sim=entorno.obtener(nombre_completo);
         if(sim!=null){

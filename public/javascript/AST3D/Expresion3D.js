@@ -79,37 +79,37 @@ class Expresion3D{
                     var temp_val1=obtenerValor(this.exp1,entorno3d);
                     var temp_val2=obtenerValor(this.exp2,entorno3d);
                     if(temp_val1!=null&&temp_val2!=null){
-                        return temp_val1==temp_val2;
+                        return parseFloat(temp_val1)==parseFloat(temp_val2);
                     }
                 }else if(this.operador=="!="){
                     var temp_val1=obtenerValor(this.exp1,entorno3d);
                     var temp_val2=obtenerValor(this.exp2,entorno3d);
                     if(temp_val1!=null&&temp_val2!=null){
-                        return temp_val1!=temp_val2;
+                        return parseFloat(temp_val1)!=parseFloat(temp_val2);
                     }
                 }else if(this.operador==">"){
                     var temp_val1=obtenerValor(this.exp1,entorno3d);
                     var temp_val2=obtenerValor(this.exp2,entorno3d);
                     if(temp_val1!=null&&temp_val2!=null){
-                        return temp_val1>temp_val2;
+                        return parseFloat(temp_val1)>parseFloat(temp_val2);
                     }
                 }else if(this.operador=="<"){
                     var temp_val1=obtenerValor(this.exp1,entorno3d);
                     var temp_val2=obtenerValor(this.exp2,entorno3d);
                     if(temp_val1!=null&&temp_val2!=null){
-                        return temp_val1<temp_val2;
+                        return parseFloat(temp_val1)<parseFloat(temp_val2);
                     }
                 }else if(this.operador==">="){
                     var temp_val1=obtenerValor(this.exp1,entorno3d);
                     var temp_val2=obtenerValor(this.exp2,entorno3d);
                     if(temp_val1!=null&&temp_val2!=null){
-                        return temp_val1>=temp_val2;
+                        return parseFloat(temp_val1)>=parseFloat(temp_val2);
                     }
                 }else if(this.operador=="<="){
                     var temp_val1=obtenerValor(this.exp1,entorno3d);
                     var temp_val2=obtenerValor(this.exp2,entorno3d);
                     if(temp_val1!=null&&temp_val2!=null){
-                        return temp_val1<=temp_val2;
+                        return parseFloat(temp_val1)<=parseFloat(temp_val2);
                     }
                 }else{
                     console.log("Operacion no valida, expresiones3d");

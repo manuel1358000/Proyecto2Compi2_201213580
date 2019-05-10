@@ -129,6 +129,12 @@ class Declaracion{
                 this.iniValue.normal=this.normal;
                 respuesta=this.iniValue.getValue(entorno);
                 respuesta.tipo=this.iniValue.getTipe(entorno);
+            }else if(this.iniValue instanceof AccesoObjetos){
+                this.iniValue.ambitos=temp_ambi;
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal;
+                respuesta=this.iniValue.getValue(entorno);
+                respuesta.tipo=this.iniValue.getTipe(entorno);
             }
             if(respuesta==null){
                 respuesta=new Result();
@@ -158,6 +164,8 @@ class Declaracion{
                 if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
                     
                 }else{
+                    alert(tipo);
+                    alert(respuesta.tipo);
                     alert("Error semantico, Declaracion erronea por tipos");
                     respuesta=null;
                 }
