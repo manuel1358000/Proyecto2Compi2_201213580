@@ -28,6 +28,7 @@ function importar(nodoast){
             }   
         }
     }
+    
     return nodoast;
 }
 
@@ -44,7 +45,49 @@ function verificarClase(nodoast,nombre){
     }
     return bandera;
 }
+function verificarClaseHerencia(nodoast,nombre){
+    var bandera=-1;
+    for(var k=0;k<nodoast.length;k++){
+        if(nodoast[k] instanceof Declaracionclase){
+            if(nodoast[k].id==nombre){
+                bandera=k;
+                break;
+            }
+        }
+        
+    }
+    return bandera;
+}
+function verificarExistencia(nodoast,nombre,tipo){
+    var bandera=true;
+    for(var i=0;i<nodoast.nodos.length;i++){
+        if(tipo=="VARIABLE"){
+            if(nodoast.nodos[i].id==nombre){
+                bandera=false;
+                break;
+            }
+        }
+    }
+    return bandera;
+}
 
+function verificarExistenciaMetodo(nodoast,nodo){
+    //es el nodo completo de la clase hija
+    //nodo es el nodo del metodo que tenemos que comparar
+    var bandera=true;
+    //del nodo que se quiere agregar conocemos 
+    var nombre=nodo.generarNombre(nodo.id);
+    for(var i=0;i<nodoast.length;i++){
+        if(nodoast[i] instanceof Metodo){
+            var nombre2=nodoast[i].generarNombre(nodoast[i].id);
+            if(nombre==nombre2){
+                bandera=false
+                break;
+            }
+        }   
+    }
+    return bandera;
+}
 
 function ejecutar(nodoast,entorno){
     var respuesta="";
@@ -65,7 +108,42 @@ function ejecutar(nodoast,entorno){
     //--------------------------EMPIEZA PRIMERA PASADA, VAMOS A REALIZAR LAS IMPORTACIONES 
             
 
+    //vamos a realizar las herencias que se encuentren en las clases
+    for(var i=0;i<nodoast.length;i++){
+        if(nodoast[i].id_extends!=null){
+            if(nodoast[i].id_extends!=nodoast[i].id){
+                var indice=verificarClaseHerencia(nodoast,nodoast[i].id_extends);
+                if(indice!=-1){
+                    for(var t=0;t<nodoast[indice].nodos.length;t++){
+                        if(nodoast[indice].nodos[t] instanceof Declaracion){
+                            if(verificarExistencia(nodoast[i],nodoast[indice].nodos[t].id,"VARIABLE")){
+                                nodoast[i].nodos.push(nodoast[indice].nodos[t]);
+                            }else{
+                                alert("Error Semantico, ya existe una declaracion con el mismo nombre, herencia");
+                            }
+                        }else if(nodoast[indice].nodos[t] instanceof Metodo){
+                            if(nodoast[indice].nodos[t].id==nodoast[indice].id){
+                                console.log("Es el constructor");
+                            }else{
+                                if(verificarExistenciaMetodo(nodoast[i].nodos,nodoast[indice].nodos[t])){
+                                    nodoast[i].nodos.push(nodoast[indice].nodos[t]);
+                                }else{
+                                    alert("Error Semantico, el metodo no se puede heredar ya que existe uno con las mismas caracteristicas en la clase hija");
+                                }
+                            }
+                        }else{
+                            alert("Error Semantico, es una instancia rara de una clase");
+                        }
+                    }
+                }else{
+                    alert("Error Semantico, la clase que se quiere heredar no existe");
+                }
+            }else{
+                alert("Error Semantico, la herencia no puede ser de la misma clase");
+            }
+        }
 
+    }
 
     //------------------------- EMPIEZA SEGUNDA PASADA, VAMOS A CARGAR TODOS LOS SIMBOLOS A LA TABLA DE SIMBOLOS
     //------------------------- SE AGREGAN, CLASES, ATRIBUTOS, METODOS
@@ -100,6 +178,7 @@ function ejecutar(nodoast,entorno){
     //------------------------
     agregarTablaSimbolos(entorno);
     //anidarErrores();
+    graficarArbol(nodoast);
     return respuesta;
 }
 function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){

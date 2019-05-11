@@ -120,7 +120,7 @@ case 9: case 15:
 break;
 case 11:
 
-                                                                    this.$=new Declaracionclase($$[$0-3],$$[$0-5],"",$$[$0-1]);
+                                                                    this.$=new Declaracionclase($$[$0-3],$$[$0-5],null,$$[$0-1]);
                                                                     
 break;
 case 12:

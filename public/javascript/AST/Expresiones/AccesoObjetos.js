@@ -170,7 +170,29 @@ class AccesoObjetos{
                     break;   
                 }
                 case "length":{
-                    alert("tamanio de un arreglo");
+                    var sim=entorno.obtener(this.id+"_"+temp_ambi);
+                    if(sim!=null){
+                        if(sim.lista_dimensiones.length>0){
+                            sim.lista_dimensiones[0].ambitos=this.ambitos;
+                            sim.lista_dimensiones[0].padre=this.padre;
+                            sim.lista_dimensiones[0].normal=this.normal;
+                            var result_dimen=sim.lista_dimensiones[0].getValue(entorno);
+                            temp+=result_dimen.cadena;
+                            var eti1=generarEtiqueta();
+                            temp+=eti1+"="+result_dimen.u_etiqueta+";\n";
+                            result.cadena+=temp;
+                            result.u_etiqueta=eti1;
+                            this.primitivetipe="INTEGER";
+                        }else{
+                            var eti1=generarEtiqueta();
+                            temp+=eti1+"="+sim.lista_dimensiones.length+";\n";
+                            result.cadena+=temp;
+                            result.u_etiqueta=eti1;
+                            this.primitivetipe="INTEGER";
+                        }
+                    }else{
+                        alert("Error Semantico, No existe el id que se esta buscando para obtener el length");
+                    }
                     break;
                 }
                 default:{
@@ -196,7 +218,9 @@ class AccesoObjetos{
                     var result_temp=this.iniValue.getValue(entorno);
                     var result_tipo=this.iniValue.getTipe(entorno);
                     if(result_temp!=null){
+                        temp+="//aqui------------------------------------";
                         temp+=result_temp.cadena;
+                        temp+="//finaliza-----------------------------";
                         result.u_etiqueta=result_temp.u_etiqueta;
                         this.primitivetipe=result_tipo;
                     }else{

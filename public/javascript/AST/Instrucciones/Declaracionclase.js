@@ -96,7 +96,7 @@ class Declaracionclase{
                         temp+="stack["+eti12+"]="+eti10+";\n";
                         temp+="p=p+"+sim.tamanio+";\n";
                         temp+="call globales_"+this.id+";\n";
-                        //temp+="p=p-"+sim.tamanio+";\n";
+                        temp+="p=p-"+sim.tamanio+";\n";
                     }else{
                         var nombre_metodo=this.id+"_"+nodo.id;
                         for(var f=0;f<nodo.parametros.length;f++){ 

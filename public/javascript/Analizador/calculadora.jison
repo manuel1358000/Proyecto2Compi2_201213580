@@ -144,7 +144,7 @@ declaraciones_clase: declaraciones_clase declaracion_clase{
                                         };
 
 declaracion_clase: modificadores_clase CLASS ID '{' cuerpo_clase '}'{
-                                                                    $$=new Declaracionclase($3,$1,"",$5);
+                                                                    $$=new Declaracionclase($3,$1,null,$5);
                                                                     }
                  | modificadores_clase CLASS ID EXTENDS ID '{' cuerpo_clase '}'{
                                                                                 $$=new Declaracionclase($3,$1,$5,$7);

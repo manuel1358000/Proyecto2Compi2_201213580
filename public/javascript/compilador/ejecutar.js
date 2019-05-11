@@ -135,7 +135,7 @@ function btn_compilar(){
         indice2=indice2-3;
     }
     agregar_contenido(codigo3d,indice2);
-    graficarArbol(ast);
+    //graficarArbol(ast);
 }
 
 

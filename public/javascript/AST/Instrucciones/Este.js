@@ -30,7 +30,7 @@ class Este{
                             if(sim_temp!=null){
                                 if(sim_temp.tipo==sim.tipo){
                                     var eti_temp1=generarEtiqueta();
-                                    temp+=eti_temp1+"=p+"+sim_temp.posRel+";\n";
+                                    temp+=eti_temp1+"=p+"+sim_temp.posRel+";\n--aqui 34---------------------------------";
                                     var eti_temp2=generarEtiqueta();
                                     temp+=eti_temp2+"=stack["+eti_temp1+"];\n";
                                     var eti_temp3=generarEtiqueta();
@@ -60,11 +60,11 @@ class Este{
                                 var temp1=generarEtiqueta();
                                 var simulado=generarEtiqueta();
                                 temp+=eti1+"=p+1;\n";
-                                temp+=simulado+"="+eti1+"+"+sim.posRel+";\n";
-                                temp+=temp1+"=stack["+simulado+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
+                                temp+=temp1+"=stack["+eti1+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
+                                temp+=simulado+"="+temp1+"+"+sim.posRel+";\n";
                                 var temp2=generarEtiqueta();
-                                temp+="heap["+temp1+"]="+result_ini.u_etiqueta+";\n";
-                                result.u_etiqueta=temp1;
+                                temp+="heap["+simulado+"]="+result_ini.u_etiqueta+";\n";
+                                result.u_etiqueta=simulado;
                                 result.cadena+=temp;
                                 sim.inicializado=true;
                                 entorno.actualizar(this.nodos[0].valor+"_"+this.normal,sim);
@@ -84,10 +84,10 @@ class Este{
                             var temp1=generarEtiqueta();
                             var simulado=generarEtiqueta();
                             temp+=eti1+"=p+1;\n";
-                            temp+=simulado+"="+eti1+"+"+sim.posRel+";\n";
-                            temp+=temp1+"=stack["+simulado+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
+                            temp+=temp1+"=stack["+eti1+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
+                            temp+=simulado+"="+temp1+"+"+sim.posRel+";\n";
                             var temp2=generarEtiqueta();
-                            temp+=temp2+"=heap["+temp1+"];\n";
+                            temp+=temp2+"=heap["+simulado+"];\n";
                             result.u_etiqueta=temp2;
                             result.cadena+=temp;
                             this.tipo=sim.tipo;

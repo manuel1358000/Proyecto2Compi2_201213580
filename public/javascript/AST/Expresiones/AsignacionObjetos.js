@@ -41,14 +41,17 @@ class AsignacionObjetos{
                             if(temp_tipo==sim_atri.tipo){
                                 temp+=temp_result.cadena;
                                 var eti1=generarEtiqueta();
-                                temp+=eti1+"=p+"+sim_ambi.tamanio+";\n";
-                                 temp+=eti1+"="+eti1+"+"+sim_atri.posRel+";\n";
-                                temp+=eti1+"="+eti1+"+1;\n";
-                                var eti2=generarEtiqueta();
+                                temp+=eti1+"=p+"+sim.posRel+";\n";
+                                var eti3=generarEtiqueta();
+                                temp+=eti3+"=stack["+eti1+"];\n";
+                                var eti4=generarEtiqueta();
+                                temp+=eti4+"=heap["+eti3+"];\n";
+                                temp+=eti4+"="+eti4+"+"+sim_atri.posRel+";\n";
+                                /*var eti2=generarEtiqueta();
                                 temp+=eti2+"=h;\n";
                                 temp+="heap[h]="+temp_result.u_etiqueta+";\n";
-                                temp+="h=h+1;\n";
-                                temp+="stack["+eti1+"]="+eti2+";\n";
+                                temp+="h=h+1;\n";*/
+                                temp+="heap["+eti4+"]="+temp_result.u_etiqueta+";\n";
                             }else{
                                 alert("Error Semantico, No son de tipos iguales la asignacion a atributo objeto");
                             }
@@ -80,14 +83,15 @@ class AsignacionObjetos{
                     }
                     if(sim_ambi!=null){
                         var eti1=generarEtiqueta();
-                        temp+=eti1+"=p+"+sim_ambi.tamanio+";\n";
-                        temp+=eti1+"="+eti1+"+"+sim_atri.posRel+";\n";
-                        temp+=eti1+"="+eti1+"+1;\n";
+                        temp+=eti1+"=p+"+sim.posRel+";\n";
                         var eti2=generarEtiqueta();
                         temp+=eti2+"=stack["+eti1+"];\n";
                         var eti3=generarEtiqueta();
                         temp+=eti3+"=heap["+eti2+"];\n";
-                        result.u_etiqueta=eti3;
+                        var eti4=generarEtiqueta();
+                        temp+=eti3+"="+eti3+"+"+sim_atri.posRel+";\n";
+                        temp+=eti4+"=heap["+eti3+"];\n";
+                        result.u_etiqueta=eti4;
                         this.primitivetipe=sim_atri.tipo;
                     }else{
                         alert("Error Semantico, No existe el ambiente local en la asignacion de objetos");
