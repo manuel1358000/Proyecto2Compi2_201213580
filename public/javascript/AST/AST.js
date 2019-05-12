@@ -128,7 +128,11 @@ function ejecutar(nodoast,entorno){
                         for(var t=0;t<nodoast[indice].nodos.length;t++){
                             if(nodoast[indice].nodos[t] instanceof Declaracion){
                                 if(verificarExistencia(nodoast[i],nodoast[indice].nodos[t].id,"VARIABLE")){
-                                    nodoast[i].nodos.push(nodoast[indice].nodos[t]);
+                                    if(nodoast[indice].nodos[t].getVisibilidad()=="PRIVATE"||nodoast[indice].nodos[t].getVisibilidad()=="private"){
+                                        alert("Error Semantico, la variable no se puede hereadar tiene visibilidad PRIVATE");
+                                    }else{
+                                        nodoast[i].nodos.push(nodoast[indice].nodos[t]);
+                                    }
                                 }else{
                                     alert("Error Semantico, ya existe una declaracion con el mismo nombre, herencia");
                                 }
@@ -144,7 +148,11 @@ function ejecutar(nodoast,entorno){
                                     }
                                 }else{
                                     if(verificarExistenciaMetodo(nodoast[i].nodos,nodoast[indice].nodos[t])){
-                                        nodoast[i].nodos.push(nodoast[indice].nodos[t]);
+                                        if(nodoast[indice].nodos[t].getVisibilidad()=="PRIVATE"||nodoast[indice].nodos[t].getVisibilidad()=="private"){
+                                            alert("Error Semantico, el metodo no se puede heredar ya tiene visibilidad private");
+                                        }else{
+                                            nodoast[i].nodos.push(nodoast[indice].nodos[t]);
+                                        }
                                     }else{
                                         alert("Error Semantico, el metodo no se puede heredar ya que existe uno con las mismas caracteristicas en la clase hija");
                                     }

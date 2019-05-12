@@ -11,7 +11,6 @@ class AccesoObjetos{
     }
     //esta seccion se centra en las llamadas a metodos que puedan tener ya que solo se hara referencia a la llamada del metodo y lo que corresponda
     getValue(entorno){
-        alert("entro aqui");
         if(this.iniValue.id=="length"||this.iniValue.id=="getClass"||this.iniValue.id=="toString"||this.iniValue.id=="equals"||this.iniValue.id=="toCharArray"||this.iniValue.id=="toUpperCase"||this.iniValue.id=="toLowerCase"){
             var result=new Result();
             var temp="";
@@ -218,11 +217,15 @@ class AccesoObjetos{
                     var result_temp=this.iniValue.getValue(entorno);
                     var result_tipo=this.iniValue.getTipe(entorno);
                     if(result_temp!=null){
-                        temp+="//aqui------------------------------------";
-                        temp+=result_temp.cadena;
-                        temp+="//finaliza-----------------------------";
-                        result.u_etiqueta=result_temp.u_etiqueta;
-                        this.primitivetipe=result_tipo;
+                        if(result_temp.visibilidad=="PRIVATE"||result_temp.visibilidad=="private"){
+                            alert("Error Semantico, la visibilidad del metodo es private no se puede acceder a ella");
+                        }else{
+                            temp+="//aqui------------------------------------";
+                            temp+=result_temp.cadena;
+                            temp+="//finaliza-----------------------------";
+                            result.u_etiqueta=result_temp.u_etiqueta;
+                            this.primitivetipe=result_tipo;
+                        }
                     }else{
                         alert("Error Semantico, No se pudo realizar la llamada al metodo del objeto");
                     }

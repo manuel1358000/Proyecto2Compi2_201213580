@@ -43,7 +43,11 @@ class Llamada_Metodo{
         var sim=entorno.obtener(nombre_completo);
         if(sim!=null){
             //if(sim.ambito==this.ambitos){
-                result=new Result();
+                result=new Result();    
+                if(sim.visibilidad=="PRIVATE"||sim.visibilidad=="private"){
+                    result.visibilidad="PRIVATE";
+                }
+                
                 var sim_temp=entorno.obtener(this.padre);
                 if(sim_temp!=null){
                     var eti1=generarEtiqueta();
@@ -132,6 +136,8 @@ class Llamada_Metodo{
             }*/
         }else{
             alert("Error Semantico, No existe el metodo que se esta llamando "+nombre_completo);
+            result=new Result();
+            temp="";
         }
         temp+="\n\n\n";
         temp+="\n";

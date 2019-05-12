@@ -28,6 +28,7 @@ class Asignacion{
             if(result_this!=null){
                 respuesta.cadena=result_this.cadena;
                 respuesta.u_etiqueta=result_this.u_etiqueta;
+                respuesta.inicializado=true;
             }
         }else{
             var tipo=this.getTipe(entorno);
