@@ -95,7 +95,7 @@ class Asignacion{
     getTipe(entorno){
         var temp_ambi="";
         if(this.padre=="main"){
-            temp_ambi=this.ambitos+"/"+this.padre;
+            temp_ambi=this.ambitos;
         }else{
             temp_ambi=this.ambitos;
         }

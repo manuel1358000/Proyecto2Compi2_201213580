@@ -76,7 +76,7 @@ class Metodo{
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin declaracion variable local\n";
-                        sim.inicializado=true;
+                        sim.inicializado=result_temp.inicializado;
                         entorno.actualizar(this.nodos[i].id+"_"+ambi2,sim);
                     }else{
                         temp="//declaracion variable local\n";
@@ -89,7 +89,7 @@ class Metodo{
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin declaracion variable local\n";
-                        sim.inicializado=true;
+                        sim.inicializado=false;
                         entorno.actualizar(this.nodos[i].id+"_"+ambi2,sim);
                     }
                 }
@@ -156,6 +156,13 @@ class Metodo{
                         temp+=simulado+"=p+"+sim.posRel+";\n";
                         temp+="stack["+simulado+"]="+temph+";\n";
                         temp+="//fin asignacion variable local\n";
+                        if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
+                            alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
+                            temp="";
+                        }else{
+                            sim.inicializado=true;
+                            entorno.actualizar(this.nodos[i].id+"_"+ambi2,sim);
+                        }
                     }
                 }else{
                    
@@ -578,4 +585,14 @@ class Metodo{
         return tam;
     }
 
+}
+function variableFinal(nodo){
+    var bandera=true;
+    for(var i=0;i<nodo.modificadores.length;i++){
+        if(nodo.modificadores[i]=="FINAL"||nodo.modificadores[i]=="final"){
+            bandera=false;
+            break;
+        }
+    }
+    return bandera;
 }

@@ -309,7 +309,7 @@ cuerpo_metodo: cuerpo_metodo sentencias_metodo{
 
 
 
-sentencias_metodo: variables ';'{$$=$1;}
+sentencias_metodo: declaracion_variables {$$=$1;}
                  | sentencia_arreglo ';'{
                                     $$=[];
                                     $$.push($1);

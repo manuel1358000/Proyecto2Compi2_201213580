@@ -89,6 +89,19 @@ function verificarExistenciaMetodo(nodoast,nodo){
     return bandera;
 }
 
+function verificarClaseFinal(nodoast,indice){
+    var bandera=true;
+    for(var i=0;i<nodoast[indice].modificadores.length;i++){
+        console.log(nodoast[indice].modificadores[i]);
+        if(nodoast[indice].modificadores[i]=="FINAL"||nodoast[indice].modificadores[i]=="final"){
+            bandera=false;
+            break;
+        }
+    }
+    return bandera;
+}
+
+
 function ejecutar(nodoast,entorno){
     var respuesta="";
     var entorno=new Entorno(null);
@@ -111,33 +124,37 @@ function ejecutar(nodoast,entorno){
             if(nodoast[i].id_extends!=nodoast[i].id){
                 var indice=verificarClaseHerencia(nodoast,nodoast[i].id_extends);
                 if(indice!=-1){
-                    for(var t=0;t<nodoast[indice].nodos.length;t++){
-                        if(nodoast[indice].nodos[t] instanceof Declaracion){
-                            if(verificarExistencia(nodoast[i],nodoast[indice].nodos[t].id,"VARIABLE")){
-                                nodoast[i].nodos.push(nodoast[indice].nodos[t]);
-                            }else{
-                                alert("Error Semantico, ya existe una declaracion con el mismo nombre, herencia");
-                            }
-                        }else if(nodoast[indice].nodos[t] instanceof Metodo){
-                            if(nodoast[indice].nodos[t].id==nodoast[indice].id){
-                                //tengo al constructor voy a verificar si existe ese contructor
-                                var nodo_temp=new Metodo(nodoast[i].id,nodoast[indice].nodos[t].tipo,nodoast[indice].nodos[t].nodos,nodoast[indice].nodos[t].parametros);
-                                nodo_temp.constructor=true;
-                                if(verificarExistenciaMetodo(nodoast[i].nodos,nodo_temp)){
-                                    nodoast[i].nodos.push(nodo_temp);
-                                }else{
-                                    alert("Error Semantico, no se puede heredar el constructor ya que existe uno con la misma firma");
-                                }
-                            }else{
-                                if(verificarExistenciaMetodo(nodoast[i].nodos,nodoast[indice].nodos[t])){
+                    if(verificarClaseFinal(nodoast,indice)){
+                        for(var t=0;t<nodoast[indice].nodos.length;t++){
+                            if(nodoast[indice].nodos[t] instanceof Declaracion){
+                                if(verificarExistencia(nodoast[i],nodoast[indice].nodos[t].id,"VARIABLE")){
                                     nodoast[i].nodos.push(nodoast[indice].nodos[t]);
                                 }else{
-                                    alert("Error Semantico, el metodo no se puede heredar ya que existe uno con las mismas caracteristicas en la clase hija");
+                                    alert("Error Semantico, ya existe una declaracion con el mismo nombre, herencia");
                                 }
+                            }else if(nodoast[indice].nodos[t] instanceof Metodo){
+                                if(nodoast[indice].nodos[t].id==nodoast[indice].id){
+                                    //tengo al constructor voy a verificar si existe ese contructor
+                                    var nodo_temp=new Metodo(nodoast[i].id,nodoast[indice].nodos[t].tipo,nodoast[indice].nodos[t].nodos,nodoast[indice].nodos[t].parametros);
+                                    nodo_temp.constructor=true;
+                                    if(verificarExistenciaMetodo(nodoast[i].nodos,nodo_temp)){
+                                        nodoast[i].nodos.push(nodo_temp);
+                                    }else{
+                                        alert("Error Semantico, no se puede heredar el constructor ya que existe uno con la misma firma");
+                                    }
+                                }else{
+                                    if(verificarExistenciaMetodo(nodoast[i].nodos,nodoast[indice].nodos[t])){
+                                        nodoast[i].nodos.push(nodoast[indice].nodos[t]);
+                                    }else{
+                                        alert("Error Semantico, el metodo no se puede heredar ya que existe uno con las mismas caracteristicas en la clase hija");
+                                    }
+                                }
+                            }else{
+                                alert("Error Semantico, es una instancia rara de una clase");
                             }
-                        }else{
-                            alert("Error Semantico, es una instancia rara de una clase");
                         }
+                    }else{
+                        alert("Error Semantico, La clase que quiere heredar es FINAL por lo que no puede realizar la operacion");
                     }
                 }else{
                     alert("Error Semantico, la clase que se quiere heredar no existe");

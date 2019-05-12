@@ -160,12 +160,10 @@ class Declaracion{
                     respuesta.cadena+=eti1+"=-1;\n";
                     respuesta.u_etiqueta=eti1;
                 }
+                respuesta.inicializado=false;
             }else{
                 if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
-                    
                 }else{
-                    alert(tipo);
-                    alert(respuesta.tipo);
                     alert("Error semantico, Declaracion erronea por tipos");
                     respuesta=null;
                 }

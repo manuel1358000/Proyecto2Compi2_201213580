@@ -19,6 +19,7 @@ class Simbolo{
         this.lista_dimensiones=[];
         this.referencia=[];
         this.ambitos_parametros;
+        this.declarado=false;
     }
 }
 

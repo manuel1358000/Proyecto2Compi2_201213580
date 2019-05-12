@@ -44,7 +44,6 @@ class Declaracionclase{
                     }
                     temp+="//Finalizo la signacion \n";
                     //finalizado
-                    sim_aux.inicializado=true;
                     entorno.actualizar(nodo.id+"_"+this.id,sim_aux);
                     variables_globales+=temp;
                 }else{
@@ -53,6 +52,9 @@ class Declaracionclase{
                     agregarErrores(error);
                 }
             }else if(nodo instanceof Metodo){
+                if(verificarFinal(nodo.modificadores)){
+                    alert("Error Semantico, Un metodo no puede tener un modificador final");
+                }
                 //metodos
                 if(this.id==nodo.id){
                     var nombre_constructor=this.id+"_"+this.id;

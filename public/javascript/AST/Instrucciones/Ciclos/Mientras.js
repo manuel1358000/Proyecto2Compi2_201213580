@@ -56,7 +56,7 @@ class Mientras{
                                         temp+=simulado+"=p+"+sim.posRel+";\n";
                                         temp+="stack["+simulado+"]="+temph+";\n";
                                         temp+="//fin declaracion variable local\n";
-                                        sim.inicializado=true; 
+                                        sim.inicializado=true;
                                         local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                                     }else{
                                         alert("Error Semantico, En la declaracion");
@@ -77,7 +77,7 @@ class Mientras{
                                     temp+=simulado+"=p+"+sim.posRel+";\n";
                                     temp+="stack["+simulado+"]="+temph+";\n";
                                     temp+="//fin declaracion variable local\n";
-                                    sim.inicializado=true;
+                                    sim.inicializado=result_temp.inicializado;
                                     local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                                 }else{
                                     temp="//declaracion variable local\n";
@@ -90,7 +90,7 @@ class Mientras{
                                     temp+=simulado+"=p+"+sim.posRel+";\n";
                                     temp+="stack["+simulado+"]="+temph+";\n";
                                     temp+="//fin declaracion variable local\n";
-                                    sim.inicializado=true;
+                                    sim.inicializado=false;
                                     local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                                 }
                             }
@@ -116,18 +116,30 @@ class Mientras{
                             this.nodos[i].ambitos=ambi;
                             var result_temp=this.nodos[i].execute(local);
                             if(result_temp!=null){
-                                temp+=result_temp.cadena;
-                                temp+="//empieza la asignacion variable local\n";
-                                var temph=generarEtiqueta();
-                                temp+=temph+"=h;\n";
-                                temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                                temp+="h=h+1;\n";
-                                var simulado=generarEtiqueta();
-                                alert(this.nodos[i].id+"_"+ambi);
-                                var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                                temp+=simulado+"=p+"+sim.posRel+";\n";
-                                temp+="stack["+simulado+"]="+temph+";\n";
-                                temp+="//fin asignacion variable local\n";
+                                if(result_temp.tipo=="this"){
+                                    temp+="//ACCESO A UN ELEMENTO DEL THIS\n";
+                                    temp+=result_temp.cadena;
+                                    temp+="//FINALIZA ACCESO A UN ELEMENTO DEL THIS\n";
+                                }else{
+                                    temp+=result_temp.cadena;
+                                    temp+="//empieza la asignacion variable local\n";
+                                    var temph=generarEtiqueta();
+                                    temp+=temph+"=h;\n";
+                                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                                    temp+="h=h+1;\n";
+                                    var simulado=generarEtiqueta();
+                                    var sim=local.obtener(this.nodos[i].id+"_"+ambi);
+                                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                                    temp+="stack["+simulado+"]="+temph+";\n";
+                                    temp+="//fin asignacion variable local\n";
+                                    if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
+                                        alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
+                                        temp="";
+                                    }else{
+                                        sim.inicializado=true;
+                                        local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                    }
+                                }
                             }else{
                                 alert("es nulo");
                             }
@@ -407,7 +419,7 @@ class Mientras{
                                 temp+=simulado+"=p+"+sim.posRel+";\n";
                                 temp+="stack["+simulado+"]="+temph+";\n";
                                 temp+="//fin declaracion variable local\n";
-                                sim.inicializado=true; 
+                                sim.inicializado=result_temp.inicializado; 
                                 local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                             }else{
                                 alert("Error Semantico, En la declaracion");
@@ -441,7 +453,7 @@ class Mientras{
                             temp+=simulado+"=p+"+sim.posRel+";\n";
                             temp+="stack["+simulado+"]="+temph+";\n";
                             temp+="//fin declaracion variable local\n";
-                            sim.inicializado=true;
+                            sim.inicializado=false;
                             local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                         }
                     }

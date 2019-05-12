@@ -84,7 +84,7 @@ class Si{
                                 temp+=simulado+"=p+"+sim.posRel+";\n";
                                 temp+="stack["+simulado+"]="+temph+";\n";
                                 temp+="//fin declaracion variable local\n";
-                                sim.inicializado=true;
+                                sim.inicializado=result_temp.inicializado;
                                 local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                             }else{
                                 temp="//declaracion variable local\n";
@@ -97,7 +97,7 @@ class Si{
                                 temp+=simulado+"=p+"+sim.posRel+";\n";
                                 temp+="stack["+simulado+"]="+temph+";\n";
                                 temp+="//fin declaracion variable local\n";
-                                sim.inicializado=true;
+                                sim.inicializado=false;
                                 local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                             }
                         }

@@ -6,5 +6,6 @@ class Result{
         this.bandera=false;
         this.cadena_aux="";
         this.tipo="";
+        this.inicializado=true;
     }
 }
