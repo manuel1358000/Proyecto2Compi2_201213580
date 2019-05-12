@@ -70,7 +70,11 @@ class Este{
                                     var simulado=generarEtiqueta();
                                     temp+=eti1+"=p+1;\n";
                                     temp+=temp1+"=stack["+eti1+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
-                                    temp+=simulado+"="+temp1+"+"+sim.posRel+";\n";
+                                    if(verificarStatic(sim.modificadores)){
+                                        temp+=simulado+"="+sim.posRel+";\n";
+                                    }else{
+                                        temp+=simulado+"="+temp1+"+"+sim.posRel+";\n";
+                                    }
                                     var temp2=generarEtiqueta();
                                     temp+="heap["+simulado+"]="+result_ini.u_etiqueta+";\n";
                                     result.u_etiqueta=simulado;
@@ -96,7 +100,11 @@ class Este{
                             var simulado=generarEtiqueta();
                             temp+=eti1+"=p+1;\n";
                             temp+=temp1+"=stack["+eti1+"];\n";//en esta posicion esta almacenado el puntero h que contiene al numero
-                            temp+=simulado+"="+temp1+"+"+sim.posRel+";\n";
+                            if(verificarStatic(sim.modificadores)){
+                                temp+=simulado+"="+sim.posRel+";\n";
+                            }else{
+                                temp+=simulado+"="+temp1+"+"+sim.posRel+";\n";
+                            }
                             var temp2=generarEtiqueta();
                             temp+=temp2+"=heap["+simulado+"];\n";
                             result.u_etiqueta=temp2;

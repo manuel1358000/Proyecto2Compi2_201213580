@@ -52,7 +52,7 @@ class Metodo{
                         var simulado=generarEtiqueta();
                         var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
                         if(sim!=null){
-                            temp+=simulado+"=p+"+sim.posRel+";\n";
+                            temp+=simulado+"=p+"+sim.posRel+";//esto verificar------------------------------------------\n";
                             temp+="stack["+simulado+"]="+temph+";\n";
                             temp+="//fin declaracion variable local\n";
                             sim.inicializado=true; 

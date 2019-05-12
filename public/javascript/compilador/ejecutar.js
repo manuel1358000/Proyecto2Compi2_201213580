@@ -83,6 +83,7 @@ function btn_3dcompilar(){
     agregarStack();
 }
 function btn_compilar(){
+    conteo=0;
     codigo=0;
     //SECCION DONDE SE INICIALIZAN LOS VALORES DE DYNAMO
     conditionalDeleteAST();  
@@ -90,7 +91,7 @@ function btn_compilar(){
     indice_errores=0;
     cont_e=-1;
     pool_salida=[];
-    lista_temporales="var heap[];\nvar stack[];\nvar h=0;\nvar p=0;\n";
+   
     //vamos a traer al activo del contenedor
     var elementoDiv=document.querySelector("#contenedor_pesta > div.active");
     //vamos a traer el area de texto para poder enviarle la informacion al parser
@@ -117,6 +118,7 @@ function btn_compilar(){
     codigo3d+=obtenerInt();
     codigo3d+=enteroString();
     codigo3d+=generaImpresion2();
+    lista_temporales="var heap[];\nvar stack[];\nvar h="+(conteo+1)+";\nvar p="+(conteo+1)+";\n"+lista_temporales;
     codigo3d=lista_temporales+";\n"+codigo3d;
     var elementoNav=document.querySelector("#nav_pesta > li.active >a");
     var nombrenuevo=elementoNav.innerHTML;

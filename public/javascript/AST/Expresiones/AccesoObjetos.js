@@ -220,9 +220,7 @@ class AccesoObjetos{
                         if(result_temp.visibilidad=="PRIVATE"||result_temp.visibilidad=="private"){
                             alert("Error Semantico, la visibilidad del metodo es private no se puede acceder a ella");
                         }else{
-                            temp+="//aqui------------------------------------";
                             temp+=result_temp.cadena;
-                            temp+="//finaliza-----------------------------";
                             result.u_etiqueta=result_temp.u_etiqueta;
                             this.primitivetipe=result_tipo;
                         }

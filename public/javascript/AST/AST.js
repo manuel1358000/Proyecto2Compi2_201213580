@@ -1,3 +1,4 @@
+var conteo=0;
 function importar(nodoast){
     for(var i=0;i<nodoast.length;i++){
        if(nodoast[i] instanceof Importacion){
@@ -176,6 +177,7 @@ function ejecutar(nodoast,entorno){
 
     //------------------------- EMPIEZA SEGUNDA PASADA, VAMOS A CARGAR TODOS LOS SIMBOLOS A LA TABLA DE SIMBOLOS
     //------------------------- SE AGREGAN, CLASES, ATRIBUTOS, METODOS
+ 
     for(var i=0;i<nodoast.length;i++){
         cargarTablaSimbolos(nodoast[i],entorno,"GLOBAL",0);
     }
@@ -210,6 +212,17 @@ function ejecutar(nodoast,entorno){
     graficarArbol(nodoast);
     return respuesta;
 }
+
+function verificarStatic(modificadores){
+    var bandera=false;
+    for(var i=0;i<modificadores.length;i++){
+        if(modificadores[i]=="STATIC"||modificadores[i]=="static"){
+            bandera=true;
+            break;
+        }
+    }
+    return bandera;
+}
 function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
     if(nodoast instanceof Declaracionclase){
         var id_instancia=nodoast.id+"_GLOBAL";
@@ -219,9 +232,22 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
         entorno.agregar(id_instancia,sim);
         var posrel=0;
         for(var i=0;i<nodoast.nodos.length;i++){
-            cargarTablaSimbolos(nodoast.nodos[i],entorno,nodoast.id,posrel,"VARIABLE_GLOBAL");
             if(nodoast.nodos[i] instanceof Declaracion){
-                posrel++;
+                if(verificarStatic(nodoast.nodos[i].modificadores)){
+                    cargarTablaSimbolos(nodoast.nodos[i],entorno,nodoast.id,conteo,"VARIABLE_GLOBAL");
+                }else{
+                    cargarTablaSimbolos(nodoast.nodos[i],entorno,nodoast.id,posrel,"VARIABLE_GLOBAL");
+                }
+            }else{
+                cargarTablaSimbolos(nodoast.nodos[i],entorno,nodoast.id,posrel,"VARIABLE_GLOBAL");
+            }
+            if(nodoast.nodos[i] instanceof Declaracion){
+                if(verificarStatic(nodoast.nodos[i].modificadores)){
+                    alert("Si es static");
+                    conteo++;       
+                }else{
+                    posrel++;
+                }
             }else if(nodoast.nodos[i] instanceof DeclaracionArreglos){  
                 posrel++;
             }
@@ -253,7 +279,6 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
             id_instancia=ambito+"_"+id_instancia;
         }
         var sim=new Simbolo(id_instancia,nodoast.tipo,ambito,"METODO",-1,nodoast.gettamMetodo(),0,nodoast.getVisibilidad(),nodoast.modificadores);
-        
         var posrel=0;
         var retu_this=[];
         retu_this.push(new Declaracion("return",PrimitiveType.VOID,null,[],0,0,0));
@@ -288,8 +313,6 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
         //instancias extras
     }
 }
-
-
 function imprimirentorno(entorno){
     var simbolo=entorno.obtener("a");
     console.log(simbolo.tipo);

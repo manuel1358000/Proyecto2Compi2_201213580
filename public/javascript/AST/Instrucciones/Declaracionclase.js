@@ -30,7 +30,11 @@ class Declaracionclase{
                     temp+=eti_aux+"=stack["+eti_this+"]; //puntero del objeto\n";
                     var eti_aux2=generarEtiqueta();
                     var sim_aux=entorno.obtener(nodo.id+"_"+this.id);
-                    temp+=eti_aux2+"="+eti_aux+"+"+sim_aux.posRel+";//direccion de "+nodo.id+"\n";
+                    if(verificarStatic(sim_aux.modificadores)){
+                        temp+=eti_aux2+"="+sim_aux.posRel+";//direccion del static \n";
+                    }else{
+                        temp+=eti_aux2+"="+eti_aux+"+"+sim_aux.posRel+";//direccion de "+nodo.id+"\n";
+                    }
                     if(result.u_etiqueta==null){
                         temp+="heap["+eti_aux2+"]=0;//asignacion del valor al heap\n";
                     }else{
