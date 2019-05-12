@@ -103,11 +103,8 @@ function ejecutar(nodoast,entorno){
         indice_temp=indice_temp[1];
         lista_pesta[nombre_pesta]=indice_temp;
     }
-
     importar(nodoast);
     //--------------------------EMPIEZA PRIMERA PASADA, VAMOS A REALIZAR LAS IMPORTACIONES 
-            
-
     //vamos a realizar las herencias que se encuentren en las clases
     for(var i=0;i<nodoast.length;i++){
         if(nodoast[i].id_extends!=null){
@@ -123,7 +120,14 @@ function ejecutar(nodoast,entorno){
                             }
                         }else if(nodoast[indice].nodos[t] instanceof Metodo){
                             if(nodoast[indice].nodos[t].id==nodoast[indice].id){
-                                console.log("Es el constructor");
+                                //tengo al constructor voy a verificar si existe ese contructor
+                                var nodo_temp=new Metodo(nodoast[i].id,nodoast[indice].nodos[t].tipo,nodoast[indice].nodos[t].nodos,nodoast[indice].nodos[t].parametros);
+                                nodo_temp.constructor=true;
+                                if(verificarExistenciaMetodo(nodoast[i].nodos,nodo_temp)){
+                                    nodoast[i].nodos.push(nodo_temp);
+                                }else{
+                                    alert("Error Semantico, no se puede heredar el constructor ya que existe uno con la misma firma");
+                                }
                             }else{
                                 if(verificarExistenciaMetodo(nodoast[i].nodos,nodoast[indice].nodos[t])){
                                     nodoast[i].nodos.push(nodoast[indice].nodos[t]);

@@ -11,6 +11,9 @@ class Llamada_Metodo{
     }
     getValue(entorno){
         var result=null;
+        if(this.id=="super"||this.id=="this"){
+            this.id=this.normal;
+        }
         var nombre_completo=this.normal+"_"+this.id;
         var temp="\n\n\n\n";
         var param_temp=this.parametros;

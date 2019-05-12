@@ -429,7 +429,13 @@ sentencia_llamada: ID '(' ')'{
                             }
                  | ID '(' lista_valores ')'{
                                             $$=new Llamada_Metodo($1,$3);
-                                            };
+                                            }
+                 | THIS '(' ')'{
+                            $$=new Llamada_Metodo($1,[]);
+                            }
+                 | THIS'(' lista_valores ')'{
+                                            $$=new Llamada_Metodo($1,$3);
+                                            } ;
 sentencia_incre_decre: ID '--' ';'{
                                 var temp=new Aritmetica(null,null,false,$1,null,Type.ID,0,0);
                                 $$=new Aritmetica(temp,null,true,null,"--",null,0,0);
