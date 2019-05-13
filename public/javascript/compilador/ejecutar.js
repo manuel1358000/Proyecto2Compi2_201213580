@@ -167,7 +167,6 @@ function agregar_contenido(contenido,indice){
     var doc = cm.getDoc();
     var cursor=doc.getCursor(); // get the line contents
     doc.replaceRange(contenido, cursor);
-
 }
 
 

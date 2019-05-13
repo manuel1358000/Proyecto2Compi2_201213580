@@ -176,7 +176,7 @@ class Declaracion{
                 }
                 respuesta.inicializado=false;
             }else{
-                if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
+                if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"||tipo=="INTEGER"&&respuesta.tipo=="CHAR"||tipo=="DOUBLE"&&respuesta.tipo=="CHAR"){
                 }else{
                     alert("Error semantico, Declaracion erronea por tipos");
                     respuesta=null;

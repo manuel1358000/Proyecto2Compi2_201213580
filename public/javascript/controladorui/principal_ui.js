@@ -28,9 +28,13 @@ function crearPesta(nombre){
 }
 function settextarea(id){
     editor=CodeMirror.fromTextArea(document.getElementById(id), {
+                mode: "text/x-java",
+                continuosScanning:500,
                 lineNumbers : true,
                 matchBrackets : true,
+                lineWrapping:true,
                 height:"350px",
+                gutter:true,
                 });   
 }
 function cerrarPesta(){
