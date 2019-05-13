@@ -97,7 +97,7 @@ class Mientras{
                         }else if(this.nodos[i] instanceof Imprimir){
                             this.nodos[i].padre=this.padre;
                             this.nodos[i].normal=this.normal;
-                            this.nodos[i].ambitos=temp_ambi;
+                            this.nodos[i].ambitos=this.ambitos;
                             var temp_tam=0;
                             if(this.padre=="main"){
                                 var sim_temp=local.obtener("main");
@@ -113,22 +113,23 @@ class Mientras{
                             var ambi=temp_ambi;
                             this.nodos[i].padre=this.padre;
                             this.nodos[i].normal=this.normal;
-                            this.nodos[i].ambitos=ambi;
-                            var result_temp=this.nodos[i].execute(local);
+                            this.nodos[i].ambitos=temp_ambi;
+                            var result_temp=this.nodos[i].execute(entorno);
+                            var temp="";
                             if(result_temp!=null){
                                 if(result_temp.tipo=="this"){
                                     temp+="//ACCESO A UN ELEMENTO DEL THIS\n";
                                     temp+=result_temp.cadena;
                                     temp+="//FINALIZA ACCESO A UN ELEMENTO DEL THIS\n";
                                 }else{
-                                    temp+=result_temp.cadena;
+                                    temp=result_temp.cadena;
                                     temp+="//empieza la asignacion variable local\n";
                                     var temph=generarEtiqueta();
                                     temp+=temph+"=h;\n";
                                     temp+="heap[h]="+result_temp.u_etiqueta+";\n";
                                     temp+="h=h+1;\n";
                                     var simulado=generarEtiqueta();
-                                    var sim=local.obtener(this.nodos[i].id+"_"+ambi);
+                                    var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
                                     temp+=simulado+"=p+"+sim.posRel+";\n";
                                     temp+="stack["+simulado+"]="+temph+";\n";
                                     temp+="//fin asignacion variable local\n";
@@ -137,11 +138,10 @@ class Mientras{
                                         temp="";
                                     }else{
                                         sim.inicializado=true;
-                                        local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                        entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
                                     }
                                 }
-                            }else{
-                                alert("es nulo");
+                            }else{   
                             }
                         }else if(this.nodos[i] instanceof Si){
                             var ambi=temp_ambi;
@@ -382,6 +382,17 @@ class Mientras{
                                 temp+=result_temp.cadena;
                             }
                             temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
+                        }else if(this.nodos[i] instanceof AsignacionObjetos){
+                            var ambi=temp_ambi;
+                            this.nodos[i].padre=this.padre;
+                            this.nodos[i].normal=this.normal;
+                            this.nodos[i].ambitos=ambi;
+                            var result_temp=this.nodos[i].getValue(local);
+                            temp+="//INICIA LLAMADA A METODO OBJETO\n"
+                            if(result_temp!=null){
+                                temp+=result_temp.cadena;
+                            }
+                            temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
                         }else{
                             console.log("Instancia rara while");
                         }
@@ -460,7 +471,7 @@ class Mientras{
                 }else if(this.nodos[i] instanceof Imprimir){
                     this.nodos[i].padre=this.padre;
                     this.nodos[i].normal=this.normal;
-                    this.nodos[i].ambitos=temp_ambi;
+                    this.nodos[i].ambitos=this.ambitos;
                     var temp_tam=0;
                     if(this.padre=="main"){
                         var sim_temp=local.obtener("main");
@@ -476,23 +487,35 @@ class Mientras{
                     var ambi=temp_ambi;
                     this.nodos[i].padre=this.padre;
                     this.nodos[i].normal=this.normal;
-                    this.nodos[i].ambitos=ambi;
-                    var result_temp=this.nodos[i].execute(local);
+                    this.nodos[i].ambitos=temp_ambi;
+                    var result_temp=this.nodos[i].execute(entorno);
+                    var temp="";
                     if(result_temp!=null){
-                        temp+=result_temp.cadena;
-                        temp+="//empieza la asignacion variable local\n";
-                        var temph=generarEtiqueta();
-                        temp+=temph+"=h;\n";
-                        temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                        temp+="h=h+1;\n";
-                        var simulado=generarEtiqueta();
-                        alert(this.nodos[i].id+"_"+ambi);
-                        var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                        temp+=simulado+"=p+"+sim.posRel+";\n";
-                        temp+="stack["+simulado+"]="+temph+";\n";
-                        temp+="//fin asignacion variable local\n";
-                    }else{
-                        alert("es nulo");
+                        if(result_temp.tipo=="this"){
+                            temp+="//ACCESO A UN ELEMENTO DEL THIS\n";
+                            temp+=result_temp.cadena;
+                            temp+="//FINALIZA ACCESO A UN ELEMENTO DEL THIS\n";
+                        }else{
+                            temp=result_temp.cadena;
+                            temp+="//empieza la asignacion variable local\n";
+                            var temph=generarEtiqueta();
+                            temp+=temph+"=h;\n";
+                            temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                            temp+="h=h+1;\n";
+                            var simulado=generarEtiqueta();
+                            var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                            temp+=simulado+"=p+"+sim.posRel+";\n";
+                            temp+="stack["+simulado+"]="+temph+";\n";
+                            temp+="//fin asignacion variable local\n";
+                            if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
+                                alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
+                                temp="";
+                            }else{
+                                sim.inicializado=true;
+                                entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                            }
+                        }
+                    }else{   
                     }
                 }else if(this.nodos[i] instanceof Si){
                     var ambi=temp_ambi;
@@ -722,6 +745,17 @@ class Mientras{
                         alert("Error Semantico, Arreglo no existe en el entorno");
                     }
                 }else if(this.nodos[i] instanceof AccesoObjetos){
+                    var ambi=temp_ambi;
+                    this.nodos[i].padre=this.padre;
+                    this.nodos[i].normal=this.normal;
+                    this.nodos[i].ambitos=ambi;
+                    var result_temp=this.nodos[i].getValue(local);
+                    temp+="//INICIA LLAMADA A METODO OBJETO\n"
+                    if(result_temp!=null){
+                        temp+=result_temp.cadena;
+                    }
+                    temp+="//FINALIZA LLAMADA A METODO OBJETO\n";
+                }else if(this.nodos[i] instanceof AsignacionObjetos){
                     var ambi=temp_ambi;
                     this.nodos[i].padre=this.padre;
                     this.nodos[i].normal=this.normal;

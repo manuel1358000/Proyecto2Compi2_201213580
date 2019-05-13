@@ -109,6 +109,7 @@ class AsignacionObjetos{
             }
         }else{
             //se tiene que retornar el valor del id
+            alert(this.id+"_"+temp_ambi);
             var sim=entorno.obtener(this.id+"_"+temp_ambi);
             if(sim!=null){
                 //vamos a buscar el atributo

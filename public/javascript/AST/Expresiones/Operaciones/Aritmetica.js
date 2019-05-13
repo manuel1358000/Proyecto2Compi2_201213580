@@ -373,6 +373,7 @@ class Aritmetica{
                 }else if(this.tipoprimitivo=="ID"){
                     var result=new Result();
                     var temp="";
+                    alert(this.valor+"_"+this.ambitos);
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     if(sim==null){
                         alert("Error Semantico, No existe el id que se busca");

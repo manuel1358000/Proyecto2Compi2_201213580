@@ -100,6 +100,8 @@ class Asignacion{
         }else{
             temp_ambi=this.ambitos;
         }
+        //asignacion de variables
+        alert(this.id+"_"+temp_ambi);
         var temp_sim=entorno.obtener(this.id+"_"+temp_ambi);
         if(temp_sim!=null){
             return temp_sim.tipo;
