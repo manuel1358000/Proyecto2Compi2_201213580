@@ -307,11 +307,22 @@ declaracion_metodos: tipo ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
                                                                             //METODO QUE DEVUELVE UN OBJETO
                                                                             $$=new Metodo($2,$1,$7,$4);
                                                                         }
+                   | ID lista_d ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
+                                                                               //METODO QUE DEVUELVE UN OBJETO
+                                                                                $$=new Metodo($3,$1,$8,$5);
+                                                                                $$.dimensiones=$2.length;
+                                                                            }
+                   | tipo lista_d ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
+                                                                                    //METODO QUE DEVUELVE UN OBJETO
+                                                                                    $$=new Metodo($3,$1,$8,$5);
+                                                                                    $$.dimensiones=$2.length;
+                                                                                } 
                    | ID '(' lista_parametros ')' '{' cuerpo_metodo '}'{
                                                                         //CONSTRUCTOR
                                                                         $$=new Metodo($1,"VOID",$6,$3);
                                                                         $$.constructor=true;
                                                                     };
+
 
 cuerpo_metodo: cuerpo_metodo sentencias_metodo{
                                                 $$=$1;
@@ -409,6 +420,11 @@ sentencia_arreglo: tipo ID lista_d{
                                             $$.inicializado=true;
                                             $$.iniValue=new Aritmetica(null,null,false,$5,null,"ID",0,0);
                                         }
+                | tipo ID lista_d '=' sentencia_llamada{
+                                                        $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
+                                                        $$.inicializado=true;
+                                                        $$.iniValue=$5;
+                                                        }
                 | ID ID lista_d '=' NEW ID lista_dd{
                                                     $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
                                                     $$.inicializado=true;
@@ -419,7 +435,12 @@ sentencia_arreglo: tipo ID lista_d{
                                         $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
                                         $$.inicializado=true;
                                         $$.iniValue=new Aritmetica(null,null,false,$5,null,"ID",0,0);
-                                    };
+                                    }
+                | ID ID lista_dd '=' sentencia_llamada{
+                                                        $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
+                                                        $$.inicializado=true;
+                                                        $$.iniValue=$5;
+                                                      };
 
 lista_d: lista_d '['']'{
                         $$=$1;

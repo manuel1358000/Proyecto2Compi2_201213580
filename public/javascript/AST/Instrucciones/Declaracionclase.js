@@ -70,7 +70,6 @@ class Declaracionclase{
                         nombre_constructor+="_"+tipo_parametro;
                         val+="_"+tipo_parametro;
                     }
-                    
                     nodo.ambitos=this.id;
                     var result=nodo.execute(entorno);
                     var temp="proc "+nombre_constructor+" begin\n";

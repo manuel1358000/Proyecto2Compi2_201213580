@@ -373,7 +373,6 @@ class Aritmetica{
                 }else if(this.tipoprimitivo=="ID"){
                     var result=new Result();
                     var temp="";
-                    alert(this.valor+"_"+this.ambitos);
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     if(sim==null){
                         alert("Error Semantico, No existe el id que se busca");
@@ -386,6 +385,7 @@ class Aritmetica{
                         temp+=temp2+"=heap["+temp1+"];\n";
                         if(sim.lista_dimensiones.length>0){
                             result.u_etiqueta=temp1;
+                            result.lista_dimensiones=sim.lista_dimensiones;
                         }else{
                             result.u_etiqueta=temp2;
                         }
@@ -399,7 +399,7 @@ class Aritmetica{
                     var temp="";
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     if(sim!=null){
-                        if(numerico(sim.tipo)){
+                       // if(numerico(sim.tipo)){
                             var eti_principio=generarEtiqueta();
                             var simulado=generarEtiqueta();
                             temp+=simulado+"=p+"+sim.posRel+";\n";
@@ -477,9 +477,11 @@ class Aritmetica{
                             }else{
                                 alert("Error Semantico, las dimensiones no coindicen");
                             }
-                        }else{
+                        /*}else{
+
+
                             alert("Error Semantico, El elemento que quiere acceder es un arreglo de objetos");
-                        }
+                        }*/
                     }else{
                         alert("Error Semantico, No existe el arreglo que se busca");
                     }

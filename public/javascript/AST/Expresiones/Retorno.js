@@ -43,6 +43,9 @@ class Retorno{
                             temp+="heap[h]="+temp_result.u_etiqueta+";\n";
                             temp+="h=h+1;\n";
                             temp+="stack["+eti1+"]="+eti2+";\n";
+                            if(temp_result.lista_dimensiones.length>0){
+                                result.lista_dimensiones=temp_result.lista_dimensiones;
+                            }
                         }else{
                             alert("Error Semantico, el tipo del retorno y la funcion no son iguales");
                         }

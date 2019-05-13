@@ -31,6 +31,7 @@ class Asignacion{
                 respuesta.inicializado=true;
             }
         }else{
+            //agregarTablaSimbolos(entorno);
             var tipo=this.getTipe(entorno);
             if(this.iniValue instanceof Aritmetica){
                 this.iniValue.ambitos=temp_ambi;
@@ -87,6 +88,7 @@ class Asignacion{
             }
             if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"){
             }else{
+                alert("aqui -"+tipo+"_"+respuesta.tipo);
                 alert("Error semantico, asignacion erronea por tipos");
                 respuesta=null;
             }
@@ -94,15 +96,14 @@ class Asignacion{
         return respuesta;
     }
     getTipe(entorno){
-        var temp_ambi="";
+        var ambiente_local="";
         if(this.padre=="main"){
-            temp_ambi=this.ambitos;
+            ambiente_local=this.ambitos;
         }else{
-            temp_ambi=this.ambitos;
+            ambiente_local=this.ambitos;
         }
-        //asignacion de variables
-        alert(this.id+"_"+temp_ambi);
-        var temp_sim=entorno.obtener(this.id+"_"+temp_ambi);
+        //asignacion de variabless
+        var temp_sim=entorno.obtener(this.id+"_"+ambiente_local);
         if(temp_sim!=null){
             return temp_sim.tipo;
         }else{

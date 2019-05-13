@@ -181,7 +181,7 @@ function ejecutar(nodoast,entorno){
     for(var i=0;i<nodoast.length;i++){
         cargarTablaSimbolos(nodoast[i],entorno,"GLOBAL",0);
     }
-    agregarTablaSimbolos(entorno);
+    //agregarTablaSimbolos(entorno);
     //------------------------- EMPIEZA TERCERA PASADA, SE REALIZA LA GENERACION DE CODIGO INTERMEDIO
     //vamos a recorrer la tabla de simbolo en busca del metodo main
     for(var i=0;i<nodoast.length;i++){
@@ -207,7 +207,7 @@ function ejecutar(nodoast,entorno){
         }
     }
     //------------------------
-    agregarTablaSimbolos(entorno);
+    //agregarTablaSimbolos(entorno);
     //anidarErrores();
     graficarArbol(nodoast);
     return respuesta;
@@ -243,7 +243,6 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
             }
             if(nodoast.nodos[i] instanceof Declaracion){
                 if(verificarStatic(nodoast.nodos[i].modificadores)){
-                    alert("Si es static");
                     conteo++;       
                 }else{
                     posrel++;

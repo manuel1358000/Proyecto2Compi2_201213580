@@ -134,7 +134,7 @@ class Subsi{
                         this.nodos[i].padre=this.padre;
                         this.nodos[i].normal=this.normal;
                         this.nodos[i].ambitos=temp_ambi;
-                        var result_temp=this.nodos[i].execute(entorno);
+                        var result_temp=this.nodos[i].execute(local);
                         var temp="";
                         if(result_temp!=null){
                             if(result_temp.tipo=="this"){
@@ -149,7 +149,7 @@ class Subsi{
                                 temp+="heap[h]="+result_temp.u_etiqueta+";\n";
                                 temp+="h=h+1;\n";
                                 var simulado=generarEtiqueta();
-                                var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                                var sim=local.obtener(this.nodos[i].id+"_"+ambi);
                                 temp+=simulado+"=p+"+sim.posRel+";\n";
                                 temp+="stack["+simulado+"]="+temph+";\n";
                                 temp+="//fin asignacion variable local\n";
@@ -158,7 +158,7 @@ class Subsi{
                                     temp="";
                                 }else{
                                     sim.inicializado=true;
-                                    entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                    local.actualizar(this.nodos[i].id+"_"+ambi,sim);
                                 }
                             }
                         }else{   
@@ -223,6 +223,9 @@ class Subsi{
                         //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
                         if(result_temp!=null){  
                             temp+=result_temp.cadena;
+                            if(result_temp.lista_dimensiones.length>0){
+                                result.lista_dimensiones=result_temp.lista_dimensiones;
+                            }
                         }
                     }else if(this.nodos[i] instanceof DeclaracionArreglos){
                         var ambi=temp_ambi;
@@ -486,7 +489,7 @@ class Subsi{
                     this.nodos[i].padre=this.padre;
                     this.nodos[i].normal=this.normal;
                     this.nodos[i].ambitos=temp_ambi;
-                    var result_temp=this.nodos[i].execute(entorno);
+                    var result_temp=this.nodos[i].execute(local);
                     var temp="";
                     if(result_temp!=null){
                         if(result_temp.tipo=="this"){
@@ -501,7 +504,7 @@ class Subsi{
                             temp+="heap[h]="+result_temp.u_etiqueta+";\n";
                             temp+="h=h+1;\n";
                             var simulado=generarEtiqueta();
-                            var sim=entorno.obtener(this.nodos[i].id+"_"+ambi);
+                            var sim=local.obtener(this.nodos[i].id+"_"+ambi);
                             temp+=simulado+"=p+"+sim.posRel+";\n";
                             temp+="stack["+simulado+"]="+temph+";\n";
                             temp+="//fin asignacion variable local\n";
@@ -510,7 +513,7 @@ class Subsi{
                                 temp="";
                             }else{
                                 sim.inicializado=true;
-                                entorno.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                local.actualizar(this.nodos[i].id+"_"+ambi,sim);
                             }
                         }
                     }else{   
@@ -576,6 +579,9 @@ class Subsi{
                     //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
                     if(result_temp!=null){  
                         temp+=result_temp.cadena;
+                        if(result_temp.lista_dimensiones.length>0){
+                            result.lista_dimensiones=result_temp.lista_dimensiones;
+                        }
                     }
                 }else if(this.nodos[i] instanceof DeclaracionArreglos){
                     var ambi=temp_ambi;

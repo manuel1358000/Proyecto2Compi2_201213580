@@ -185,7 +185,6 @@ class DeclaracionArreglos{
                                 temp+=temp_result.cadena;
                                 result.cadena+=temp;
                                 result.u_etiqueta=temp_result.u_etiqueta;
-                                alert(result.cadena);
                                 this.lista_dimensiones=sim_temp.lista_dimensiones;
                             }else{
                                 alert("Error semantico, los tipos son diferentes en la declaracion arreglo");

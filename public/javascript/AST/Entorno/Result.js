@@ -7,5 +7,6 @@ class Result{
         this.cadena_aux="";
         this.tipo="";
         this.inicializado=true;
+        this.lista_dimensiones=[];
     }
 }

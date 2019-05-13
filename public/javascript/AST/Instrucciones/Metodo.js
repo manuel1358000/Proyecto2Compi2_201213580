@@ -7,6 +7,7 @@ class Metodo{
         this.parametros_entrada=[];
         this.retorno=null;
         this.modificadores=[];
+        this.dimensiones=[];
         this.constructor=false;
         this.ambitos="";
         this.codigo=codigo;
@@ -125,7 +126,7 @@ class Metodo{
                 if(this.id=="main"){
                     nombre="main";
                     ambi2=this.ambitos+"/"+this.id;
-                    this.nodos[i].ambitos=ambi;
+                    this.nodos[i].ambitos=ambi2;
                 }else{
                     var complemento="";
                     for(var f=0;f<this.parametros.length;f++){
@@ -135,6 +136,7 @@ class Metodo{
                     this.nodos[i].ambitos=ambi+"/"+this.id+complemento;
                     ambi2=this.nodos[i].ambitos;
                 }
+
                 this.nodos[i].padre=nombre;
                 this.nodos[i].normal=ambi;
                 var result_temp=this.nodos[i].execute(entorno);
@@ -324,6 +326,12 @@ class Metodo{
                 //aca no vamos a recibir ninguna etiqueta ya que solo se ejecuta el if
                 if(result_temp!=null){  
                     result.cadena+=result_temp.cadena;
+                    if(result_temp.lista_dimensiones.length>0){
+                        result.lista_dimensiones=result_temp.lista_dimensiones;
+                        var sim_temp=entorno.obtener(this.ambitos+"_"+this.id);
+                        sim_temp.lista_dimensiones=result.lista_dimensiones;
+                        entorno.actualizar(this.ambitos+"_"+this.id,sim_temp);
+                    }
                 }
             }else if(this.nodos[i] instanceof DeclaracionArreglos){
                 var ambi=this.ambitos;
@@ -391,7 +399,7 @@ class Metodo{
                 var temp="";
                 var sim=entorno.obtener(this.nodos[i].id+"_"+ambi2);
                 if(sim!=null){
-                    if(numerico(sim.tipo)){
+                    //if(numerico(sim.tipo)){
                         if(result_temp!=null){
                             temp=result_temp.cadena;
                             temp+="//empieza la asignacion ARREGLO PRIMITIVO\n";
@@ -468,17 +476,17 @@ class Metodo{
                         }else{
                             alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
                         }
-                    }else{
+                    /*}else{
+                        //este result_temp es el que deberia de ser new objeto();
+                        //o podria ser arreglo[]
+                        //o podria ser metodo();
+                        //podria ser objeto
+                        if(result_temp!=null){
 
-                        //terminar esta parte
-                        /******* 
-                         * 
-                         * 
-                         * 
-                         * 
-                        */
-                        alert("Es una asignacion a un arreglo de objetos FALTA TERMINAR");
-                    }
+                        }else{
+                            alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
+                        }
+                    }*/
                 }else{
                     alert("Error Semantico, Arreglo no existe en el entorno");
                 }
