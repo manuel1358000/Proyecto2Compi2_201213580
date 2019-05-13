@@ -402,6 +402,7 @@ class Metodo{
                     //if(numerico(sim.tipo)){
                         if(result_temp!=null){
                             temp=result_temp.cadena;
+                            alert(temp);
                             temp+="//empieza la asignacion ARREGLO PRIMITIVO\n";
                             //se tiene el valor puntual a asignar result_temp.u_etiqueta
                             var eti_principio=generarEtiqueta();

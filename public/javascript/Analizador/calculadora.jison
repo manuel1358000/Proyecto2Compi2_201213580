@@ -412,7 +412,19 @@ sentencia_objetos: ID '.' sentencia_llamada{$$=new AccesoObjetos($1,$3);}
                                         $$=new AsignacionObjetos($1,$3,$5);
                                     };
 
-sentencia_asignacion_arreglo: ID lista_dd '=' exp{$$=new AsignacionArreglos($1,$4,$2);};
+sentencia_asignacion_arreglo: ID lista_dd '=' exp{
+                                                    $$=new AsignacionArreglos($1,$4,$2);
+                                                }
+                            | ID lista_dd '=' NEW ID '(' ')'{
+                                                            $$=new AsignacionArreglos($1,$5,$2);
+                                                            $$.lista_valores=[];
+                                                            $$.constructor_objeto=true;
+                                                            }
+                            | ID lista_dd '=' NEW ID '(' lista_valores ')'{
+                                                                            $$=new AsignacionArreglos($1,$5,$2);
+                                                                            $$.lista_valores=$7;
+                                                                            $$.constructor_objeto=true;
+                                                                        };
 
 sentencia_arreglo: tipo ID lista_d{
                                     $$=new DeclaracionArreglos($2,$1,[],$3.length,0,0);
