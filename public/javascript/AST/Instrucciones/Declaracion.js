@@ -26,7 +26,11 @@ class Declaracion{
             temp_ambi=this.ambitos;
         }
         var respuesta=null;
+        alert("aqui");
         if(this.inicializado==true){
+            if(this.iniValue instanceof Aritmetica){
+                alert("Asignacion de un objeto a otro ");
+            }
             var temp="";
             respuesta=new Result();
             var eti_h=generarEtiqueta();

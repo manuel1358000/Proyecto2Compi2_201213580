@@ -55,10 +55,7 @@ class AsignacionObjetos{
                                     }else{
                                         temp+=eti4+"="+eti4+"+"+sim_atri.posRel+";\n";
                                     }
-                                    /*var eti2=generarEtiqueta();
-                                    temp+=eti2+"=h;\n";
-                                    temp+="heap[h]="+temp_result.u_etiqueta+";\n";
-                                    temp+="h=h+1;\n";*/
+                                    alert(eti4);
                                     temp+="heap["+eti4+"]="+temp_result.u_etiqueta+";\n";
                                 }
                             }else{
