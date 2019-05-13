@@ -269,7 +269,18 @@ variables: tipo lista_id {
                                             $2[($2.length-1)].lista_valores=[];
                                             $2[($2.length-1)].inicializado=true;
                                             $$=$2;
-                                            };
+                                            }
+         | ID lista_id '='  ID lista_dd{
+                                        for(var i=0;i<$2.length;i++){
+                                            $2[i].tipo=$1; 
+                                        }
+                                        
+                                        $2[($2.length-1)].iniValue=new Aritmetica(null,null,false,$4,null,"ARRAY",0,0);
+                                        $2[($2.length-1)].iniValue.lista_dimensiones=$5;
+                                        $2[($2.length-1)].lista_valores=[];
+                                        $2[($2.length-1)].inicializado=true;
+                                        $$=$2;                                
+                                        };
 
 
 lista_valores: lista_valores ',' exp{

@@ -468,7 +468,7 @@ class Mientras{
                     var ambi=temp_ambi;
                     this.nodos[i].padre=this.padre;
                     this.nodos[i].normal=this.normal;
-                    this.nodos[i].ambitos=temp_ambi;
+                    this.nodos[i].ambitos=this.ambitos;
                     var result_temp=this.nodos[i].execute(local);
                     var temp="";
                     if(result_temp!=null){

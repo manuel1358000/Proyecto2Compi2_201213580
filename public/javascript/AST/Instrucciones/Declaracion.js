@@ -28,70 +28,79 @@ class Declaracion{
         var respuesta=null;
         if(this.inicializado==true){
             if(this.iniValue instanceof Aritmetica){
-                alert("Asignacion de un objeto a otro ");
-            }else{
-                
-            }
-            var temp="";
-            respuesta=new Result();
-            var eti_h=generarEtiqueta();
-            temp+=eti_h+"=h;\n";
-            respuesta.u_etiqueta=eti_h;
-            var sim=entorno.obtener(this.tipo+"_GLOBAL");
-            temp+="h=h+"+sim.tamanio+";\n";
-            var ran;
-            if(this.padre=="main"){
-                ran=this.padre;
-            }else{
-                ran=temp_ambi;    
-            }
-            var sim_temp1=entorno.obtener(ran.replace("/","_"));
-            var eti2=generarEtiqueta();
-            temp+=eti2+"=p+"+sim_temp1.tamanio+";//simulacion de ambito para poder pasarle los valores del this al objeto\n";
-            var eti3=generarEtiqueta();
-            temp+=eti3+"="+eti2+"+1;//esta es la direccion del this de las globales\n";
-            temp+="stack["+eti3+"]="+eti_h+";\n";
-            temp+="//INICIALIZA LAS GLOBALES DEL OBJETO\n";
-            temp+="p=p+"+sim_temp1.tamanio+";\n";
-            temp+="call globales_"+this.tipo+";\n";
-            temp+="p=p-"+sim_temp1.tamanio+";\n";
-            temp+="//FINALIZA LAS GLOBALES DEL OBJETO\n";
-            temp+=eti2+"=p+"+sim_temp1.tamanio+";//simulacion de ambito para poder pasarle los valores del this al objeto\n";
-            var eti3=generarEtiqueta();
-            temp+=eti3+"="+eti2+"+1;//esta es la direccion del this de las globales\n";
-            temp+="stack["+eti3+"]="+eti_h+";\n";
-            temp+="//INICIA LLAMADA AL CONSTRUCTOR DEL OBJETO\n";
-            var nombre_constructor=this.tipo+"_"+this.tipo;
-            if(this.lista_valores.length==0){
-            }else{
-                temp+="\n\n\n\n//INICIA EL SETEO DE PARAMETROS PARA EL CONSTRUCTOR\n";//aqui se empiezan a pasar los parametros que se tienen
-                var temp_indice=2;
-                var eti4=generarEtiqueta();  
-                temp+=eti4+"=p+"+sim_temp1.tamanio+";\n";
-                for(var i=0;i<this.lista_valores.length;i++){
-                    this.lista_valores[i].ambitos=temp_ambi;
-                    this.lista_valores[i].padre=this.padre;
-                    this.lista_valores[i].normal=this.normal;
-                    var result_valor=this.lista_valores[i].getValue(entorno);
-                    var tipo_lista=this.lista_valores[i].getTipe(entorno);
-                    nombre_constructor+="_"+tipo_lista;  
-                    var eti5=generarEtiqueta();
-                    temp+=eti5+"="+eti4+"+"+temp_indice+";\n";
-                    temp+="//valores\n";
-                    temp+=result_valor.cadena;
-                    var eti6=generarEtiqueta();
-                    temp+=eti6+"=h;\n";
-                    temp+="heap[h]="+result_valor.u_etiqueta+";\n";
-                    temp+="h=h+1;\n";
-                    temp+="stack["+eti5+"]="+eti6+";\n";
-                    temp_indice++;
+                respuesta=new Result();
+                this.iniValue.padre=this.padre;
+                this.iniValue.normal=this.normal;
+                this.iniValue.ambitos=temp_ambi;
+                var result_temp=this.iniValue.getValue(entorno);
+                if(result_temp!=null){
+                    respuesta.cadena=result_temp.cadena;
+                    respuesta.u_etiqueta=result_temp.u_etiqueta;
+                }else{
+                    alert("Error Semantico, la asignacion a un objeto fue incorrecta");
                 }
-                temp+="//FINALIZA EL SETEO DE PARAMETROS PARA EL CONSTRUCTOR DEL OBJETO\n\n\n\n\n";
+            }else{
+                var temp="";
+                respuesta=new Result();
+                var eti_h=generarEtiqueta();
+                temp+=eti_h+"=h;\n";
+                respuesta.u_etiqueta=eti_h;
+                var sim=entorno.obtener(this.tipo+"_GLOBAL");
+                temp+="h=h+"+sim.tamanio+";\n";
+                var ran;
+                if(this.padre=="main"){
+                    ran=this.padre;
+                }else{
+                    ran=temp_ambi;    
+                }
+                var sim_temp1=entorno.obtener(ran.replace("/","_"));
+                var eti2=generarEtiqueta();
+                temp+=eti2+"=p+"+sim_temp1.tamanio+";//simulacion de ambito para poder pasarle los valores del this al objeto\n";
+                var eti3=generarEtiqueta();
+                temp+=eti3+"="+eti2+"+1;//esta es la direccion del this de las globales\n";
+                temp+="stack["+eti3+"]="+eti_h+";\n";
+                temp+="//INICIALIZA LAS GLOBALES DEL OBJETO\n";
+                temp+="p=p+"+sim_temp1.tamanio+";\n";
+                temp+="call globales_"+this.tipo+";\n";
+                temp+="p=p-"+sim_temp1.tamanio+";\n";
+                temp+="//FINALIZA LAS GLOBALES DEL OBJETO\n";
+                temp+=eti2+"=p+"+sim_temp1.tamanio+";//simulacion de ambito para poder pasarle los valores del this al objeto\n";
+                var eti3=generarEtiqueta();
+                temp+=eti3+"="+eti2+"+1;//esta es la direccion del this de las globales\n";
+                temp+="stack["+eti3+"]="+eti_h+";\n";
+                temp+="//INICIA LLAMADA AL CONSTRUCTOR DEL OBJETO\n";
+                var nombre_constructor=this.tipo+"_"+this.tipo;
+                if(this.lista_valores.length==0){
+                }else{
+                    temp+="\n\n\n\n//INICIA EL SETEO DE PARAMETROS PARA EL CONSTRUCTOR\n";//aqui se empiezan a pasar los parametros que se tienen
+                    var temp_indice=2;
+                    var eti4=generarEtiqueta();  
+                    temp+=eti4+"=p+"+sim_temp1.tamanio+";\n";
+                    for(var i=0;i<this.lista_valores.length;i++){
+                        this.lista_valores[i].ambitos=temp_ambi;
+                        this.lista_valores[i].padre=this.padre;
+                        this.lista_valores[i].normal=this.normal;
+                        var result_valor=this.lista_valores[i].getValue(entorno);
+                        var tipo_lista=this.lista_valores[i].getTipe(entorno);
+                        nombre_constructor+="_"+tipo_lista;  
+                        var eti5=generarEtiqueta();
+                        temp+=eti5+"="+eti4+"+"+temp_indice+";\n";
+                        temp+="//valores\n";
+                        temp+=result_valor.cadena;
+                        var eti6=generarEtiqueta();
+                        temp+=eti6+"=h;\n";
+                        temp+="heap[h]="+result_valor.u_etiqueta+";\n";
+                        temp+="h=h+1;\n";
+                        temp+="stack["+eti5+"]="+eti6+";\n";
+                        temp_indice++;
+                    }
+                    temp+="//FINALIZA EL SETEO DE PARAMETROS PARA EL CONSTRUCTOR DEL OBJETO\n\n\n\n\n";
+                }   
+                temp+="p=p+"+sim_temp1.tamanio+";\n";
+                temp+="call "+nombre_constructor+";\n";
+                temp+="p=p-"+sim_temp1.tamanio+";\n";
+                respuesta.cadena+=temp;
             }
-            temp+="p=p+"+sim_temp1.tamanio+";\n";
-            temp+="call "+nombre_constructor+";\n";
-            temp+="p=p-"+sim_temp1.tamanio+";\n";
-            respuesta.cadena+=temp;
         }else{
             var tipo=this.getTipe(entorno);
             if(this.iniValue instanceof Aritmetica){

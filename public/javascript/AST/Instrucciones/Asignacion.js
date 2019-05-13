@@ -32,7 +32,7 @@ class Asignacion{
             }
         }else{
             //agregarTablaSimbolos(entorno);
-            var tipo=this.getTipe(entorno);
+            var tipo=this.getTipe(entorno,temp_ambi);
             if(this.iniValue instanceof Aritmetica){
                 this.iniValue.ambitos=temp_ambi;
                 this.iniValue.padre=this.padre;
@@ -95,15 +95,10 @@ class Asignacion{
         }
         return respuesta;
     }
-    getTipe(entorno){
-        var ambiente_local="";
-        if(this.padre=="main"){
-            ambiente_local=this.ambitos;
-        }else{
-            ambiente_local=this.ambitos;
-        }
+    getTipe(entorno,temp_ambi){
         //asignacion de variabless
-        var temp_sim=entorno.obtener(this.id+"_"+ambiente_local);
+        alert(this.id+"_"+temp_ambi);
+        var temp_sim=entorno.obtener(this.id+"_"+temp_ambi);
         if(temp_sim!=null){
             return temp_sim.tipo;
         }else{

@@ -126,7 +126,7 @@ class Metodo{
                 if(this.id=="main"){
                     nombre="main";
                     ambi2=this.ambitos+"/"+this.id;
-                    this.nodos[i].ambitos=ambi2;
+                    this.nodos[i].ambitos=ambi;
                 }else{
                     var complemento="";
                     for(var f=0;f<this.parametros.length;f++){
