@@ -26,7 +26,16 @@ class Llamada_Metodo{
         }else{
             temp_ambi=this.ambitos;
         }
-        if(this.id=="str"){
+        if(this.id=="read_file"){
+            result=new Result();
+            alert("soy read_file");
+        }else if(this.id=="write_file"){
+            result=new Result();
+            alert("soy write_file");
+        }else if(this.id=="graph"){
+            result=new Result();
+            alert("soy graph");
+        }else if(this.id=="str"){
             result=new Result();
             if(this.parametros.length==1){
                 this.parametros[0].ambitos=temp_ambi;
