@@ -246,16 +246,84 @@ function agregarSimbolosDinamo(){
 }
 function verificarStatic(modificadores){
     var bandera=false;
-    for(var i=0;i<modificadores.length;i++){
-        if(modificadores[i]=="STATIC"||modificadores[i]=="static"){
-            bandera=true;
-            break;
+    if(modificadores!=null){
+        for(var i=0;i<modificadores.length;i++){
+            if(modificadores[i]=="STATIC"||modificadores[i]=="static"){
+                bandera=true;
+                break;
+            }
+        }
+    }
+    
+    return bandera;
+}
+function verificarProtected(modificadores){
+    var bandera=false;
+    if(modificadores!=null){
+        for(var i=0;i<modificadores.length;i++){
+            if(modificadores[i]=="PROTECTED"){
+                bandera=true;
+            }
+        }
+    }
+    return bandera;
+}
+function verificarPrivate(modificadores){
+    var bandera=false;
+    if(modificadores!=null){
+        for(var i=0;i<modificadores.length;i++){
+            if(modificadores[i]=="PRIVATE"){
+                bandera=true;
+            }
+        }
+    }
+    return bandera;
+}
+function verificarPublic(modificadores){
+    var bandera=false;
+    if(modificadores!=null){
+        for(var i=0;i<modificadores.length;i++){
+            if(modificadores[i]=="PUBLIC"){
+                bandera=true;
+            }
+        }
+    }
+    return bandera;
+}
+function verificarFinal(modificadores){
+    var bandera=false;
+    if(modificadores!=null){
+        for(var i=0;i<modificadores.length;i++){
+            if(modificadores[i]=="FINAL"){
+                bandera=true;
+            }
         }
     }
     return bandera;
 }
 function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
     if(nodoast instanceof Declaracionclase){
+        if(tipo=="VARIABLE_GLOBAL"){
+            if(verificarPublic(nodoast.modificadores)){
+                alert("Error Semantico, la clase miembro "+nodoast.id+" no puede tener un modificador PUBLIC");
+            }
+        }else{
+            if(verificarProtected(nodoast.modificadores)){
+                alert("Error Semantico, la clase superior "+nodoast.id+" tiene un modificador PROTECTED es un error");
+            }
+            if(verificarPrivate(nodoast.modificadores)){
+                alert("Error Semantico, la clase superior "+nodoast.id+" tiene un modificador PRIVATE es un error");
+            }
+            if(verificarStatic(nodoast.modificadores)){
+                alert("Error Semantico, la clase superior "+nodoast.id+" tiene un modificador STATIC es un error");
+            }
+            if(verificarAbstract(nodoast.modificadores)&&verificarFinal(nodoast.modificadores)){
+                alert("Error Semantico, la clase superior "+nodoast.id+" no puede ser abstrac y final a la vez");
+            }
+
+
+        }
+        
         var id_instancia=nodoast.id+"_GLOBAL";
         var sim=new Simbolo(nodoast.id,Type.CLASE,"GLOBAL",Type.CLASE,-1,nodoast.gettamClase(),0,nodoast.getVisibilidad(),nodoast.modificadores);
         sim.inicializado=false;
@@ -303,6 +371,9 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
         posicion++;
         entorno.agregar(id_instancia,sim);
     }else if(nodoast instanceof Metodo){
+        if(verificarAbstract(nodoast.modificadores)&&verificarPrivate(nodoast.modificadores)){
+            alert("Error Semantico, No se puede implementar un metodo que sea abstract y private");
+        }
         var id_instancia=nodoast.generarNombre(nodoast.id);
         var ambito_local=ambito+"/"+id_instancia;
         if(id_instancia!="main"){
