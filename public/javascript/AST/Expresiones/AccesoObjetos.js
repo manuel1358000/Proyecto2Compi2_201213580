@@ -219,20 +219,24 @@ class AccesoObjetos{
                     }
                     if(sim_obtener!=null){
                         var sim_tipo=entorno.obtener(this.iniValue.valor+"_"+sim_temp.tipo);
-                        var eti1=generarEtiqueta();
-                        raro+=eti1+"=p+"+sim_obtener.tamanio+";\n";
-                        raro+=eti1+"="+eti1+"+1;\n";
-                        var eti2=generarEtiqueta();
-                        raro+=eti2+"=stack["+eti1+"];\n";
-                        raro+=eti2+"="+eti2+"+"+sim_tipo.posRel+";\n";
-                        var eti3=generarEtiqueta();
-                        raro+=eti3+"=heap["+eti2+"];";
-                        result.u_etiqueta=eti3;
-                        result.cadena+=raro;
-                        this.primitivetipe=sim_tipo.tipo;
-                        alert(raro);
+                        if(sim_tipo!=null){
+                            var eti1=generarEtiqueta();
+                            raro+=eti1+"=p+"+sim_obtener.tamanio+";\n";
+                            raro+=eti1+"="+eti1+"+1;\n";
+                            var eti2=generarEtiqueta();
+                            raro+=eti2+"=stack["+eti1+"];\n";
+                            raro+=eti2+"="+eti2+"+"+sim_tipo.posRel+";\n";
+                            var eti3=generarEtiqueta();
+                            raro+=eti3+"=heap["+eti2+"];";
+                            result.u_etiqueta=eti3;
+                            result.cadena+=raro;
+                            this.primitivetipe=sim_tipo.tipo;
+                        }else{
+                            alert("Error Semantico, el objeto a asignar no existe objeto.objeto");
+                        }
                     }else{
                         alert("Error Semantico, no existe el id que se busca en la asigacion de objetos objeto.objeto");
+                        result=null;
                     }
                 }else{
                     alert("Error Semantico, El primer id de objeto.objeto no existe");

@@ -89,7 +89,6 @@ class Aritmetica{
             }
         }else{
             if(this.exp1!=null&&this.exp2!=null){
-            
                 this.exp1.ambitos=this.ambitos;
                 this.exp1.padre=this.padre;
                 this.exp1.normal=this.normal;
@@ -707,11 +706,7 @@ function numero_cadena(){
         temp+="stack["+temp_retorno+"]="+puntero_h1+";\n";
         temp+="";
         respuesta+=temp;
-
-
 }
-
-
 
 function generarTipo(tipo1,tipo2){
     if(!numerico(tipo1)||!numerico(tipo2)){

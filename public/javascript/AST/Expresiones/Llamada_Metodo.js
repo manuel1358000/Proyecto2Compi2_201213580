@@ -26,28 +26,174 @@ class Llamada_Metodo{
         }else{
             temp_ambi=this.ambitos;
         }
-        for(var i=0;i<param_temp.length;i++){
-            if(this.parametros[i].getTipe(entorno)=="ID"){
-                indices.unshift(i);
+        if(this.id=="str"){
+            result=new Result();
+            if(this.parametros.length==1){
+                this.parametros[0].ambitos=temp_ambi;
+                this.parametros[0].normal=this.normal;
+                this.parametros[0].padre=this.padre;
+                var result_temp=this.parametros[0].getValue(entorno);
+                var result_tipo=this.parametros[0].getTipe(entorno);
+                var sim_correr=entorno.obtener(this.padre);
+                if(sim_correr!=null){
+                    if(result_tipo=="CHAR"){
+                        var respuesta=generarString(result_temp.u_etiqueta,true,"CHAR");
+                        temp+=result_temp.cadena;
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=respuesta.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=respuesta.u_etiqueta;
+                        this.primitivetipe="STRING";
+                    }else if(result_tipo=="INTEGER"){
+                        var respuesta=generarString(result_temp.u_etiqueta,true,"INTEGER");
+                        temp+=result_temp.cadena;
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=respuesta.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=respuesta.u_etiqueta;
+                        this.primitivetipe="STRING";
+                    }else if(result_tipo=="DOUBLE"){
+                        var respuesta=generarString(result_temp.u_etiqueta,true,"DOUBLE");
+                        temp+=result_temp.cadena;
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=respuesta.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=respuesta.u_etiqueta;
+                        this.primitivetipe="STRING";
+                    }else if(result_tipo=="STRING"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=result_temp.u_etiqueta;
+                        this.primitivetipe="STRING";
+                    }else{
+                        alert("Error Semantico, el casteo explicito solo puede operar INTEGER, DOUBLE,CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo);
+                    }
+                }else{
+                    alert("Error Semantico, No existe el entorno en la tabla de simbolos casteos");
+                }
+            }else{
+                alert("Error Semantico, el casteo explicito STR solo puede contener un parametro");
+
             }
-            param_temp[i].ambitos=temp_ambi;
-            param_temp[i].padre=this.padre;
-            param_temp[i].normal=this.normal;
-            var result1=param_temp[i].getValue(entorno);
-            var tipo1=param_temp[i].getTipe(entorno);
-            indice_result.push(result1);
-            indice_tipo.push(tipo1);
-            nombre_completo+="_"+tipo1;
-        }
-        //vamos a verificar si existe el metodo en el entorno
-        var sim=entorno.obtener(nombre_completo);
-        if(sim!=null){
-            //if(sim.ambito==this.ambitos){
+        }else if(this.id=="toDouble"){
+            result=new Result();
+            if(this.parametros.length==1){
+                this.parametros[0].ambitos=temp_ambi;
+                this.parametros[0].normal=this.normal;
+                this.parametros[0].padre=this.padre;
+                var result_temp=this.parametros[0].getValue(entorno);
+                var result_tipo=this.parametros[0].getTipe(entorno);
+                var sim_correr=entorno.obtener(this.padre);
+                if(sim_correr!=null){
+                    if(result_tipo=="DOUBLE"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=result_temp.u_etiqueta;
+                        this.primitivetipe="DOUBLE";
+                    }else if(result_tipo=="CHAR"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=result_temp.u_etiqueta;
+                        alert("Entro aqui");
+                        this.primitivetipe="DOUBLE";
+                    }else if(result_tipo=="INTEGER"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=result_temp.u_etiqueta;
+                        this.primitivetipe="DOUBLE";
+                    }else if(result_tipo=="STRING"){
+                        alert("Error Semantico, no se puede realizar la conversison de string a double");
+                        this.primitivetipe="STRING";
+                    }else{
+                        alert("Error Semantico, el casteo explicito solo puede operar INTEGER, DOUBLE,CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo);
+                    }
+                }else{
+                    alert("Error Semantico, No existe el entorno en la tabla de simbolos casteos");
+                }
+            }else{
+                alert("Error Semantico, el casteo explicito STR solo puede contener un parametro");
+
+            }
+        }else if(this.id=="toInt"){
+            result=new Result();
+            if(this.parametros.length==1){
+                this.parametros[0].ambitos=temp_ambi;
+                this.parametros[0].normal=this.normal;
+                this.parametros[0].padre=this.padre;
+                var result_temp=this.parametros[0].getValue(entorno);
+                var result_tipo=this.parametros[0].getTipe(entorno);
+                var sim_correr=entorno.obtener(this.padre);
+                if(sim_correr!=null){
+                    if(result_tipo=="DOUBLE"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        var eti1=generarEtiqueta();
+                        temp+=eti1+"=p+5;\n";
+                        temp+=eti1+"="+eti1+"+1;\n";
+                        temp+="stack["+eti1+"]="+result_temp.u_etiqueta+";\n";
+                        temp+="p=p+5;\n";
+                        temp+="call obtenerInt;\n";
+                        var eti2=generarEtiqueta();
+                        temp+=eti2+"=p+0;\n";
+                        var eti3=generarEtiqueta();
+                        temp+=eti3+"=stack["+eti2+"];\n";
+                        temp+="p=p-5;\n";
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=eti3;
+                        this.primitivetipe="INTEGER";
+                    }else if(result_tipo=="CHAR"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=result_temp.u_etiqueta;
+                        alert("Entro aqui");
+                        this.primitivetipe="INTEGER";
+                    }else if(result_tipo=="INTEGER"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=result_temp.u_etiqueta;
+                        this.primitivetipe="INTEGER";
+                    }else if(result_tipo=="STRING"){
+                        alert("Error Semantico, no se puede realizar la conversison de string a integer");
+                        this.primitivetipe="STRING";
+                    }else{
+                        alert("Error Semantico, el casteo explicito solo puede operar INTEGER, DOUBLE,CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo);
+                    }
+                }else{
+                    alert("Error Semantico, No existe el entorno en la tabla de simbolos casteos");
+                }
+            }else{
+                alert("Error Semantico, el casteo explicito STR solo puede contener un parametro");
+
+            }
+        }else if(this.id=="toChar"){
+            alert("soy el tochar");
+        }else{
+            for(var i=0;i<param_temp.length;i++){
+                if(this.parametros[i].getTipe(entorno)=="ID"){
+                    indices.unshift(i);
+                }
+                param_temp[i].ambitos=temp_ambi;
+                param_temp[i].padre=this.padre;
+                param_temp[i].normal=this.normal;
+                var result1=param_temp[i].getValue(entorno);
+                var tipo1=param_temp[i].getTipe(entorno);
+                indice_result.push(result1);
+                indice_tipo.push(tipo1);
+                nombre_completo+="_"+tipo1;
+            }
+            //vamos a verificar si existe el metodo en el entorno
+            var sim=entorno.obtener(nombre_completo);
+            if(sim!=null){
                 result=new Result();    
                 if(sim.visibilidad=="PRIVATE"||sim.visibilidad=="private"){
                     result.visibilidad="PRIVATE";
-                }
-                
+                }    
                 var sim_temp=entorno.obtener(this.padre);
                 if(sim_temp!=null){
                     var eti1=generarEtiqueta();
@@ -131,16 +277,14 @@ class Llamada_Metodo{
                 }else{
                     alert("Ocurrio un error en el indice padre llamada a metodo");
                 }
-           /* }else{
-                alert("Error Semantico, No existe el metodo en la clase");
-            }*/
-        }else{
-            alert("Error Semantico, No existe el metodo que se esta llamando "+nombre_completo);
-            result=new Result();
-            temp="";
+            }else{
+                alert("Error Semantico, No existe el metodo que se esta llamando "+nombre_completo);
+                result=new Result();
+                temp="";
+            }
+            temp+="\n\n\n";
+            temp+="\n";
         }
-        temp+="\n\n\n";
-        temp+="\n";
         result.cadena+=temp;
         return result;
     }

@@ -40,6 +40,7 @@ class Declaracion{
                     alert("Error Semantico, la asignacion a un objeto fue incorrecta");
                 }
             }else if(this.iniValue instanceof AccesoObjetos){
+                //aqui tendrian que llegar los casteos
                 respuesta=new Result();
                 this.iniValue.padre=this.padre;
                 this.iniValue.normal=this.normal;
@@ -141,15 +142,12 @@ class Declaracion{
                 respuesta=this.iniValue.getValue(entorno);
                 respuesta.tipo=this.iniValue.getTipe(entorno);
             }else if(this.iniValue instanceof Llamada_Metodo){
-                if(this.padre=="main"){
-                    this.iniValue.ambitos="main";
-                }else{
-                    this.iniValue.ambitos=temp_ambi;
-                }
+                this.iniValue.ambitos=this.ambitos;
                 this.iniValue.padre=this.padre;
                 this.iniValue.normal=this.normal;
                 respuesta=this.iniValue.getValue(entorno);
                 respuesta.tipo=this.iniValue.getTipe(entorno);
+                alert(respuesta.tipo);
             }else if(this.iniValue instanceof AsignacionObjetos){
                 this.iniValue.ambitos=temp_ambi;
                 this.iniValue.padre=this.padre;
@@ -191,7 +189,7 @@ class Declaracion{
             }else{
                 if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"||tipo=="INTEGER"&&respuesta.tipo=="CHAR"||tipo=="DOUBLE"&&respuesta.tipo=="CHAR"){
                 }else{
-                    alert("Error semantico, Declaracion erronea por tipos");
+                    alert("Error semantico, Declaracion erronea por tipos "+tipo+"_"+respuesta.tipo);
                     respuesta=null;
                 }
             }
