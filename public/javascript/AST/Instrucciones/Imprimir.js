@@ -147,6 +147,8 @@ class Imprimir{
             }else{
                 alert("VERIFICAR ESTO "+result.tipo);
                 alert("Error semantico, no esta inicializada la variable que se debe de imprimir o es un objeto");
+                var errores_1=new Errores("Semantico","error no esta inicializada la variable que se debe de imprimir o es un objeto",0,0);
+                            lista_errores.push(errores_1);
             }
         }
         

@@ -65,6 +65,8 @@ class DeclaracionArreglos{
                         }
                         if(bandera){
                             alert("Error Semantico, El tamanio de la dimension no existe o no es de tipo integer, declaracion arreglo sera null");
+                            var errores_1=new Errores("Semantico","El tamanio de la dimension no existe o no es de tipo integer, declaracion arreglo sera null",0,0);
+                            lista_errores.push(errores_1);
                             this.inicializado=false;
                         }else{
                             var eti5=generarEtiqueta();
@@ -86,10 +88,14 @@ class DeclaracionArreglos{
                         }
                     }else{
                         alert("Error Semantico, no coinciden los tama;os de dimensiones en la declaracion de arreglos");
+                        var errores_1=new Errores("Semantico","no coinciden los tamanios de dimensiones en la declaracion de arreglos",0,0);
+                            lista_errores.push(errores_1);
                         bandera=true;
                     }
                 }else{
                     alert("Error Semantico, La declaracion del array de objetos tiene tipos diferentes");
+                    var errores_1=new Errores("Semantico","la declaracion de array de objetos tiene tipos diferentes",0,0);
+                            lista_errores.push(errores_1);
                     bandera=true;
                 }
             }else{
@@ -139,6 +145,8 @@ class DeclaracionArreglos{
                             }
                             if(bandera){
                                 alert("Error Semantico, El tamanio de la dimension no existe o no es de tipo integer, declaracion arreglo sera null");
+                                var errores_1=new Errores("Semantico","el tamanio de la dimension no existe o no es de tipo integer, declaracion arreglo sera null",0,0);
+                            lista_errores.push(errores_1);
                                 this.inicializado=false;
                             }else{
                                 var eti5=generarEtiqueta();
@@ -164,10 +172,14 @@ class DeclaracionArreglos{
                             }
                         }else{
                             alert("Error Semantico, no coinciden los tama;os de dimensiones en la declaracion de arreglos");
+                            var errores_1=new Errores("Semantico","no coinciden los tamanio de dimensiones en la declaracion de arreglos",0,0);
+                            lista_errores.push(errores_1);
                             bandera=true;
                         }
                     }else{
                         alert("Error Semantico, La declaracion del array tiene tipos diferentes");
+                        var errores_1=new Errores("Semantico","La declaracion del array tiene tipos diferentes",0,0);
+                            lista_errores.push(errores_1);
                         bandera=true;
                     }
                 }else{
@@ -188,14 +200,20 @@ class DeclaracionArreglos{
                                 this.lista_dimensiones=sim_temp.lista_dimensiones;
                             }else{
                                 alert("Error semantico, los tipos son diferentes en la declaracion arreglo");
+                                var errores_1=new Errores("Semantico","Error Semantico, los tipos son diferentes en la declaracion arreglo",0,0);
+                            lista_errores.push(errores_1);
                                 bandera=true;
                             }
                         }else{
                             alert("Error Semantico, no existe el id que se quiere asignar al arreglo");
+                            var errores_1=new Errores("Semantico","no existe el id que se quiere asignar al arreglo",0,0);
+                            lista_errores.push(errores_1);
                             bandera=true;
                         }
                     }else{
                         alert("Error Semantico, no existe el id que se quiere asignar al arreglo");
+                        var errores_1=new Errores("Semantico","no existe el id que se quiere asignar al arreglo",0,0);
+                            lista_errores.push(errores_1);
                         bandera=true;
                     }
                 }
@@ -232,6 +250,8 @@ class DeclaracionArreglos{
                 }else{
                     this.modificadores.splice(i,1);
                     alert("Solo puede existir un elemento de visibilidad");
+                    var errores_1=new Errores("Semantico","Solo puede existir un elemento de visibilidad",0,0);
+                            lista_errores.push(errores_1);
                 }
             }
         }

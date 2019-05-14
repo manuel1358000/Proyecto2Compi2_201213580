@@ -28,6 +28,8 @@ class Este{
                         if(tipo_ini=="ID"){
                             if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
                                 alert("Error Semantico, La variable final "+sim.nombre+" ya esta inicializada");
+                                var errores_1=new Errores("Semantico","error la variable final "+sim.nombre+" ya esta inicializada",0,0);
+                            lista_errores.push(errores_1);
                             }else{
                                 //aqui tambien se tiene que hacer la validacion
                                 var sim_temp=entorno.obtener(this.iniValue.valor+"_"+this.ambitos);
@@ -53,9 +55,13 @@ class Este{
                                         entorno.actualizar(this.nodos[0].valor+"_"+separado[0],sim);
                                     }else{
                                         alert("Este 0 Error Semantico, no son del mismo tipo las variables");
+                                        var errores_1=new Errores("Semantico","no son del mismo tipo de las variables",0,0);
+                            lista_errores.push(errores_1);
                                     }
                                 }else{
                                     alert("Este 1Error Semantico, La variable a asignar no existe en el entorno "+this.ambitos);
+                                    var errores_1=new Errores("Semantico","la variable a asignar no existe en el entorno "+this.ambitos,0,0);
+                            lista_errores.push(errores_1);
                                 }
                             }
                         }else{
@@ -63,6 +69,8 @@ class Este{
                             if(tipo_ini==sim.tipo){
                                 if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
                                     alert("Error Semantico, La variable final "+sim.nombre+" ya esta inicializada");
+                                    var errores_1=new Errores("Semantico","la variable final "+sim.nombre+" ya esta inicializada",0,0);
+                            lista_errores.push(errores_1);
                                 }else{
                                     temp+=result_ini.cadena;
                                     var eti1=generarEtiqueta();
@@ -85,10 +93,14 @@ class Este{
                                 
                             }else{
                                 alert("Este 3 Error Semantico, No se puede realizar la asignacion, son de tipos diferentes");
+                                var errores_1=new Errores("Semantico","No se puede realizar la asignacion, son de tipos diferentes",0,0);
+                            lista_errores.push(errores_1);
                             }
                         }
                     }else{
                         alert("Este 4 Error Semantico, La variable global "+this.nodos[0].valor+" no existe");
+                        var errores_1=new Errores("Semantico","la variable global "+this.nodos[0].valor+" no existe",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else{
                     var sim=entorno.obtener(this.nodos[0].valor+"_"+this.normal);
@@ -112,9 +124,13 @@ class Este{
                             this.tipo=sim.tipo;
                         }else{
                             alert("Este 5 Error Semantico, La variable global "+this.nodos[0].valor+" no esta inicializada");
+                            var errores_1=new Errores("Semantico","la variable global "+this.nodos[0].valor+" no esta inicializada",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else{  
                         console.log("Este 6 No existe el id que se busca en la clase");
+                        var errores_1=new Errores("Semantico","no existe el id que se busca en la clase",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }
             }

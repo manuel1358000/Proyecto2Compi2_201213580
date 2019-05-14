@@ -190,6 +190,8 @@ class Declaracion{
                 if(tipo==respuesta.tipo||tipo=="DOUBLE"&&respuesta.tipo=="INTEGER"||tipo=="INTEGER"&&respuesta.tipo=="CHAR"||tipo=="DOUBLE"&&respuesta.tipo=="CHAR"){
                 }else{
                     alert("Error semantico, Declaracion erronea por tipos "+tipo+"_"+respuesta.tipo);
+                    var errores_1=new Errores("Semantico","declaracion erronea por tipos"+tipo+"_"+respuesta.tipo,0,0);
+                            lista_errores.push(errores_1);
                     respuesta=null;
                 }
             }
@@ -211,6 +213,8 @@ class Declaracion{
                 }else{
                     this.modificadores.splice(i,1);
                     alert("Solo puede existir un elemento de visibilidad");
+                    var errores_1=new Errores("Semantico","solo puede existir un elemento de visibilidad",0,0);
+                            lista_errores.push(errores_1);
                 }
             }
         }
