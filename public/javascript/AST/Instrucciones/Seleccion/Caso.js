@@ -254,7 +254,7 @@ class Caso{
                 var result_temp=this.nodos[i].execute(local);
                 var sim=local.obtener(this.nodos[i].id+"_"+ambi);
                 if(sim!=null){
-                    if(numerico(sim.tipo)){
+                   // if(numerico(sim.tipo)){
                         if(result_temp!=null){
                             temp+=result_temp.cadena;
                             temp+="//empieza la asignacion ARREGLO PRIMITIVO\n";
@@ -332,17 +332,11 @@ class Caso{
                         }else{
                             alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
                         }
-                    }else{
+                   /* }else{
 
-                        //terminar esta parte
-                        /******* 
-                         * 
-                         * 
-                         * 
-                         * 
-                        */
+                    
                         alert("Es una asignacion a un arreglo de objetos FALTA TERMINAR");
-                    }
+                    }*/
                 }else{
                     alert("Error Semantico, Arreglo no existe en el entorno");
                 }

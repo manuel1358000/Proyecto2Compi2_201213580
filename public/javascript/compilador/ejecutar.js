@@ -83,11 +83,13 @@ function btn_3dcompilar(){
     agregarStack();
 }
 function btn_compilar(){
+    scanDataSimbolos();
     conteo=0;
     codigo=0;
     //SECCION DONDE SE INICIALIZAN LOS VALORES DE DYNAMO
     conditionalDeleteAST();  
     scanData2();
+    
     indice_errores=0;
     cont_e=-1;
     pool_salida=[];
@@ -138,6 +140,7 @@ function btn_compilar(){
     }
     agregar_contenido(codigo3d,indice2);
     //graficarArbol(ast);
+    agregarSimbolosDinamo();
 }
 
 
@@ -231,6 +234,7 @@ function agregarTablaSimbolos(entorno){
     for(var e=entorno;e!=null;e=e.padre){
         for(var clave in e.tabla.valores) {
             if(typeof e.tabla.valores[clave]!="undefined"){
+                lista_tabla_simbolo.push(e.tabla.valores[clave]);
                 fila+="<tr>";
                 fila+="<td>"+clave+"</td>";
                 fila+="<td>"+e.tabla.valores[clave].nombre+"</td>";

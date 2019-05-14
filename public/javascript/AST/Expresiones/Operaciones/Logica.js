@@ -40,6 +40,8 @@ class Logica{
                     this.tipoprimitivo=tipo1;
                 }else{
                     alert("Error Semantico, La operacion unaria ! solo puede ser aplicada a boolean");
+                    var errores_1=new Errores("Semantico","La operacion unaria ! solo puede ser aplicada a boolean",0,0);
+                            lista_errores.push(errores_1);
                 }
                 return result;
             }else{  
@@ -146,9 +148,13 @@ class Logica{
                         return result;
                     }else{
                         console.log("Error semantico Logicas: Operador no soportado para operaciones logicas");
+                        var errores_1=new Errores("Semantico","Operador no soportado para operaciones logicas",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else{
                     console.log("Error semantico Logicas: No se pueden operar los tipos tipo1: "+tipo1+" tipo2:"+tipo2);
+                    var errores_1=new Errores("Semantico","No se pueden operar los tipos tipo1: "+tipo1+"tipo2: "+tipo2,0,0);
+                            lista_errores.push(errores_1);
                 }
             }else{
                 return this.valor;

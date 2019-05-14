@@ -230,3 +230,135 @@ function scanDataAST() {
         }
     }
 }
+
+
+function createReporteSimbolos() {
+    var params = {
+        TableName : "Reporte_Tabla_201213580",
+        KeySchema: [
+            {
+                AttributeName: "ID",
+                KeyType: "HASH"
+            }
+          ],
+        AttributeDefinitions: [
+            {
+                AttributeName: "ID",
+                AttributeType: "N"
+            }
+          ],
+        ProvisionedThroughput: {       
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1
+        }
+    };
+
+    dynamodb.createTable(params, function(err, data) {
+        if (err) {
+            alert("Unable to create table: " + "\n" + JSON.stringify(err, undefined, 5));
+        } else {
+            alert("Created table: " + "\n" + JSON.stringify(data, undefined, 5));
+        }
+    });
+}
+function scanDataSimbolos() {
+    var params = {
+        TableName: "Reporte_Tabla_201213580",
+        ProjectionExpression: "#id",
+        ExpressionAttributeNames: {
+            "#id": "ID",
+        },
+    };
+    docClient.scan(params, onScan);
+    function onScan(err, data) {
+        if (err) {
+            alert("Error no se pudo consultar la tabla Reporte Errores 201213580: " + "\n" + JSON.stringify(err, undefined, 2));
+        } else {
+            // Print all the movies
+            alert("Reinicio Reportes Exitoso");
+            
+            data.Items.forEach(function(tabla) {
+                conditionalDeleteSimbolos(tabla.ID);
+            });         
+        }
+    }
+}
+function conditionalDeleteSimbolos(id) {
+    var table = "Reporte_Tabla_201213580";
+    var params = {
+        TableName:table,
+        Key:{
+            "ID":id
+        },
+    };
+
+    docClient.delete(params, function(err, data) {
+        if (err) {
+            alert("Reinicio Falido: " + "\n" + JSON.stringify(err, undefined, 2));
+        } else {
+            console.log("Reinicio exitoso");
+        }
+    });
+}
+function createElementoSimbolos(id,nombre,tipo,ambito,rol,posrel,tamanio,dimensiones,visibilidad,modificadores,inicializado,extiende) {
+    var params = {
+        TableName :"Reporte_Tabla_201213580",
+        Item:{
+            "ID":id,
+            "NOMBRE": nombre,
+            "TIPO":tipo,
+            "AMBITO":ambito,
+            "ROL":rol,
+            "POSREL":posrel,
+            "TAMANIO":tamanio,
+            "DIMENSIONES":"-",
+            "VISIBILIDAD":visibilidad,
+            "MODIFICADORES":modificadores,
+            "INICIALIZADO":inicializado,
+            "EXTIENDE":"-"
+        }
+    };
+    docClient.put(params, function(err, data) {
+        if (err) {
+            alert("el elemento no se pudo enviar a dynamo" + "\n" + JSON.stringify(err, undefined, 2));
+        } else {
+            console.log("Elemento Tabla Enviado a Dynamo" + "\n" + JSON.stringify(data, undefined, 2));
+        }
+    });
+}
+function scanDataTabla2() {
+    var params = {
+        TableName: "Reporte_Tabla_201213580",
+        ProjectionExpression: "#id,NOMBRE,TIPO,AMBITO,ROL,POSREL,TAMANIO,DIMENSIONES,VISIBILIDAD,MODIFICADORES,INICIALIZADO,EXTIENDE",
+        ExpressionAttributeNames: {
+            "#id": "ID",
+        },
+    };
+    docClient.scan(params, onScan);
+    function onScan(err, data) {
+        if (err) {
+            alert("No se pueden leer los elementos de la tabla: " + "\n" + JSON.stringify(err, undefined, 2));
+        } else {
+            var tabla=document.getElementById("cuerpo_tabla");
+            tabla.innerHTML = "";
+            var fila="";
+            data.Items.forEach(function(tabla) {
+                fila+="<tr>";
+                fila+="<td>"+tabla.ID+"</td>";
+                fila+="<td>"+tabla.NOMBRE+"</td>";
+                fila+="<td>"+tabla.TIPO+"</td>";
+                fila+="<td>"+tabla.AMBITO+"</td>";
+                fila+="<td>"+tabla.ROL+"</td>";
+                fila+="<td>"+tabla.POSREL+"</td>";
+                fila+="<td>"+tabla.TAMANIO+"</td>";
+                fila+="<td>"+tabla.DIMENSIONES+"</td>";
+                fila+="<td>"+tabla.VISIBILIDAD+"</td>";
+                fila+="<td>"+tabla.MODIFICADORES+"</td>";
+                fila+="<td>"+tabla.INICIALIZADO+"</td>"
+                fila+="<td>"+tabla.EXTIENDE+"</td>";
+                fila+="</tr>";
+            });
+            tabla.insertAdjacentHTML('beforeend',fila);           
+        }
+    }
+}

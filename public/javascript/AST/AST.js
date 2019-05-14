@@ -184,14 +184,23 @@ function ejecutar(nodoast,entorno){
     //agregarTablaSimbolos(entorno);
     //------------------------- EMPIEZA TERCERA PASADA, SE REALIZA LA GENERACION DE CODIGO INTERMEDIO
     //vamos a recorrer la tabla de simbolo en busca del metodo main
+    var bandera=false;
     for(var i=0;i<nodoast.length;i++){
         var clases=nodoast[i];
         if(clases instanceof Declaracionclase){
             for(var a=0;a<clases.nodos.length;a++){
                 var metodo=clases.nodos[a];
+                if(metodo.id==clases.id){
+                    bandera=true;
+                    break;
+                }
+            }
+            if(bandera==false){
+                nodoast[i].nodos.push(new Metodo(clases.id,"VOID",[],[]));
             }
         }
     }
+
     for(var i=0;i<nodoast.length;i++){
         if(nodoast[i] instanceof Declaracionclase){
             respuesta+=nodoast[i].execute(entorno);
@@ -203,7 +212,38 @@ function ejecutar(nodoast,entorno){
     graficarArbol(nodoast);
     return respuesta;
 }
-
+function agregarSimbolosDinamo(){
+    for(var i=0;i<lista_tabla_simbolo.length;i++){
+        var modificadores="-";
+        for(var f=0;f<lista_tabla_simbolo[i].modificadores.length;f++){
+            modificadores+=lista_tabla_simbolo[i].modificadores[f]+"-";
+        }
+        if(lista_tabla_simbolo[i].nombre==""||lista_tabla_simbolo[i].nombre==null){
+            lista_tabla_simbolo[i].nombre=="-";
+        }else if(lista_tabla_simbolo[i].tipo==""||lista_tabla_simbolo[i].tipo==null){
+            lista_tabla_simbolo[i].tipo="-";
+        }else if(lista_tabla_simbolo[i].ambito==""||lista_tabla_simbolo[i].ambito==null){
+            lista_tabla_simbolo[i].ambito="-";
+        }else if(lista_tabla_simbolo[i].rol==""||lista_tabla_simbolo[i].rol==null){
+            lista_tabla_simbolo[i].rol="-";
+        }else if(lista_tabla_simbolo[i].posRel==""||lista_tabla_simbolo[i].posRel==null){
+            lista_tabla_simbolo[i].posRel="-";
+        }else if(lista_tabla_simbolo[i].tamanio==""||lista_tabla_simbolo[i].tamanio==null){
+            lista_tabla_simbolo[i].tamanio="-";
+        }else if(lista_tabla_simbolo[i].dim==""||lista_tabla_simbolo[i].dim==null){
+            lista_tabla_simbolo[i].dimensiones="-";
+        }else if(lista_tabla_simbolo[i].visibilidad==""||lista_tabla_simbolo[i].visibilidad==null){
+            lista_tabla_simbolo[i].visibilidad="-";
+        }else if(modificadores==""||modificadores==null){
+            modificadores="-";
+        }else if(lista_tabla_simbolo[i].inicializado==""||lista_tabla_simbolo[i].inicializado==null){
+            lista_tabla_simbolo[i].inicializado="-";
+        }else if(lista_tabla_simbolo[i].extiende==""||lista_tabla_simbolo[i].extiende==null){
+            lista_tabla_simbolo[i].extiende="-";
+        }
+        createElementoSimbolos(i,lista_tabla_simbolo[i].nombre,lista_tabla_simbolo[i].tipo,lista_tabla_simbolo[i].ambito,lista_tabla_simbolo[i].rol,lista_tabla_simbolo[i].posRel,lista_tabla_simbolo[i].tamanio,lista_tabla_simbolo[i].dim,lista_tabla_simbolo[i].visibilidad,modificadores,lista_tabla_simbolo[i].inicializado,"-");
+    }
+}
 function verificarStatic(modificadores){
     var bandera=false;
     for(var i=0;i<modificadores.length;i++){

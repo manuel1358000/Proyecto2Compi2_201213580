@@ -262,7 +262,9 @@ class Aritmetica{
                             result.valor=result.u_etiqueta;
                             return result;
                         }else{
-                            console.log("Error semantico: Operacion no soportada");
+                            alert("Error Semantico, operacion no soportada");
+                            var errores_1=new Errores("Semantico","Error semantico: Operacion no soportada",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else if(this.operador=="^"){
                         if(tipo=="INTEGER"){
@@ -323,7 +325,9 @@ class Aritmetica{
                             result.valor=result.u_etiqueta;
                             return result;
                         }else{
-                            console.log("Error semantico: Operacion no soportada");
+                            alert("Error semantico: Operacion no soportada");
+                            var errores_1=new Errores("Semantico","Error Semantico, Operacion no soportada",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else if(this.operador=="%"){
                         if(tipo=="INTEGER"){
@@ -351,13 +355,19 @@ class Aritmetica{
                             result.valor=result.u_etiqueta;
                             return result;
                         }else{
-                            console.log("Error semantico: Operacion no soportada");
+                            alert("Error semantico: Operacion no soportada");
+                            var errores_1=new Errores("Semantico","Operacion no soportada aritmeticas",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else{
                         console.log("Error semantico: Operador no soportado op: "+this.operador);
+                        var errores_1=new Errores("Semantico"," Operador no soportado "+this.operador,0,0);
+                        lista_errores.push(errores_1);
                     }
                 }else{
                     console.log("Error semantico Aritmetica: no se pueden operar los tipos t1:"+tipo1+" t2: "+tipo2);
+                    var errores_1=new Errores("Semantico","No se pueden operar los tipos t1:"+tipo1+" t2: "+tipo2,0,0);
+                    lista_errores.push(errores_1);
                 }
             }else{
                 //es una valor implicito
@@ -375,6 +385,8 @@ class Aritmetica{
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     if(sim==null){
                         alert("Error Semantico, No existe el id que se busca "+this.valor+"_"+this.ambitos);
+                        var errores_1=new Errores("Semantico","No existe el id que se busca "+this.valor+"_"+this.ambitos,0,0);
+                            lista_errores.push(errores_1);
                     }else{
                         var temp1=generarEtiqueta();
                         var simulado=generarEtiqueta();
@@ -475,6 +487,8 @@ class Aritmetica{
                                 }
                             }else{
                                 alert("Error Semantico, las dimensiones no coindicen");
+                                var errores_1=new Errores("Semantico","Las dimensiones no coinciden",0,0);
+                                lista_errores.push(errores_1);
                             }
                         /*}else{
 
@@ -483,6 +497,8 @@ class Aritmetica{
                         }*/
                     }else{
                         alert("Error Semantico, No existe el arreglo que se busca");
+                        var errores_1=new Errores("Semantico","No existe el arreglo que se busca",0,0);
+                            lista_errores.push(errores_1);
                     }
                     return result;
                 }else{

@@ -120,6 +120,21 @@ class Declaracionclase{
                 var temp="";
                 temp+="//ESTA PARTE ESTA PENDIENTE\n";
                 variables_globales+=temp;
+            }else if(nodo instanceof Declaracionclase){
+                var temp="";
+                var bandera=false;
+                for(var a=0;a<nodo.nodos.length;a++){
+                    var metodo=nodo.nodos[a];
+                    if(metodo.id==nodo.id){
+                        bandera=true;
+                        break;
+                    }
+                }
+                if(bandera==false){
+                    nodo.nodos.push(new Metodo(nodo.id,"VOID",[],[]));
+                }
+                temp+=nodo.execute(entorno);
+                respuesta+=temp;
             }else{
                 alert("Es un valor cualquiera");
             }

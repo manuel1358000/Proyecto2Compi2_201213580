@@ -50,6 +50,8 @@ class Relacional{
                         result.cadena+="if("+result1.u_etiqueta+">"+result2.u_etiqueta+") goto "+salto_v+";\n";
                     }else{
                         console.log("Error semantico: Operacion no soportada");
+                        var errores_1=new Errores("Semantico","Operacion no soportada para >",0,0);
+                            lista_errores.push(errores_1);
                     }
                     result.cadena+="goto "+salto_f+";\n";
                     result.cadena+=salto_v+": \n"+eti_aux+"=1;\n goto "+salto_s+";\n";
@@ -73,6 +75,8 @@ class Relacional{
                         result.cadena+="if("+result1.u_etiqueta+"<"+result2.u_etiqueta+") goto "+salto_v+";\n";
                     }else{
                         console.log("Error semantico: Operacion no soportada");
+                        var errores_1=new Errores("Semantico","Operacion no soportada para <",0,0);
+                            lista_errores.push(errores_1);
                     }
                     result.cadena+="goto "+salto_f+";\n";
                     result.cadena+=salto_v+": \n"+eti_aux+"=1;\n goto "+salto_s+";\n";
@@ -95,7 +99,9 @@ class Relacional{
                     }else if(tipo=="CHAR"){
                         result.cadena+="if("+result1.u_etiqueta+">="+result2.u_etiqueta+") goto "+salto_v+";\n";
                     }else{
-
+                        alert("Error Semantico: Operacion no soportada para >=");
+                        var errores_1=new Errores("Semantico","Operacion no soportada para >=",0,0);
+                            lista_errores.push(errores_1);
                     }
                     result.cadena+="goto "+salto_f+";\n";
                     result.cadena+=salto_v+": \n"+eti_aux+"=1;\n goto "+salto_s+";\n";
@@ -119,6 +125,8 @@ class Relacional{
                         result.cadena+="if("+result1.u_etiqueta+"<="+result2.u_etiqueta+") goto "+salto_v+";\n";
                     }else{
                         console.log("Error semantico: Operacion no soportada");
+                        var errores_1=new Errores("Semantico","Operacion no soportada para <=",0,0);
+                            lista_errores.push(errores_1);
                     }
                     result.cadena+="goto "+salto_f+";\n";
                     result.cadena+=salto_v+": \n"+eti_aux+"=1;\n goto "+salto_s+";\n";
@@ -211,6 +219,8 @@ class Relacional{
                         return result;
                     }else{
                         console.log("Error semantico: Operacion no soportada");
+                        var errores_1=new Errores("Semantico","Operacion no soportada ==",0,0);
+                            lista_errores.push(errores_1);
                     }
                     
                 }else if(this.operador=="!="){
@@ -297,12 +307,18 @@ class Relacional{
                         return result;
                     }else{
                         console.log("Error semantico: Operacion no soportada");
+                        var errores_1=new Errores("Semantico","Operacion no soportada para !=",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else{
                     console.log("Error semantico: Operador no soportado op: "+this.operador);
+                    var errores_1=new Errores("Semantico","Operador no soportado "+this.operador,0,0);
+                            lista_errores.push(errores_1);
                 }
             }else{
                 console.log("Error semantico: no se pueden operar los tipos t1:"+tipo1+" t2: "+tipo2);
+                var errores_1=new Errores("Semantico","no se pueden operar los tipos t1:"+tipo1+" t2:"+tipo2,0,0);
+                            lista_errores.push(errores_1);
             }   
         }else{  
             return this.valor;

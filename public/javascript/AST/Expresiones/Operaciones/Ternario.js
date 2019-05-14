@@ -46,6 +46,8 @@ class Ternario{
             
         }else{
             alert("Error Semantico, La condicion del ternario tiene que ser BOOLEAN");
+            var errores_1=new Errores("Semantico","La condicion del ternario tiene que ser boolean",0,0);
+                            lista_errores.push(errores_1);
         } 
         result.cadena+=temp;
         return result;  

@@ -60,9 +60,13 @@ class Mientras{
                                         local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                                     }else{
                                         alert("Error Semantico, En la declaracion");
+                                        var errores_1=new Errores("Semantico","error en la declaracion mientras",0,0);
+                                        lista_errores.push(errores_1);
                                     }
                                 }else{
-                                    alert("Error Semantico, OBJETO");
+                                    alert("Error Semantico, OBJETO mientras");
+                                    var errores_1=new Errores("Semantico","error en objeto mientras",0,0);
+                            lista_errores.push(errores_1);
                                 }
                             }else{
                                 if(result_temp!=null){
@@ -135,6 +139,8 @@ class Mientras{
                                     temp+="//fin asignacion variable local\n";
                                     if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
                                         alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
+                                        var errores_1=new Errores("Semantico","error la variable final "+sim.nombre+"ya ha sido inicializada",0,0);
+                            lista_errores.push(errores_1);
                                         temp="";
                                     }else{
                                         sim.inicializado=true;
@@ -171,6 +177,8 @@ class Mientras{
                                 temp+="//FINALIZA DETENER-------------------------\n";
                             }else{
                                 alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
+                                var errores_1=new Errores("Semantico","sentencia breake no corresponde a esta seccion de codigo",0,0);
+                            lista_errores.push(errores_1);
                             }
                         }else if(this.nodos[i] instanceof Mientras){
                             var ambi=temp_ambi;
@@ -193,6 +201,8 @@ class Mientras{
                                 }   
                             }else{
                                 alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
+                                var errores_1=new Errores("Semantico","operacion no permitirda, unicamente incremento y decremento",0,0);
+                            lista_errores.push(errores_1);
                             }
                         }else if(this.nodos[i] instanceof Para){
                             var ambi=temp_ambi;
@@ -250,6 +260,8 @@ class Mientras{
                                 local.actualizar(this.nodos[i].id+"_"+ambi,sim);
                             }else{
                                 alert("Error Semantico, en la operacion declaracion arreglos");
+                                var errores_1=new Errores("Semantico","error en la operacion declaracion arreglos",0,0);
+                            lista_errores.push(errores_1);
                             }        
                         }else if(this.nodos[i] instanceof AsignacionArreglos){
                             var ambi=temp_ambi;
@@ -260,7 +272,7 @@ class Mientras{
                             var temp="";
                             var sim=local.obtener(this.nodos[i].id+"_"+ambi);
                             if(sim!=null){
-                                if(numerico(sim.tipo)){
+                                //if(numerico(sim.tipo)){
                                     if(result_temp!=null){
                                         temp=result_temp.cadena;
                                         temp+="//empieza la asignacion ARREGLO PRIMITIVO\n";
@@ -332,25 +344,22 @@ class Mientras{
                                             }
                                         }else{
                                             alert("Error Semantico, Numero de dimensiones incorrectas para la asignacion del valor al arreglo primitivo");
+                                            var errores_1=new Errores("Semantico","numero de dimensiones incorrectas para la asignacion del valor al arreglo primitivo",0,0);
+                                            lista_errores.push(errores_1);
                                             temp="//empieza la asignacion ARREGLO PRIMITIVO\n";
                                         }
                                         temp+="//fin asignacion ARREGLO PRIMITIVO\n";
                                     }else{
                                         alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
+                                        var errores_1=new Errores("Semantico","error en la expresion a asignar a posicion de arreglo",0,0);
+                                        lista_errores.push(errores_1);
                                     }
-                                }else{
-            
-                                    //terminar esta parte
-                                    /******* 
-                                     * 
-                                     * 
-                                     * 
-                                     * 
-                                    */
-                                    alert("Es una asignacion a un arreglo de objetos FALTA TERMINAR");
-                                }
+                                /*}else{
+                                }*/
                             }else{
                                 alert("Error Semantico, Arreglo no existe en el entorno");
+                                var errores_1=new Errores("Semantico","error arreglo no existe en el entorno",0,0);
+                            lista_errores.push(errores_1);
                             }
                         }else if(this.nodos[i] instanceof AccesoObjetos){
                             var ambi=temp_ambi;
@@ -381,9 +390,13 @@ class Mientras{
                     temp+="goto "+etiinicio+";\n";
                 }else{
                     alert("Error Semantico, condicion del while debe de ser boolean");
+                    var errores_1=new Errores("Semantico","error condicion del while debe de ser boolean",0,0);
+                            lista_errores.push(errores_1);
                 }
             }else{
                 alert("Error Semantico, condicion del while no valida");
+                var errores_1=new Errores("Semantico","condicion del white no valida",0,0);
+                            lista_errores.push(errores_1);
             }
 
         }else{
@@ -415,9 +428,13 @@ class Mientras{
                                 local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
                             }else{
                                 alert("Error Semantico, En la declaracion");
+                                var errores_1=new Errores("Semantico","error en la declaracion",0,0);
+                            lista_errores.push(errores_1);
                             }
                         }else{
                             alert("Error Semantico, OBJETO");
+                            var errores_1=new Errores("Semantico","error objeto",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else{
                         if(result_temp!=null){
@@ -490,6 +507,8 @@ class Mientras{
                             temp+="//fin asignacion variable local\n";
                             if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
                                 alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
+                                var errores_1=new Errores("Semantico","la variable final "+sim.nombre+" ya ha sido inicializada",0,0);
+                            lista_errores.push(errores_1);
                                 temp="";
                             }else{
                                 sim.inicializado=true;
@@ -526,6 +545,8 @@ class Mientras{
                         temp+="//FINALIZA DETENER-------------------------\n";
                     }else{
                         alert("Error Semantico, la sentencia breake no corresponde a esta seccion de codigo");
+                        var errores_1=new Errores("Semantico","la sentencia breake no corresponde a esta seccion de codigo",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else if(this.nodos[i] instanceof Aritmetica){
                     if(this.nodos[i].unario){
@@ -539,6 +560,8 @@ class Mientras{
                         }   
                     }else{
                         alert("Error Semantico, Operacion no Permitida, unicamente incremento y decremento");
+                        var errores_1=new Errores("Semantico","operacion no permitida, unicamente incremento y decremento",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else if(this.nodos[i] instanceof Para){
                     var ambi=temp_ambi;
@@ -605,6 +628,8 @@ class Mientras{
                         local.actualizar(this.nodos[i].id+"_"+ambi,sim);
                     }else{
                         alert("Error Semantico, en la operacion declaracion arreglos");
+                        var errores_1=new Errores("Semantico","error en la operacion declaracion arreglos",0,0);
+                            lista_errores.push(errores_1);
                     }        
                 }else if(this.nodos[i] instanceof AsignacionArreglos){
                     var ambi=temp_ambi;
@@ -614,7 +639,7 @@ class Mientras{
                     var result_temp=this.nodos[i].execute(local);
                     var sim=local.obtener(this.nodos[i].id+"_"+ambi);
                     if(sim!=null){
-                        if(numerico(sim.tipo)){
+                        //if(numerico(sim.tipo)){
                             if(result_temp!=null){
                                 temp+=result_temp.cadena;
                                 temp+="//empieza la asignacion ARREGLO PRIMITIVO\n";
@@ -686,25 +711,23 @@ class Mientras{
                                     }
                                 }else{
                                     alert("Error Semantico, Numero de dimensiones incorrectas para la asignacion del valor al arreglo primitivo");
+                                    var errores_1=new Errores("Semantico","Numero de dimensiones incorrectas para la asignacion del valor al arreglo primitivo",0,0);
+                            lista_errores.push(errores_1);
                                     temp="//empieza la asignacion ARREGLO PRIMITIVO\n";
                                 }
                                 temp+="//fin asignacion ARREGLO PRIMITIVO\n";
                             }else{
                                 alert("Error Semantico, en la expresion a asignar a posicion de arreglo");
+                                var errores_1=new Errores("Semantico","error en la expresion a asignar a posicion de arreglo",0,0);
+                            lista_errores.push(errores_1);
                             }
-                        }else{
-    
-                            //terminar esta parte
-                            /******* 
-                             * 
-                             * 
-                             * 
-                             * 
-                            */
+                        /*}else{
                             alert("Es una asignacion a un arreglo de objetos FALTA TERMINAR");
-                        }
+                        }*/
                     }else{
                         alert("Error Semantico, Arreglo no existe en el entorno");
+                        var errores_1=new Errores("Semantico","arreglo no existe en el entorno",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else if(this.nodos[i] instanceof AccesoObjetos){
                     var ambi=temp_ambi;

@@ -83,7 +83,7 @@
 [0-9]+                return 'NUMBER'
 
 "\""[^\"\n]*"\""      return 'STRING'
-"'"[a-zA-Z][^''\n]*"'" return 'CHAR'
+"'"([a-zA-Z]|[0-9])[^''\n]*"'" return 'CHAR'
 ([a-zA-Z]|["_"])([a-zA-Z]|[0-9]|["_"])* return 'ID'
 <<EOF>>               return 'EOF'
 .                     {lista_errores.push(new Errores("LEXICO","TOKEN NO RECONOCIDO "+yytext,(yylineno+1),yyleng));}
@@ -185,14 +185,45 @@ cuerpo_clase_sentencias: modificadores declaracion_metodos{
                                                             $$.push($2);
                                                         }
                         | declaracion_metodos{
-                            $$=[];
-                            $$.push($1);
+                                                $$=[];
+                                                $$.push($1);
                         }
                         | declaracion_variables{$$=$1;}
                         | declaracion_arreglos{
                                                 $$=[];
                                                 $$.push($1);
-                                            };
+                                            }
+                        | declaracion_clase_interna{
+                                                    $$=[];
+                                                    $$.push($1);
+                                                    };
+
+declaracion_clase_interna: modificadores CLASS ID '{' cuerpo_clase_interna '}'{$$=new Declaracionclase($3,$1,null,$5);}
+                        | CLASS ID '{' cuerpo_clase_interna '}'{$$=new Declaracionclase($2,[],null,$4);};
+
+cuerpo_clase_interna: cuerpo_clase_interna cuerpo_interna{
+                                                                $$=$1;
+                                                                for(var i=0;i<$2.length;i++){
+                                                                    $$.push($2[i]);
+                                                                }
+                                                                }
+                    | cuerpo_interna{$$=$1;};
+cuerpo_interna: modificadores declaracion_metodos{
+                                                $$=[];
+                                                $2.modificadores=$1;
+                                                $$.push($2);
+                                                }
+                | declaracion_metodos{
+                                    $$=[];
+                                    $$.push($1);
+                                        }
+                | declaracion_variables{
+                                        $$=$1;
+                                        }
+                | declaracion_arreglos{
+                                    $$=[];
+                                    $$.push($1);
+                                    };
 
 declaracion_arreglos: modificadores sentencia_arreglo ';'{
                                                             $$=$2;

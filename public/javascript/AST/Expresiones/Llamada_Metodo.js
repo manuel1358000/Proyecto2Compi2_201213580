@@ -68,12 +68,18 @@ class Llamada_Metodo{
                         this.primitivetipe="STRING";
                     }else{
                         alert("Error Semantico, el casteo explicito solo puede operar INTEGER, DOUBLE,CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo);
+                        var errores_1=new Errores("Semantico","el casteo explicito solo puede operar INTEGER DOUBLE CHAR Y STRING EL TIPO QUE SE UQIERE CASTEAR ES "+result_tipo,0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else{
                     alert("Error Semantico, No existe el entorno en la tabla de simbolos casteos");
+                    var errores_1=new Errores("Semantico","no existe el entorno en la tabla de simbolos",0,0);
+                            lista_errores.push(errores_1);
                 }
             }else{
                 alert("Error Semantico, el casteo explicito STR solo puede contener un parametro");
+                var errores_1=new Errores("Semantico","el casteo explicito str solo puede contener un parametro",0,0);
+                            lista_errores.push(errores_1);
 
             }
         }else if(this.id=="toDouble"){
@@ -107,15 +113,23 @@ class Llamada_Metodo{
                         this.primitivetipe="DOUBLE";
                     }else if(result_tipo=="STRING"){
                         alert("Error Semantico, no se puede realizar la conversison de string a double");
+                        var errores_1=new Errores("Semantico","no se puede realizar la conversion de string a double",0,0);
+                            lista_errores.push(errores_1);
                         this.primitivetipe="STRING";
                     }else{
                         alert("Error Semantico, el casteo explicito solo puede operar INTEGER, DOUBLE,CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo);
+                        var errores_1=new Errores("Semantico","el casteo explicto solo puede operar INTEGER DOUBLE CHAR Y STRING EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo,0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else{
                     alert("Error Semantico, No existe el entorno en la tabla de simbolos casteos");
+                    var errores_1=new Errores("Semantico","no existe el entorno en la tabla de simbolos casteos",0,0);
+                            lista_errores.push(errores_1);
                 }
             }else{
                 alert("Error Semantico, el casteo explicito STR solo puede contener un parametro");
+                var errores_1=new Errores("Semantico","el casteo explicito str solo puede contener un parametro",0,0);
+                            lista_errores.push(errores_1);
 
             }
         }else if(this.id=="toInt"){
@@ -160,15 +174,23 @@ class Llamada_Metodo{
                         this.primitivetipe="INTEGER";
                     }else if(result_tipo=="STRING"){
                         alert("Error Semantico, no se puede realizar la conversison de string a integer");
+                        var errores_1=new Errores("Semantico","no se puede realizar la conversion de string a integer",0,0);
+                            lista_errores.push(errores_1);
                         this.primitivetipe="STRING";
                     }else{
                         alert("Error Semantico, el casteo explicito solo puede operar INTEGER, DOUBLE,CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo);
+                        var errores_1=new Errores("Semantico","el casteo explicito solo puede operar INTEGER, DOUBLE CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo,0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else{
                     alert("Error Semantico, No existe el entorno en la tabla de simbolos casteos");
+                    var errores_1=new Errores("Semantico","no exist el entorno en la tabla de simbolos casteos",0,0);
+                            lista_errores.push(errores_1);
                 }
             }else{
-                alert("Error Semantico, el casteo explicito STR solo puede contener un parametro");
+                alert("Error Semantico, el casteo explicito toint solo puede contener un parametro");
+                var errores_1=new Errores("Semantico","el casteo explicito toint solo puede contener un parametro",0,0);
+                            lista_errores.push(errores_1);
 
             }
         }else if(this.id=="toChar"){
@@ -220,12 +242,18 @@ class Llamada_Metodo{
                         this.primitivetipe="CHAR";
                     }else{
                         alert("Error Semantico, el casteo explicito solo puede operar INTEGER, DOUBLE,CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo);
+                        var errores_1=new Errores("Semantico","el casteo explicito solo puede operar INTEGER DOUBLE CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAS ES "+result_tipo,0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else{
                     alert("Error Semantico, No existe el entorno en la tabla de simbolos casteos");
+                    var errores_1=new Errores("Semantico","no existe el entorno en la tabla de simbolos casteos",0,0);
+                            lista_errores.push(errores_1);
                 }
             }else{
-                alert("Error Semantico, el casteo explicito STR solo puede contener un parametro");
+                alert("Error Semantico, el casteo explicito tochar solo puede contener un parametro");
+                var errores_1=new Errores("Semantico","el casteo explicto tochar",0,0);
+                            lista_errores.push(errores_1);
 
             }
         }else{
@@ -331,9 +359,13 @@ class Llamada_Metodo{
                     temp+="p=p-"+sim_temp.tamanio+";\n";
                 }else{
                     alert("Ocurrio un error en el indice padre llamada a metodo");
+                    var errores_1=new Errores("Semantico","error en el indice padre llamada a metodo",0,0);
+                            lista_errores.push(errores_1);
                 }
             }else{
                 alert("Error Semantico, No existe el metodo que se esta llamando "+nombre_completo);
+                var errores_1=new Errores("Semantico","no existe el metodo que se esta llamando",0,0);
+                            lista_errores.push(errores_1);
                 result=new Result();
                 temp="";
             }

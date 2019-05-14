@@ -10,3 +10,4 @@ var codigo=0;
 var lista_pesta={};
 var graficaast="";
 var h=0;
+var lista_tabla_simbolo=[];

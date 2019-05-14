@@ -27,6 +27,8 @@ class Retorno{
             if(sim!=null){
                 if(sim.tipo=="VOID"){
                     alert("Error Semantico, la sentencia retorno no puede existir en un metodo de tipo VOID");
+                    var errores_1=new Errores("Semantico","la sentencia retorno no puede existir en un metodo de tipo void",0,0);
+                            lista_errores.push(errores_1);
                 }else{
                     this.exp1.ambitos=temp_ambi;
                     this.exp1.padre=this.padre;
@@ -48,13 +50,19 @@ class Retorno{
                             }
                         }else{
                             alert("Error Semantico, el tipo del retorno y la funcion no son iguales");
+                            var errores_1=new Errores("Semantico","el tipo del retorno y la funcion no son iguales",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else{
                         alert("Error Semantico, No se pudo realizar la operacion");
+                        var errores_1=new Errores("Semantico","no se pudo realizar la operacion",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }
             }else{
                 alert("Error Semantico, no existe el metodo donde esta el return");
+                var errores_1=new Errores("Semantico","no existe el metodo donde esta el return",0,0);
+                            lista_errores.push(errores_1);
             }
             
         }else{

@@ -31,7 +31,9 @@ class AccesoObjetos{
                         this.primitivetipe="STRING";
                         result.cadena+=temp;
                     }else{
-                        alert("Error Semantico, no existe el id que se quiere buscar");
+                        alert("Error Semantico, no existe el id que se quiere buscar accesoobjetos");
+                        var errores_1=new Errores("Semantico","no existe el id que se quiere buscar accesoobjeto",0,0);
+                            lista_errores.push(errores_1);
                     }
                     break;
                 }
@@ -76,7 +78,9 @@ class AccesoObjetos{
                             this.primitivetipe="STRING";
                         }
                     }else{
-                        alert("Error Semantico, no existe el id que se quiere buscar");
+                        alert("Error Semantico, no existe el id que se quiere buscar accesoobjetos");
+                        var errores_1=new Errores("Semantico","No existe el id que se quiere buscar accesoobjetos",0,0);
+                            lista_errores.push(errores_1);
                     }
                     break;
                 }
@@ -127,6 +131,8 @@ class AccesoObjetos{
                         this.primitivetipe="STRING";
                     }else{
                         alert("Error Semantico, el metodo touppercase solo se puede aplicar a valores de tipo STRING");
+                        var errores_1=new Errores("Semantico","el metodo touppercase solo se puede aplicar a valores de tipo string",0,0);
+                            lista_errores.push(errores_1);
                     }
                     break;
                 }
@@ -165,6 +171,8 @@ class AccesoObjetos{
                         this.primitivetipe="STRING";
                     }else{
                         alert("Error Semantico, el metodo touppercase solo se puede aplicar a valores de tipo STRING");
+                        var errores_1=new Errores("Semantico","el metodo tolowercase solo se puede aplicar a valores de tipo string",0,0);
+                            lista_errores.push(errores_1);
                     }
                     break;   
                 }
@@ -191,6 +199,8 @@ class AccesoObjetos{
                         }
                     }else{
                         alert("Error Semantico, No existe el id que se esta buscando para obtener el length");
+                        var errores_1=new Errores("Semantico","no existe el id que se esta buscando para obtener el length accesoobjetos",0,0);
+                            lista_errores.push(errores_1);
                     }
                     break;
                 }
@@ -233,13 +243,19 @@ class AccesoObjetos{
                             this.primitivetipe=sim_tipo.tipo;
                         }else{
                             alert("Error Semantico, el objeto a asignar no existe objeto.objeto");
+                            var errores_1=new Errores("Semantico","el objeto a asignar no existe objeto.objeto accesoobjetos",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else{
                         alert("Error Semantico, no existe el id que se busca en la asigacion de objetos objeto.objeto");
+                        var errores_1=new Errores("Semantico","no existe el id que se busca en la aisngacion de objetos objeto.objeto accesoobjetos",0,0);
+                            lista_errores.push(errores_1);
                         result=null;
                     }
                 }else{
                     alert("Error Semantico, El primer id de objeto.objeto no existe");
+                    var errores_1=new Errores("Semantico","El primer id de objeto.objeto no existe acceso objetos",0,0);
+                            lista_errores.push(errores_1);
                     result=null;
                 }
             }else{
@@ -262,6 +278,8 @@ class AccesoObjetos{
                         if(result_temp!=null){
                             if(result_temp.visibilidad=="PRIVATE"||result_temp.visibilidad=="private"){
                                 alert("Error Semantico, la visibilidad del metodo es private no se puede acceder a ella");
+                                var errores_1=new Errores("Semantico","la visibilidad del metodo es private no se puede acceder a ella",0,0);
+                            lista_errores.push(errores_1);
                             }else{
                                 temp+=result_temp.cadena;
                                 result.u_etiqueta=result_temp.u_etiqueta;
@@ -269,12 +287,18 @@ class AccesoObjetos{
                             }
                         }else{
                             alert("Error Semantico, No se pudo realizar la llamada al metodo del objeto");
+                            var errores_1=new Errores("Semantico","no se pudo realizar la llamada al metodo del objeto accesoobjetos",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }else{
                         alert("Error Semantico, El objeto al que quiere acceder no esta inicializado");
+                        var errores_1=new Errores("Semantico","El objeto al que quiere acceder no esta inicialiado accesoobjetos",0,0);
+                            lista_errores.push(errores_1);
                     }
                 }else{
                     alert("Error Semantico, El objeto al que quiere acceder no existe en el entorno o no esta instanciado");
+                    var errores_1=new Errores("Semantico","el objeto al que quiere acceder no existe en el entorno o no esta instanciado accesoobjetos",0,0);
+                            lista_errores.push(errores_1);
                 }
                 result.cadena+=temp;
             }
