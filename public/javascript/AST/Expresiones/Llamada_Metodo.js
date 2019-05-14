@@ -172,7 +172,62 @@ class Llamada_Metodo{
 
             }
         }else if(this.id=="toChar"){
-            alert("soy el tochar");
+            result=new Result();
+            if(this.parametros.length==1){
+                this.parametros[0].ambitos=temp_ambi;
+                this.parametros[0].normal=this.normal;
+                this.parametros[0].padre=this.padre;
+                var result_temp=this.parametros[0].getValue(entorno);
+                var result_tipo=this.parametros[0].getTipe(entorno);
+                var sim_correr=entorno.obtener(this.padre);
+                if(sim_correr!=null){
+                    if(result_tipo=="DOUBLE"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        var eti1=generarEtiqueta();
+                        temp+=eti1+"=p+5;\n";
+                        temp+=eti1+"="+eti1+"+1;\n";
+                        temp+="stack["+eti1+"]="+result_temp.u_etiqueta+";\n";
+                        temp+="p=p+5;\n";
+                        temp+="call obtenerInt;\n";
+                        var eti2=generarEtiqueta();
+                        temp+=eti2+"=p+0;\n";
+                        var eti3=generarEtiqueta();
+                        temp+=eti3+"=stack["+eti2+"];\n";
+                        temp+="p=p-5;\n";
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=eti3;
+                        this.primitivetipe="CHAR";
+                    }else if(result_tipo=="CHAR"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=result_temp.u_etiqueta;
+                        this.primitivetipe="CHAR";
+                    }else if(result_tipo=="INTEGER"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=result_temp.u_etiqueta;
+                        this.primitivetipe="CHAR";
+                    }else if(result_tipo=="STRING"){
+                        temp+="p=p+"+sim_correr.tamanio+";\n";
+                        temp+=result_temp.cadena;
+                        var eti1=generarEtiqueta();
+                        temp+=eti1+"=heap["+result_temp.u_etiqueta+"];\n";
+                        temp+="p=p-"+sim_correr.tamanio+";\n";
+                        result.u_etiqueta=eti1;
+                        this.primitivetipe="CHAR";
+                    }else{
+                        alert("Error Semantico, el casteo explicito solo puede operar INTEGER, DOUBLE,CHAR Y STRING, EL TIPO QUE SE QUIERE CASTEAR ES "+result_tipo);
+                    }
+                }else{
+                    alert("Error Semantico, No existe el entorno en la tabla de simbolos casteos");
+                }
+            }else{
+                alert("Error Semantico, el casteo explicito STR solo puede contener un parametro");
+
+            }
         }else{
             for(var i=0;i<param_temp.length;i++){
                 if(this.parametros[i].getTipe(entorno)=="ID"){
