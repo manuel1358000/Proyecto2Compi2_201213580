@@ -189,15 +189,6 @@ function ejecutar(nodoast,entorno){
         if(clases instanceof Declaracionclase){
             for(var a=0;a<clases.nodos.length;a++){
                 var metodo=clases.nodos[a];
-                /*if(metodo instanceof Metodo){
-                    if(metodo.id=="main"){
-                        clases.nodos.splice(a,1)
-                        clases.nodos.unshift(metodo);
-                        var temp=clases;
-                        nodoast.splice(i,1);
-                        nodoast.unshift(temp);
-                    }
-                }*/
             }
         }
     }
@@ -207,7 +198,7 @@ function ejecutar(nodoast,entorno){
         }
     }
     //------------------------
-    //agregarTablaSimbolos(entorno);
+    agregarTablaSimbolos(entorno);
     //anidarErrores();
     graficarArbol(nodoast);
     return respuesta;

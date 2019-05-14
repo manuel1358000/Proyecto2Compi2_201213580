@@ -11,8 +11,8 @@ class AccesoObjetos{
     }
     //esta seccion se centra en las llamadas a metodos que puedan tener ya que solo se hara referencia a la llamada del metodo y lo que corresponda
     getValue(entorno){
+        var result=new Result();
         if(this.iniValue.id=="length"||this.iniValue.id=="getClass"||this.iniValue.id=="toString"||this.iniValue.id=="equals"||this.iniValue.id=="toCharArray"||this.iniValue.id=="toUpperCase"||this.iniValue.id=="toLowerCase"){
-            var result=new Result();
             var temp="";
             var temp_ambi="";
             if(this.padre=="main"){
@@ -200,40 +200,80 @@ class AccesoObjetos{
                 }
             }
         }else{
-            var result=new Result();
-            var temp="";
-            var temp_ambi="";
-            if(this.padre=="main"){
-                temp_ambi=this.ambitos;
-            }else{
-                temp_ambi=this.ambitos;
-            }
-            var sim=entorno.obtener(this.id+"_"+temp_ambi);
-            if(sim!=null&&this.iniValue!=null){  
-                if(sim.inicializado){
-                    this.iniValue.normal=sim.tipo;
-                    this.iniValue.ambitos=this.ambitos;
-                    this.iniValue.padre=this.padre;
-                    var result_temp=this.iniValue.getValue(entorno);
-                    var result_tipo=this.iniValue.getTipe(entorno);
-                    if(result_temp!=null){
-                        if(result_temp.visibilidad=="PRIVATE"||result_temp.visibilidad=="private"){
-                            alert("Error Semantico, la visibilidad del metodo es private no se puede acceder a ella");
-                        }else{
-                            temp+=result_temp.cadena;
-                            result.u_etiqueta=result_temp.u_etiqueta;
-                            this.primitivetipe=result_tipo;
-                        }
+            if(this.iniValue instanceof Aritmetica){
+                var temp="";
+                var temp_ambi="";
+                if(this.padre=="main"){
+                    temp_ambi=this.ambitos;
+                }else{
+                    temp_ambi=this.ambitos;
+                }
+                var sim_temp=entorno.obtener(this.id+"_"+temp_ambi);
+                if(sim_temp!=null){
+                    var raro="";
+                    var sim_obtener;
+                    if(this.padre=="main"){
+                        sim_obtener=entorno.obtener(this.padre);
                     }else{
-                        alert("Error Semantico, No se pudo realizar la llamada al metodo del objeto");
+                        sim_obtener=entorno.obtener(temp_ambi);
+                    }
+                    if(sim_obtener!=null){
+                        var sim_tipo=entorno.obtener(this.iniValue.valor+"_"+sim_temp.tipo);
+                        var eti1=generarEtiqueta();
+                        raro+=eti1+"=p+"+sim_obtener.tamanio+";\n";
+                        raro+=eti1+"="+eti1+"+1;\n";
+                        var eti2=generarEtiqueta();
+                        raro+=eti2+"=stack["+eti1+"];\n";
+                        raro+=eti2+"="+eti2+"+"+sim_tipo.posRel+";\n";
+                        var eti3=generarEtiqueta();
+                        raro+=eti3+"=heap["+eti2+"];";
+                        result.u_etiqueta=eti3;
+                        result.cadena+=raro;
+                        this.primitivetipe=sim_tipo.tipo;
+                        alert(raro);
+                    }else{
+                        alert("Error Semantico, no existe el id que se busca en la asigacion de objetos objeto.objeto");
                     }
                 }else{
-                    alert("Error Semantico, El objeto al que quiere acceder no esta inicializado");
+                    alert("Error Semantico, El primer id de objeto.objeto no existe");
+                    result=null;
                 }
             }else{
-                alert("Error Semantico, El objeto al que quiere acceder no existe en el entorno o no esta instanciado");
+                
+                var temp="";
+                var temp_ambi="";
+                if(this.padre=="main"){
+                    temp_ambi=this.ambitos;
+                }else{
+                    temp_ambi=this.ambitos;
+                }
+                var sim=entorno.obtener(this.id+"_"+temp_ambi);
+                if(sim!=null&&this.iniValue!=null){  
+                    if(sim.inicializado){
+                        this.iniValue.normal=sim.tipo;
+                        this.iniValue.ambitos=this.ambitos;
+                        this.iniValue.padre=this.padre;
+                        var result_temp=this.iniValue.getValue(entorno);
+                        var result_tipo=this.iniValue.getTipe(entorno);
+                        if(result_temp!=null){
+                            if(result_temp.visibilidad=="PRIVATE"||result_temp.visibilidad=="private"){
+                                alert("Error Semantico, la visibilidad del metodo es private no se puede acceder a ella");
+                            }else{
+                                temp+=result_temp.cadena;
+                                result.u_etiqueta=result_temp.u_etiqueta;
+                                this.primitivetipe=result_tipo;
+                            }
+                        }else{
+                            alert("Error Semantico, No se pudo realizar la llamada al metodo del objeto");
+                        }
+                    }else{
+                        alert("Error Semantico, El objeto al que quiere acceder no esta inicializado");
+                    }
+                }else{
+                    alert("Error Semantico, El objeto al que quiere acceder no existe en el entorno o no esta instanciado");
+                }
+                result.cadena+=temp;
             }
-            result.cadena+=temp;
         }
         return result;
     }

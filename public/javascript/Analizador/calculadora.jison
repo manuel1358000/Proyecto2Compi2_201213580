@@ -42,6 +42,7 @@
 "for"               return 'FOR'
 "default"           return 'DEFAULT'
 "break"             return 'BREAK'
+//casteos
 //simbolos del lenguaje
 "."                   return '.'
 "{"                   return '{'
@@ -251,6 +252,14 @@ variables: tipo lista_id {
                                                         $2[($2.length-1)].inicializado=true;
                                                         $$=$2;
                                                     }
+         | ID lista_id '=' ID '.' ID{
+                                    for(var i=0;i<$2.length;i++){
+                                        $2[i].tipo=$1; 
+                                    }
+                                    $2[($2.length-1)].iniValue=new AccesoObjetos($4,new Aritmetica(null,null,false,$6,null,Type.ID,0,0));
+                                    $2[($2.length-1)].inicializado=true;
+                                    $$=$2;
+                                    }
          
          | ID lista_id '=' ID{ 
                                 for(var i=0;i<$2.length;i++){
@@ -518,6 +527,13 @@ sentencia_break: BREAK{$$=new Detener($1);};
 sentencia_asignacion: ID '=' exp{
                                 $$=new Asignacion($1,$3,0);
                                 }
+                    | ID '=' NEW ID '('  ')'{
+                                            $$=new Asignacion($1,$4,0);
+                                        }
+                    | ID '=' NEW ID '(' lista_valores ')'{
+                                                        $$=new Asignacion($1,$4,0);
+                                                        $$.lista_valores=$6;
+                                                    }
                     | THIS '.' elementos_this '=' exp{
                                                     //id,iniValue,dimensiones
                                                     var temp_this=new Este($3);

@@ -15,6 +15,8 @@ class Declaracionclase{
         for(var i=0;i<this.nodos.length;i++){
             var nodo=this.nodos[i];
             if(nodo instanceof Declaracion){
+                nodo.ambitos=this.id+"_GLOBAL";
+                nodo.padre=this.id+"_GLOBAL";
                 var result=nodo.execute(entorno);
                 var tipo_result=nodo.getTipe(entorno);
                 if(tipo_result==nodo.tipo){

@@ -375,7 +375,7 @@ class Aritmetica{
                     var temp="";
                     var sim=entorno.obtener(this.valor+"_"+this.ambitos);
                     if(sim==null){
-                        alert("Error Semantico, No existe el id que se busca");
+                        alert("Error Semantico, No existe el id que se busca "+this.valor+"_"+this.ambitos);
                     }else{
                         var temp1=generarEtiqueta();
                         var simulado=generarEtiqueta();
