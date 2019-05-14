@@ -69,34 +69,39 @@ class Mientras{
                             lista_errores.push(errores_1);
                                 }
                             }else{
-                                if(result_temp!=null){
-                                    temp+=result_temp.cadena;
-                                    temp+="//declaracion variable local\n";
-                                    var temph=generarEtiqueta();
-                                    temp+=temph+"=h;\n";
-                                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                                    temp+="h=h+1;\n";
-                                    var simulado=generarEtiqueta();
-                                    var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
-                                    temp+=simulado+"=p+"+sim.posRel+";\n";
-                                    temp+="stack["+simulado+"]="+temph+";\n";
-                                    temp+="//fin declaracion variable local\n";
-                                    sim.inicializado=result_temp.inicializado;
-                                    local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
-                                }else{
-                                    temp="//declaracion variable local\n";
-                                    var temph=generarEtiqueta();
-                                    temp+=temph+"=h;\n";
-                                    temp+="heap[h]=0;\n";
-                                    temp+="h=h+1;\n";
-                                    var simulado=generarEtiqueta();
-                                    var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
-                                    temp+=simulado+"=p+"+sim.posRel+";\n";
-                                    temp+="stack["+simulado+"]="+temph+";\n";
-                                    temp+="//fin declaracion variable local\n";
-                                    sim.inicializado=false;
-                                    local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
+                                try{
+                                    if(result_temp!=null){
+                                        temp+=result_temp.cadena;
+                                        temp+="//declaracion variable local\n";
+                                        var temph=generarEtiqueta();
+                                        temp+=temph+"=h;\n";
+                                        temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                                        temp+="h=h+1;\n";
+                                        var simulado=generarEtiqueta();
+                                        var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
+                                        temp+=simulado+"=p+"+sim.posRel+";\n";
+                                        temp+="stack["+simulado+"]="+temph+";\n";
+                                        temp+="//fin declaracion variable local\n";
+                                        sim.inicializado=result_temp.inicializado;
+                                        local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
+                                    }else{
+                                        temp="//declaracion variable local\n";
+                                        var temph=generarEtiqueta();
+                                        temp+=temph+"=h;\n";
+                                        temp+="heap[h]=0;\n";
+                                        temp+="h=h+1;\n";
+                                        var simulado=generarEtiqueta();
+                                        var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
+                                        temp+=simulado+"=p+"+sim.posRel+";\n";
+                                        temp+="stack["+simulado+"]="+temph+";\n";
+                                        temp+="//fin declaracion variable local\n";
+                                        sim.inicializado=false;
+                                        local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
+                                    }
+                                }catch(error){
+                                    console.log("Error general en sim mientras declaracion");
                                 }
+                                
                             }
                         }else if(this.nodos[i] instanceof Imprimir){
                             this.nodos[i].padre=this.padre;
@@ -121,31 +126,35 @@ class Mientras{
                             var result_temp=this.nodos[i].execute(local);
                             var temp="";
                             if(result_temp!=null){
-                                if(result_temp.tipo=="this"){
-                                    temp+="//ACCESO A UN ELEMENTO DEL THIS\n";
-                                    temp+=result_temp.cadena;
-                                    temp+="//FINALIZA ACCESO A UN ELEMENTO DEL THIS\n";
-                                }else{
-                                    temp=result_temp.cadena;
-                                    temp+="//empieza la asignacion variable local\n";
-                                    var temph=generarEtiqueta();
-                                    temp+=temph+"=h;\n";
-                                    temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                                    temp+="h=h+1;\n";
-                                    var simulado=generarEtiqueta();
-                                    var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                                    temp+=simulado+"=p+"+sim.posRel+";\n";
-                                    temp+="stack["+simulado+"]="+temph+";\n";
-                                    temp+="//fin asignacion variable local\n";
-                                    if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
-                                        alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
-                                        var errores_1=new Errores("Semantico","error la variable final "+sim.nombre+"ya ha sido inicializada",0,0);
-                            lista_errores.push(errores_1);
-                                        temp="";
+                                try{
+                                    if(result_temp.tipo=="this"){
+                                        temp+="//ACCESO A UN ELEMENTO DEL THIS\n";
+                                        temp+=result_temp.cadena;
+                                        temp+="//FINALIZA ACCESO A UN ELEMENTO DEL THIS\n";
                                     }else{
-                                        sim.inicializado=true;
-                                        local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                        temp=result_temp.cadena;
+                                        temp+="//empieza la asignacion variable local\n";
+                                        var temph=generarEtiqueta();
+                                        temp+=temph+"=h;\n";
+                                        temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                                        temp+="h=h+1;\n";
+                                        var simulado=generarEtiqueta();
+                                        var sim=local.obtener(this.nodos[i].id+"_"+ambi);
+                                        temp+=simulado+"=p+"+sim.posRel+";\n";
+                                        temp+="stack["+simulado+"]="+temph+";\n";
+                                        temp+="//fin asignacion variable local\n";
+                                        if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
+                                            alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
+                                            var errores_1=new Errores("Semantico","error la variable final "+sim.nombre+"ya ha sido inicializada",0,0);
+                                            lista_errores.push(errores_1);
+                                            temp="";
+                                        }else{
+                                            sim.inicializado=true;
+                                            local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                        }
                                     }
+                                }catch(error){
+                                    console.log("Error general en asignacion mientras");
                                 }
                             }else{   
                             }
@@ -244,24 +253,29 @@ class Mientras{
                             var result_temp=this.nodos[i].execute(local);
                             var tipo_result=this.nodos[i].getTipe(local);
                             if(result_temp!=null){
-                                temp+="//declaracion ARRAY local\n";
-                                temp+=result_temp.cadena;
-                                var simulado=generarEtiqueta();
-                                var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                                temp+=simulado+"=p+"+sim.posRel+";\n";
-                                temp+="stack["+simulado+"]="+result_temp.u_etiqueta+";//asigna el puntero del heap donde inicia el array\n";
-                                temp+="//fin declaracion variable local\n";
-                                if(this.nodos[i].inicializado==true){
-                                    sim.inicializado=true;
-                                    sim.lista_dimensiones=this.nodos[i].lista_dimensiones;
-                                }else{
-                                    sim.inicializado=false;
+                                try{
+                                    temp+="//declaracion ARRAY local\n";
+                                    temp+=result_temp.cadena;
+                                    var simulado=generarEtiqueta();
+                                    var sim=local.obtener(this.nodos[i].id+"_"+ambi);
+                                    temp+=simulado+"=p+"+sim.posRel+";\n";
+                                    temp+="stack["+simulado+"]="+result_temp.u_etiqueta+";//asigna el puntero del heap donde inicia el array\n";
+                                    temp+="//fin declaracion variable local\n";
+                                    if(this.nodos[i].inicializado==true){
+                                        sim.inicializado=true;
+                                        sim.lista_dimensiones=this.nodos[i].lista_dimensiones;
+                                    }else{
+                                        sim.inicializado=false;
+                                    }
+                                    local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                }catch(error){
+                                    console.log("Error general en sim en mientras declaracion arreglos");
                                 }
-                                local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                
                             }else{
                                 alert("Error Semantico, en la operacion declaracion arreglos");
                                 var errores_1=new Errores("Semantico","error en la operacion declaracion arreglos",0,0);
-                            lista_errores.push(errores_1);
+                                lista_errores.push(errores_1);
                             }        
                         }else if(this.nodos[i] instanceof AsignacionArreglos){
                             var ambi=temp_ambi;
@@ -437,33 +451,37 @@ class Mientras{
                             lista_errores.push(errores_1);
                         }
                     }else{
-                        if(result_temp!=null){
-                            temp+=result_temp.cadena;
-                            temp+="//declaracion variable local\n";
-                            var temph=generarEtiqueta();
-                            temp+=temph+"=h;\n";
-                            temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                            temp+="h=h+1;\n";
-                            var simulado=generarEtiqueta();
-                            var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
-                            temp+=simulado+"=p+"+sim.posRel+";\n";
-                            temp+="stack["+simulado+"]="+temph+";\n";
-                            temp+="//fin declaracion variable local\n";
-                            sim.inicializado=true;
-                            local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
-                        }else{
-                            temp="//declaracion variable local\n";
-                            var temph=generarEtiqueta();
-                            temp+=temph+"=h;\n";
-                            temp+="heap[h]=0;\n";
-                            temp+="h=h+1;\n";
-                            var simulado=generarEtiqueta();
-                            var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
-                            temp+=simulado+"=p+"+sim.posRel+";\n";
-                            temp+="stack["+simulado+"]="+temph+";\n";
-                            temp+="//fin declaracion variable local\n";
-                            sim.inicializado=false;
-                            local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
+                        try{
+                            if(result_temp!=null){
+                                temp+=result_temp.cadena;
+                                temp+="//declaracion variable local\n";
+                                var temph=generarEtiqueta();
+                                temp+=temph+"=h;\n";
+                                temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                                temp+="h=h+1;\n";
+                                var simulado=generarEtiqueta();
+                                var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
+                                temp+=simulado+"=p+"+sim.posRel+";\n";
+                                temp+="stack["+simulado+"]="+temph+";\n";
+                                temp+="//fin declaracion variable local\n";
+                                sim.inicializado=true;
+                                local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
+                            }else{
+                                temp="//declaracion variable local\n";
+                                var temph=generarEtiqueta();
+                                temp+=temph+"=h;\n";
+                                temp+="heap[h]=0;\n";
+                                temp+="h=h+1;\n";
+                                var simulado=generarEtiqueta();
+                                var sim=local.obtener(this.nodos[i].id+"_"+temp_ambi);
+                                temp+=simulado+"=p+"+sim.posRel+";\n";
+                                temp+="stack["+simulado+"]="+temph+";\n";
+                                temp+="//fin declaracion variable local\n";
+                                sim.inicializado=false;
+                                local.actualizar(this.nodos[i].id+"_"+temp_ambi,sim);
+                            }
+                        }catch(error){
+                            console.log("Error general en sim, en mientras declaracion");
                         }
                     }
                 }else if(this.nodos[i] instanceof Imprimir){
@@ -494,25 +512,29 @@ class Mientras{
                             temp+=result_temp.cadena;
                             temp+="//FINALIZA ACCESO A UN ELEMENTO DEL THIS\n";
                         }else{
-                            temp=result_temp.cadena;
-                            temp+="//empieza la asignacion variable local\n";
-                            var temph=generarEtiqueta();
-                            temp+=temph+"=h;\n";
-                            temp+="heap[h]="+result_temp.u_etiqueta+";\n";
-                            temp+="h=h+1;\n";
-                            var simulado=generarEtiqueta();
-                            var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                            temp+=simulado+"=p+"+sim.posRel+";\n";
-                            temp+="stack["+simulado+"]="+temph+";\n";
-                            temp+="//fin asignacion variable local\n";
-                            if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
-                                alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
-                                var errores_1=new Errores("Semantico","la variable final "+sim.nombre+" ya ha sido inicializada",0,0);
-                            lista_errores.push(errores_1);
-                                temp="";
-                            }else{
-                                sim.inicializado=true;
-                                local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                            try{
+                                temp=result_temp.cadena;
+                               temp+="//empieza la asignacion variable local\n";
+                                var temph=generarEtiqueta();
+                                temp+=temph+"=h;\n";
+                                temp+="heap[h]="+result_temp.u_etiqueta+";\n";
+                                temp+="h=h+1;\n";
+                                var simulado=generarEtiqueta();
+                                var sim=local.obtener(this.nodos[i].id+"_"+ambi);
+                                temp+=simulado+"=p+"+sim.posRel+";\n";
+                                temp+="stack["+simulado+"]="+temph+";\n";
+                                temp+="//fin asignacion variable local\n";
+                                if(verificarFinal(sim.modificadores)&&sim.inicializado==true){
+                                    alert("Error Semantico, la variable final "+sim.nombre+" ya ha sido inicializada");
+                                    var errores_1=new Errores("Semantico","la variable final "+sim.nombre+" ya ha sido inicializada",0,0);
+                                    lista_errores.push(errores_1);
+                                    temp="";
+                                }else{
+                                    sim.inicializado=true;
+                                    local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                                }
+                            }catch(error){
+                                console.log("Error general en sim, mientrasasignacion");
                             }
                         }
                     }else{   
@@ -612,20 +634,24 @@ class Mientras{
                     var result_temp=this.nodos[i].execute(local);
                     var tipo_result=this.nodos[i].getTipe(local);
                     if(result_temp!=null){
-                        temp+="//declaracion ARRAY local\n";
-                        temp+=result_temp.cadena;
-                        var simulado=generarEtiqueta();
-                        var sim=local.obtener(this.nodos[i].id+"_"+ambi);
-                        temp+=simulado+"=p+"+sim.posRel+";\n";
-                        temp+="stack["+simulado+"]="+result_temp.u_etiqueta+";//asigna el puntero del heap donde inicia el array\n";
-                        temp+="//fin declaracion variable local\n";
-                        if(this.nodos[i].inicializado==true){
-                            sim.inicializado=true;
-                            sim.lista_dimensiones=this.nodos[i].lista_dimensiones;
-                        }else{
-                            sim.inicializado=false;
-                        }
-                        local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                        try{
+                            temp+="//declaracion ARRAY local\n";
+                            temp+=result_temp.cadena;
+                            var simulado=generarEtiqueta();
+                            var sim=local.obtener(this.nodos[i].id+"_"+ambi);
+                            temp+=simulado+"=p+"+sim.posRel+";\n";
+                            temp+="stack["+simulado+"]="+result_temp.u_etiqueta+";//asigna el puntero del heap donde inicia el array\n";
+                            temp+="//fin declaracion variable local\n";
+                            if(this.nodos[i].inicializado==true){
+                                sim.inicializado=true;
+                                sim.lista_dimensiones=this.nodos[i].lista_dimensiones;
+                            }else{
+                                sim.inicializado=false;
+                            }
+                            local.actualizar(this.nodos[i].id+"_"+ambi,sim);
+                        }catch(error){
+                            console.log("Error general en mientras declaracionarreglos");
+                        }                    
                     }else{
                         alert("Error Semantico, en la operacion declaracion arreglos");
                         var errores_1=new Errores("Semantico","error en la operacion declaracion arreglos",0,0);
