@@ -61,7 +61,6 @@ class Entorno{
             }
         }
     }
-
     agregarparametro(clave,sim){
         this.tabla.put(clave,sim);
     }

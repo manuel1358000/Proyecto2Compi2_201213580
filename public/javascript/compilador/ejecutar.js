@@ -83,6 +83,7 @@ function btn_3dcompilar(){
     agregarStack();
 }
 function btn_compilar(){
+    lista_temporales="";
     scanDataSimbolos();
     conteo=0;
     codigo=0;
@@ -104,12 +105,6 @@ function btn_compilar(){
     }else if(indice>1){
         indice=indice-3;
     }
-    var errores_1=new Errores("Semantico","Prueba de errores 1",0,0);
-    lista_errores.push(errores_1);
-    errores_1=new Errores("Semantico","Prueba de errores 2",0,0);
-    lista_errores.push(errores_1);
-    errores_1=new Errores("Semantico","Prueba de errores 3",0,0);
-    lista_errores.push(errores_1);
     var cm = $('.CodeMirror')[indice].CodeMirror;
     var ast=calculadora.parse(cm.getValue());
     cont_e=-1;
@@ -278,7 +273,6 @@ function graficarArbol(lista_clases){
     }
     temp_grafica+="\n}";
     graficaast=temp_grafica;
-    console.log(temp_grafica);
     createElementoAST(temp_grafica);  
 }
 

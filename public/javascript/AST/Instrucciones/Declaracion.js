@@ -57,9 +57,12 @@ class Declaracion{
                 var temp="";
                 respuesta=new Result();
                 var eti_h=generarEtiqueta();
+                var sim=entorno.obtener(this.tipo+"_GLOBAL");
+                if(verificarAbstract(sim.modificadores)){
+                    alert("Error Semantico, La clase "+sim.nombre+" tiene un modificador abstract no se puede instanciar"); 
+                }
                 temp+=eti_h+"=h;\n";
                 respuesta.u_etiqueta=eti_h;
-                var sim=entorno.obtener(this.tipo+"_GLOBAL");
                 temp+="h=h+"+sim.tamanio+";\n";
                 var ran;
                 if(this.padre=="main"){
@@ -118,7 +121,6 @@ class Declaracion{
                 }catch(error){
                     console.log("Error sim en declaracion");
                 }
-                
             }
         }else{
             var tipo=this.getTipe(entorno);
@@ -225,4 +227,14 @@ class Declaracion{
         }
         return indice;
     }
+}
+function verificarAbstract(modificadores){      
+    var bandera=false;
+    for(var i=0;i<modificadores.length;i++){
+        if(modificadores[i]=="ABSTRACT"){
+            bandera=true;
+            break;
+        }
+    }
+    return bandera;
 }

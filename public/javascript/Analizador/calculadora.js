@@ -980,6 +980,7 @@ parseError: function parseError(str, hash) {
     } else {
         var error = new Error(str);
         error.hash = hash;
+        yyerror(hash.token,hash.line,hash.loc.first_column);
         throw error;
     }
 },
