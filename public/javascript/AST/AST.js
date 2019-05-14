@@ -20,12 +20,16 @@ function importar(nodoast){
                         }else{
                             //la clase ya se encuentra definida
                             alert("Error, la clase "+ast[t].id +" ya esta definida, no se puede importar");
+                            var errores_1=new Errores("Semantico","La clase "+ast[t].id+" ya esta definida, no se puede importar",0,0);
+                            lista_errores.push(errores_1);
                         }
                     }
                 }   
                 
             }else{
                 alert("Error, No existe el archivo que se quiere importar con el nombre "+nodoast[i].id);
+                var errores_1=new Errores("Semantico","No existe el archivo que se quiere importar con el nombre "+nodoast[i].id,0,0);
+                lista_errores.push(errores_1);
             }   
         }
     }
@@ -131,11 +135,15 @@ function ejecutar(nodoast,entorno){
                                 if(verificarExistencia(nodoast[i],nodoast[indice].nodos[t].id,"VARIABLE")){
                                     if(nodoast[indice].nodos[t].getVisibilidad()=="PRIVATE"||nodoast[indice].nodos[t].getVisibilidad()=="private"){
                                         alert("Error Semantico, la variable no se puede hereadar tiene visibilidad PRIVATE");
+                                        var errores_1=new Errores("Semantico","la variable no se puede heredar tiene visibilidad PRIVATE",0,0);
+                                        lista_errores.push(errores_1);
                                     }else{
                                         nodoast[i].nodos.push(nodoast[indice].nodos[t]);
                                     }
                                 }else{
                                     alert("Error Semantico, ya existe una declaracion con el mismo nombre, herencia");
+                                    var errores_1=new Errores("Semantico","Ya existe una declaracion con el mismo nombre, herencia",0,0);
+                                    lista_errores.push(errores_1);
                                 }
                             }else if(nodoast[indice].nodos[t] instanceof Metodo){
                                 if(nodoast[indice].nodos[t].id==nodoast[indice].id){
@@ -146,16 +154,22 @@ function ejecutar(nodoast,entorno){
                                         nodoast[i].nodos.push(nodo_temp);
                                     }else{
                                         alert("Error Semantico, no se puede heredar el constructor ya que existe uno con la misma firma");
+                                        var errores_1=new Errores("Semantico","no se puede pasar el constructor ya que existe uno con la misma firma",0,0);
+                                        lista_errores.push(errores_1);
                                     }
                                 }else{
                                     if(verificarExistenciaMetodo(nodoast[i].nodos,nodoast[indice].nodos[t])){
                                         if(nodoast[indice].nodos[t].getVisibilidad()=="PRIVATE"||nodoast[indice].nodos[t].getVisibilidad()=="private"){
                                             alert("Error Semantico, el metodo no se puede heredar ya tiene visibilidad private");
+                                            var errores_1=new Errores("Semantico","el metodo no se puede heredar ya tiene visibilidad private",0,0);
+                                            lista_errores.push(errores_1);
                                         }else{
                                             nodoast[i].nodos.push(nodoast[indice].nodos[t]);
                                         }
                                     }else{
                                         alert("Error Semantico, el metodo no se puede heredar ya que existe uno con las mismas caracteristicas en la clase hija");
+                                        var errores_1=new Errores("Semantico","El metodo no se puede heredar ya que existe uno con las mismas caracteristicas en la clase hija",0,0);
+                                        lista_errores.push(errores_1);
                                     }
                                 }
                             }else{
@@ -164,12 +178,18 @@ function ejecutar(nodoast,entorno){
                         }
                     }else{
                         alert("Error Semantico, La clase que quiere heredar es FINAL por lo que no puede realizar la operacion");
+                        var errores_1=new Errores("Semantico","la clase que quiere heredar es FINAL por lo que no puede realizar la operacion",0,0);
+                        lista_errores.push(errores_1);
                     }
                 }else{
                     alert("Error Semantico, la clase que se quiere heredar no existe");
+                    var errores_1=new Errores("Semantico","La clase que se quiere heredar no existe",0,0);
+                    lista_errores.push(errores_1);
                 }
             }else{
                 alert("Error Semantico, la herencia no puede ser de la misma clase");
+                var errores_1=new Errores("Semantico","la herencia no puede ser de la misma clase",0,0);
+                lista_errores.push(errores_1);
             }
         }
 
@@ -306,19 +326,29 @@ function cargarTablaSimbolos(nodoast,entorno,ambito,posicion,tipo){
         if(tipo=="VARIABLE_GLOBAL"){
             if(verificarPublic(nodoast.modificadores)){
                 alert("Error Semantico, la clase miembro "+nodoast.id+" no puede tener un modificador PUBLIC");
+                var errores_1=new Errores("Semantico","La clase miembro "+nodoast.id+" no puede tener  un modificador PUBLIC",0,0);
+                lista_errores.push(errores_1);
             }
         }else{
             if(verificarProtected(nodoast.modificadores)){
                 alert("Error Semantico, la clase superior "+nodoast.id+" tiene un modificador PROTECTED es un error");
+                var errores_1=new Errores("Semantico","la clase superior "+nodoast.id+ "tiene un modificador PROTECTED es un error",0,0);
+                lista_errores.push(errores_1);
             }
             if(verificarPrivate(nodoast.modificadores)){
                 alert("Error Semantico, la clase superior "+nodoast.id+" tiene un modificador PRIVATE es un error");
+                var errores_1=new Errores("Semantico","la clase superior "+nodoast.id+" tiene un modificador PRIVATE ES UN ERROR",0,0);
+                lista_errores.push(errores_1);
             }
             if(verificarStatic(nodoast.modificadores)){
                 alert("Error Semantico, la clase superior "+nodoast.id+" tiene un modificador STATIC es un error");
+                var errores_1=new Errores("Semantico","la clase superior "+nodoast.id+" tiene un modificador STATIC es un error",0,0);
+                lista_errores.push(errores_1);
             }
             if(verificarAbstract(nodoast.modificadores)&&verificarFinal(nodoast.modificadores)){
                 alert("Error Semantico, la clase superior "+nodoast.id+" no puede ser abstrac y final a la vez");
+                var errores_1=new Errores("Semantico","La clase superior "+nodoast.id+" no puede ser abstract y final a la vez",0,0);
+                lista_errores.push(errores_1);
             }
 
 
